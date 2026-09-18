@@ -1,0 +1,119 @@
+.mental-support-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+/* Chat box styling */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  max-height: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #fafafa;
+  border-radius: 10px;
+  scrollbar-width: thin;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  word-wrap: break-word;
+  font-size: 0.95rem;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+}
+
+.chat-bubble.ai {
+  align-self: flex-start;
+  background-color: #e6e6e6;
+  color: #333;
+}
+
+.typing-indicator {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: gray;
+  text-align: center;
+}
+
+.chat-input {
+  padding: 8px;
+  background-color: white;
+}
+
+.chat-text-input {
+  font-size: 0.9rem;
+}
+
+.send-btn {
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.clear-btn {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+/* Resource section */
+.resource-section {
+  border-radius: 10px;
+}
+
+.resource-title {
+  font-size: 0.9rem;
+}
+
+.resource-icon {
+  font-size: 1rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .mental-support-container {
+    padding: 0 5px;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  .chat-box {
+    height: 55vh;
+  }
+
+  .chat-bubble {
+    font-size: 0.85rem;
+  }
+
+  .chat-input .input-group {
+    flex-direction: column;
+  }
+
+  .chat-input .form-control {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .send-btn {
+    width: 100%;
+  }
+
+  .resource-title {
+    font-size: 0.85rem;
+  }
+}
