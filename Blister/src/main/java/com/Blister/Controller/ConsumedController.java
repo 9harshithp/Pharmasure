@@ -152,4 +152,23 @@ public class ConsumedController {
     public List<Consumed> getConsumedByPatient(@PathVariable("p_id") Integer p_id) {
         return consumedRepository.findByMedicationPatientPid(p_id);
     }
+
+    // POST log a consumed dose for a medication and decrement stock
+    @PostMapping("/add/{mid}")
+    public ResponseEntity<?> addConsumed(@PathVariable("mid") Integer mid) {
+        Optional<Medication> medOpt = medicationRepository.findById(mid);
+        if (medOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Medication not found");
+        }
+        Medication med = medOpt.get();
+        if (med.getTabletQty() != null && med.getTabletQty() > 0) {
+            med.setTabletQty(med.getTabletQty() - 1);
+            medicationRepository.save(med);
+        }
+        Consumed c = new Consumed();
+        c.setMedication(med);
+        c.setDateTime(LocalDateTime.now());
+        Consumed saved = consumedRepository.save(c);
+        return ResponseEntity.ok(saved);
+    }
 }

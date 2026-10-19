@@ -10,20 +10,54 @@ import {
   FaBrain,
   FaBell,
   FaSignOutAlt,
+  FaFilePdf,
+  FaVolumeUp,
+  FaStop,
 } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getZeroRiskSummary } from "../utils/predictiveRiskCalculator";
+import QuickDoseFAB from "./QuickDoseFAB";
+import { generateDoctorSummaryReport } from "../utils/clinicalReportGenerator";
+import { toggleSpeech } from "../utils/voiceAssistant";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const UserDashBoard = () => {
+  const { t, currentLanguage, translate, speechLangCode } = useLanguage();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [role, setRole] = useState("patient");
   const [alertStatus, setAlertStatus] = useState(false);
   const [pid, setPid] = useState(null);
+  const [zeroRiskAlerts, setZeroRiskAlerts] = useState([]);
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [missedTablets, setMissedTablets] = useState([]);
   const [showMissedModal, setShowMissedModal] = useState(false);
+  const [isVoiceAlertPlaying, setIsVoiceAlertPlaying] = useState(false);
+
+  const handleToggleVoiceAlert = async () => {
+    let text = `Critical Zero-risk alert. You have ${zeroRiskAlerts.length} medications whose remaining supply extends past their batch expiry date. Please review your regimen.`;
+    if (currentLanguage !== "en") {
+      text = await translate(text);
+    }
+    const playing = toggleSpeech("zero-risk-dashboard-alert", text, {
+      lang: speechLangCode,
+      onStart: () => setIsVoiceAlertPlaying(true),
+      onEnd: () => setIsVoiceAlertPlaying(false),
+      onStop: () => setIsVoiceAlertPlaying(false),
+      onError: () => setIsVoiceAlertPlaying(false),
+    });
+
+    if (playing) {
+      toast.info(`🔊 ${t("voiceAlert")}... (${t("stopVoice")})`, { autoClose: 2500 });
+      setIsVoiceAlertPlaying(true);
+    } else {
+      toast.info(`⏹️ ${t("stopVoice")}.`, { autoClose: 1500 });
+      setIsVoiceAlertPlaying(false);
+    }
+  };
 
   useEffect(() => {
     const storedName = sessionStorage.getItem("name");
@@ -42,12 +76,31 @@ const UserDashBoard = () => {
     setPid(storedPid);
 
     fetchAlertStatus(storedPid, storedRole);
+    checkZeroRiskCompliance(storedPid);
     
     if (!medicationChecked) {
       checkMedicationStatus(storedEmail);
       sessionStorage.setItem("medicationChecked", "true");
     }
   }, [navigate]);
+
+  const checkZeroRiskCompliance = async (patientPid) => {
+    try {
+      const res = await axios.get(`${baseUrl}/medications/get/patient/${patientPid}`);
+      if (res.data && Array.isArray(res.data)) {
+        const summary = getZeroRiskSummary(res.data);
+        if (summary.violations > 0 || summary.expired > 0) {
+          setZeroRiskAlerts(
+            summary.details.filter(
+              (d) => d.status === "RUNOUT_EXCEEDS_EXPIRY" || d.status === "EXPIRED"
+            )
+          );
+        }
+      }
+    } catch (err) {
+      console.error("Error checking zero-risk compliance:", err);
+    }
+  };
 
   const fetchAlertStatus = async (id, userRole) => {
     try {
@@ -151,6 +204,28 @@ const UserDashBoard = () => {
     navigate("/");
   };
 
+  const handleGenerateDoctorReport = async () => {
+    if (!pid) return;
+    try {
+      toast.info("Generating Clinical Summary PDF...", { autoClose: 1500 });
+      const [patientRes, medsRes, consumedRes] = await Promise.all([
+        axios.get(`${baseUrl}/getById/${pid}`),
+        axios.get(`${baseUrl}/medications/get/patient/${pid}`),
+        axios.get(`${baseUrl}/consumed/bypatient/${pid}`).catch(() => ({ data: [] })),
+      ]);
+
+      generateDoctorSummaryReport(
+        patientRes.data,
+        medsRes.data || [],
+        consumedRes.data || []
+      );
+      toast.success("✅ Clinical report downloaded!");
+    } catch (err) {
+      console.error("Error generating report:", err);
+      toast.error("❌ Failed to generate report.");
+    }
+  };
+
   const handleAlert = async () => {
     if (!pid) return;
     try {
@@ -188,42 +263,45 @@ const UserDashBoard = () => {
 
   {/* Mobile Navbar */}
   <nav className="navbar navbar-dark bg-dark d-md-none">
-    <div className="container-fluid">
-      <span className="navbar-brand fw-bold">💊 PHARMASURE</span>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#mobileMenu"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+    <div className="container-fluid d-flex justify-content-between align-items-center">
+      <span className="navbar-brand fw-bold mb-0">💊 {t("appName")}</span>
+      <div className="d-flex align-items-center gap-2">
+        <LanguageSelector variant="dark" />
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mobileMenu"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+      </div>
     </div>
     <div className="collapse" id="mobileMenu">
       <ul className="navbar-nav text-start bg-dark p-3">
         <li className="nav-item mb-2">
           <Link to="/userDashBoard/manageMedication" className="nav-link text-white">
-            <FaPills className="me-2" /> Manage Medication
+            <FaPills className="me-2" /> {t("manageMedication")}
           </Link>
         </li>
         <li className="nav-item mb-2">
           <Link to="/userDashBoard/consumedChart" className="nav-link text-white">
-            <FaChartLine className="me-2" /> Consumed Chart
+            <FaChartLine className="me-2" /> {t("consumedChart")}
           </Link>
         </li>
         <li className="nav-item mb-2">
           <Link to="/userDashBoard/ConsumedCount" className="nav-link text-white">
-            <FaCheckCircle className="me-2" /> Consumed Count
+            <FaCheckCircle className="me-2" /> {t("consumedCount")}
           </Link>
         </li>
         <li className="nav-item mb-2">
           <Link to="/userDashBoard/mentalSupport" className="nav-link text-white">
-            <FaBrain className="me-2" /> Mental Support
+            <FaBrain className="me-2" /> {t("mentalSupport")}
           </Link>
         </li>
         <li className="nav-item mb-2">
           <Link to="/userDashBoard/profile" className="nav-link text-white">
-            <FaUser className="me-2" /> Profile
+            <FaUser className="me-2" /> {t("profile")}
           </Link>
         </li>
         {role === "patient" && (
@@ -242,7 +320,7 @@ const UserDashBoard = () => {
             className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
             onClick={handleLogout}
           >
-            <FaSignOutAlt /> Logout
+            <FaSignOutAlt /> {t("logout")}
           </button>
         </li>
       </ul>
@@ -250,33 +328,47 @@ const UserDashBoard = () => {
   </nav>
 
   {/* Sidebar (Desktop Only) */}
-  <div className="bg-dark text-white d-none d-md-flex flex-column p-3" style={{ width: "250px" }}>
-    <h3 className="mb-4 text-center fw-bold">💊 PHARMASURE</h3>
+  <div className="bg-dark text-white d-none d-md-flex flex-column p-3" style={{ width: "260px" }}>
+    <h4 className="mb-2 text-center fw-bold text-primary">💊 {t("appName")}</h4>
+    
+    {/* Global Language Selector */}
+    <div className="mb-4 text-center">
+      <LanguageSelector variant="dark" />
+    </div>
+
     <ul className="nav flex-column text-start ">
       <li className="nav-item mb-2">
         <Link to="/userDashBoard/manageMedication" className="nav-link text-white">
-          <FaPills className="me-2" /> Manage Medication
+          <FaPills className="me-2 text-primary" /> {t("manageMedication")}
         </Link>
       </li>
       <li className="nav-item mb-2">
         <Link to="/userDashBoard/consumedChart" className="nav-link text-white">
-          <FaChartLine className="me-2" /> Consumed Chart
+          <FaChartLine className="me-2 text-info" /> {t("consumedChart")}
         </Link>
       </li>
       <li className="nav-item mb-2">
         <Link to="/userDashBoard/ConsumedCount" className="nav-link text-white">
-          <FaCheckCircle className="me-2" /> Consumed Count
+          <FaCheckCircle className="me-2 text-success" /> {t("consumedCount")}
         </Link>
       </li>
       <li className="nav-item mb-2">
         <Link to="/userDashBoard/mentalSupport" className="nav-link text-white">
-          <FaBrain className="me-2" /> Ask AI for Mental Support
+          <FaBrain className="me-2 text-warning" /> {t("mentalSupport")}
         </Link>
       </li>
       <li className="nav-item mb-2">
         <Link to="/userDashBoard/profile" className="nav-link text-white">
-          <FaUser className="me-2" /> Profile
+          <FaUser className="me-2 text-light" /> {t("profile")}
         </Link>
+      </li>
+      <li className="nav-item mb-2">
+        <button
+          className="btn btn-outline-info w-100 text-white text-start d-flex align-items-center gap-2"
+          onClick={handleGenerateDoctorReport}
+        >
+          <FaFilePdf /> {t("downloadDoctorReport")}
+        </button>
       </li>
       {role === "patient" && (
         <li className="nav-item mt-3">
@@ -285,7 +377,7 @@ const UserDashBoard = () => {
             disabled={alertStatus}
             onClick={handleAlert}
           >
-            <FaBell /> {alertStatus ? "Alert Sent" : "Send Alert"}
+            <FaBell /> {alertStatus ? t("alertSent") : t("sendAlert")}
           </button>
         </li>
       )}
@@ -294,7 +386,7 @@ const UserDashBoard = () => {
           className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center mt-3 gap-2"
           onClick={handleLogout}
         >
-          <FaSignOutAlt /> Logout
+          <FaSignOutAlt /> {t("logout")}
         </button>
       </li>
     </ul>
@@ -302,8 +394,42 @@ const UserDashBoard = () => {
 
   {/* Main Content */}
   <div className="flex-grow-1 p-3 p-md-4" style={{ backgroundColor: "#ffffff" }}>
+    {/* 🚨 Global Zero-Risk Expiry Conflict Banner */}
+    {zeroRiskAlerts.length > 0 && (
+      <div className="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 p-3 rounded-3">
+        <div>
+          <h6 className="fw-bold mb-1 text-danger">
+            🚨 {t("zeroRiskAlert")}: Course Overruns Batch Expiry!
+          </h6>
+          <p className="mb-0 small text-dark">
+            <strong>{zeroRiskAlerts.length}</strong> {t("zeroRiskDesc")}
+          </p>
+        </div>
+        <div className="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
+          <button
+            className={`btn btn-sm text-nowrap fw-bold d-flex align-items-center gap-1 ${
+              isVoiceAlertPlaying ? "btn-danger" : "btn-outline-danger"
+            }`}
+            onClick={handleToggleVoiceAlert}
+            title={isVoiceAlertPlaying ? t("stopVoice") : t("voiceAlert")}
+          >
+            {isVoiceAlertPlaying ? <FaStop /> : <FaVolumeUp />}
+            <span>{isVoiceAlertPlaying ? t("stopVoice") : t("voiceAlert")}</span>
+          </button>
+          <Link
+            to="/userDashBoard/manageMedication"
+            className="btn btn-danger btn-sm text-nowrap fw-bold"
+          >
+            {t("reviewAdjustDosage")}
+          </Link>
+        </div>
+      </div>
+    )}
     <Outlet />
   </div>
+
+  {/* 🚀 1-Tap Quick-Dose Floating Action Button for Patients */}
+  {role === "patient" && <QuickDoseFAB />}
 
   {/* (Your Modals stay unchanged) */}
   {role === "caretaker" && showAlertModal && (
@@ -311,13 +437,13 @@ const UserDashBoard = () => {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content border-warning">
           <div className="modal-header bg-warning text-dark">
-            <h5 className="modal-title">⚠️ Patient Alert</h5>
+            <h5 className="modal-title">⚠️ {t("patientAlert")}</h5>
           </div>
           <div className="modal-body">
             <p>Your associate patient has triggered an alert! Please contact immediately.</p>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-success" onClick={handleClearAlert}>Confirm</button>
+            <button className="btn btn-success" onClick={handleClearAlert}>{t("confirm")}</button>
           </div>
         </div>
       </div>

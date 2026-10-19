@@ -6,9 +6,12 @@ import loginBg from "../Assets/home123.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -91,25 +94,31 @@ const handleLogin = async (e) => {
         style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
       ></div>
 
+      {/* Top Right Language Selector */}
+      <div className="position-absolute top-0 end-0 p-4" style={{ zIndex: 100 }}>
+        <LanguageSelector variant="dark" />
+      </div>
+
       {/* Glass card */}
       <div
         className="p-4 text-white"
         style={{
           backdropFilter: "blur(15px)",
-          background: "rgba(255,255,255,0.1)",
+          background: "rgba(255,255,255,0.12)",
           boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
           borderRadius: "20px",
           width: "350px",
           transform: loaded ? "translateY(0)" : "translateY(-50px)",
           opacity: loaded ? 1 : 0,
           transition: "all 1s ease",
+          zIndex: 10,
         }}
       >
         <h3
           className="text-center mb-4 fw-bold"
           style={{ textShadow: "2px 2px 10px rgba(0,0,0,0.7)" }}
         >
-          Login
+          {t("login")}
         </h3>
         <form onSubmit={handleLogin}>
           <div className="mb-3">

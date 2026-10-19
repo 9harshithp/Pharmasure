@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import homeBg from "../Assets/home123.jpg";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useLanguage } from "../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 200); // fade-in delay
@@ -19,13 +21,12 @@ const Home = () => {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center vh-100"
+      className="d-flex justify-content-center align-items-center vh-100 position-relative"
       style={{
         backgroundImage: `url(${homeBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         filter: "blur(5%)",
-        position: "relative",
         overflow: "hidden",
       }}
     >
@@ -35,29 +36,43 @@ const Home = () => {
         style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
       ></div>
 
+      {/* Top Right Language Selector */}
+      <div
+        className="position-absolute top-0 end-0 p-4"
+        style={{ zIndex: 100 }}
+      >
+        <LanguageSelector variant="dark" />
+      </div>
+
       {/* Glass card with animation */}
       <div
         className={`text-center text-white p-5 rounded`}
         style={{
           backdropFilter: "blur(15px)",
-          background: "rgba(255, 255, 255, 0.1)",
+          background: "rgba(255, 255, 255, 0.12)",
           boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
           borderRadius: "20px",
           transform: loaded ? "translateY(0)" : "translateY(-50px)",
           opacity: loaded ? 1 : 0,
           transition: "all 1s ease",
+          maxWidth: "600px",
+          width: "90%",
+          zIndex: 10,
         }}
       >
         <h1
-          className="mb-4 fw-bold"
+          className="mb-2 fw-bold"
           style={{
             fontSize: "3rem",
             textShadow: "2px 2px 10px rgba(0,0,0,0.7)",
             animation: loaded ? "fadeIn 1.5s ease forwards" : "none",
           }}
         >
-        PHARMASURE
+          {t("appName")}
         </h1>
+        <p className="mb-4 text-light lead" style={{ fontSize: "1.1rem" }}>
+          {t("tagline")}
+        </p>
         <button
           className="btn btn-gradient btn-lg px-5 py-3 fw-bold"
           onClick={handleStart}
