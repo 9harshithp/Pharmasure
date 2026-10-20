@@ -49,6 +49,7 @@ const ManageMedication = () => {
 
   useEffect(() => {
     if (patientId) fetchMedications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientId]);
 
   const fetchMedications = async () => {

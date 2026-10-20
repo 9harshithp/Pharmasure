@@ -27,6 +27,7 @@ const ConsumedCount = () => {
 
   useEffect(() => {
     if (patientId) fetchConsumedData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientId]);
 
   const fetchConsumedData = async () => {
