@@ -17,7 +17,7 @@ import Analytics from './Components/Analytics';
 import { LanguageProvider } from './context/LanguageContext';
 import Footer from './Components/Footer';
 
-export const baseUrl = "http://localhost:8080";
+export const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
 
 function App() {
   return (
