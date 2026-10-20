@@ -97,7 +97,7 @@ const Login = () => {
         style={{
           width: "450px",
           height: "450px",
-          background: "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0, 242, 255, 0.22) 0%, transparent 70%)",
           top: "10%",
           left: "10%",
           pointerEvents: "none",
@@ -109,7 +109,7 @@ const Login = () => {
         style={{
           width: "450px",
           height: "450px",
-          background: "radial-gradient(circle, rgba(0, 245, 212, 0.2) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255, 103, 50, 0.18) 0%, transparent 70%)",
           bottom: "10%",
           right: "10%",
           pointerEvents: "none",

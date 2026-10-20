@@ -40,11 +40,11 @@ const Home = () => {
         style={{
           width: "550px",
           height: "550px",
-          background: "radial-gradient(circle, rgba(139, 92, 246, 0.22) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0, 242, 255, 0.2) 0%, transparent 70%)",
           top: "-150px",
           left: "5%",
           pointerEvents: "none",
-          filter: "blur(60px)",
+          filter: "blur(70px)",
           zIndex: 0,
         }}
       />
@@ -53,42 +53,55 @@ const Home = () => {
         style={{
           width: "600px",
           height: "600px",
-          background: "radial-gradient(circle, rgba(0, 245, 212, 0.16) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255, 103, 50, 0.16) 0%, transparent 70%)",
           top: "35%",
           right: "-100px",
           pointerEvents: "none",
-          filter: "blur(70px)",
+          filter: "blur(80px)",
+          zIndex: 0,
+        }}
+      />
+      <div
+        className="position-absolute rounded-circle"
+        style={{
+          width: "500px",
+          height: "500px",
+          background: "radial-gradient(circle, rgba(255, 202, 0, 0.12) 0%, transparent 70%)",
+          top: "65%",
+          left: "20%",
+          pointerEvents: "none",
+          filter: "blur(80px)",
           zIndex: 0,
         }}
       />
 
-      {/* Floating Biotech Navbar (BioAge Labs Inspired) */}
-      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      {/* Floating Modern Biotech Navbar */}
+      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(42, 47, 61, 0.75)" }}>
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
           <div className="d-flex align-items-center gap-3" role="button" onClick={() => navigate("/")}>
             <div
               className="d-flex align-items-center justify-content-center rounded-3 p-2"
               style={{
-                background: "linear-gradient(135deg, rgba(0, 245, 212, 0.2), rgba(139, 92, 246, 0.3))",
-                border: "1px solid rgba(0, 245, 212, 0.4)",
-                boxShadow: "0 0 20px rgba(0, 245, 212, 0.25)",
+                background: "linear-gradient(135deg, rgba(0, 242, 255, 0.25), rgba(255, 103, 50, 0.25))",
+                border: "1px solid rgba(0, 242, 255, 0.45)",
+                boxShadow: "0 0 20px rgba(0, 242, 255, 0.3)",
               }}
             >
-              <FaShieldAlt className="text-info fs-5" />
+              <FaShieldAlt style={{ color: "var(--bio-cyan)", fontSize: "1.25rem" }} />
             </div>
             <div>
               <span className="fs-4 fw-bold tracking-tight bio-heading text-white" style={{ letterSpacing: "-0.03em" }}>
                 PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
               </span>
-              <span className="badge ms-2 bio-pill-cyan" style={{ fontSize: "10px" }}>
+              <span className="badge ms-2 bio-pill-orange" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>
             </div>
           </div>
 
           {/* Desktop Nav Pills */}
-          <div className="d-none d-lg-flex align-items-center gap-4 small fw-semibold" style={{ color: "#e2e8f0" }}>
+          <div className="d-none d-lg-flex align-items-center gap-4 small fw-semibold" style={{ color: "#cbd5e1" }}>
             <a href="#features" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
               Clinical Platform
             </a>
@@ -99,7 +112,7 @@ const Home = () => {
               Instant Roles
             </a>
             <div className="d-flex align-items-center gap-1 font-monospace text-light opacity-85">
-              <span className="text-success">●</span> PoS #{liveBlock.toLocaleString()}
+              <span style={{ color: "#FFCA00" }}>●</span> PoS #{liveBlock.toLocaleString()}
             </div>
           </div>
 
@@ -122,7 +135,7 @@ const Home = () => {
         <div className="text-center mx-auto" style={{ maxWidth: "860px" }}>
           {/* Eyebrow Pill */}
           <div className="d-inline-flex align-items-center mb-4">
-            <span className="bio-pill bio-pill-violet shadow-sm">
+            <span className="bio-pill bio-pill-orange shadow-sm">
               <span className="badge rounded-circle p-1 bg-success me-1"></span>
               FDA DSCSA Track & Trace • Polygon PoS Chain
             </span>
@@ -133,7 +146,7 @@ const Home = () => {
             className="display-4 fw-bolder mb-3 bio-heading"
             style={{
               lineHeight: 1.15,
-              background: "linear-gradient(135deg, #ffffff 30%, #c0b3d0 75%, #00f5d4 100%)",
+              background: "linear-gradient(135deg, #FFFFFF 25%, #00F2FF 65%, #FFCA00 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -145,7 +158,7 @@ const Home = () => {
           <p
             className="lead mb-4 fs-5 mx-auto"
             style={{
-              color: "#e2e8f0",
+              color: "#FFFFFF",
               lineHeight: 1.65,
               maxWidth: "800px",
               fontWeight: 400,
@@ -183,7 +196,7 @@ const Home = () => {
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-violet)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-gold)" }}>
                 64-Block
               </div>
               <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
@@ -191,7 +204,7 @@ const Home = () => {
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "#38bdf8" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-orange)" }}>
                 5 Regional
               </div>
               <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
@@ -199,7 +212,7 @@ const Home = () => {
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-emerald)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-cyan)" }}>
                 &lt; 1.2s
               </div>
               <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>

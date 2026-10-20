@@ -16,9 +16,9 @@ const Footer = () => {
     <footer
       className="bio-footer position-relative mt-auto"
       style={{
-        background: "linear-gradient(180deg, rgba(7, 7, 22, 0.92) 0%, #04040d 100%)",
-        borderTop: "1px solid rgba(139, 92, 246, 0.25)",
-        boxShadow: "0 -10px 40px rgba(0, 0, 0, 0.6)",
+        background: "linear-gradient(180deg, rgba(42, 47, 61, 0.98) 0%, #1a1e27 100%)",
+        borderTop: "1px solid rgba(0, 242, 255, 0.25)",
+        boxShadow: "0 -10px 40px rgba(0, 0, 0, 0.5)",
         zIndex: 20,
         color: "#cbd5e1",
       }}
@@ -28,8 +28,8 @@ const Footer = () => {
         style={{
           height: "2px",
           width: "100%",
-          background: "linear-gradient(90deg, transparent 0%, #00f5d4 30%, #8b5cf6 70%, transparent 100%)",
-          opacity: 0.8,
+          background: "linear-gradient(90deg, transparent 0%, #00F2FF 25%, #FF6732 50%, #FFCA00 75%, transparent 100%)",
+          opacity: 0.9,
         }}
       />
 
@@ -43,9 +43,9 @@ const Footer = () => {
                 style={{
                   width: "36px",
                   height: "36px",
-                  background: "linear-gradient(135deg, #00f5d4 0%, #8b5cf6 100%)",
-                  color: "#070716",
-                  boxShadow: "0 0 15px rgba(0, 245, 212, 0.4)",
+                  background: "linear-gradient(135deg, #00F2FF 0%, #FF6732 100%)",
+                  color: "#1a1e27",
+                  boxShadow: "0 0 15px rgba(0, 242, 255, 0.4)",
                 }}
               >
                 <FaShieldAlt size={18} />
@@ -53,7 +53,7 @@ const Footer = () => {
               <span className="fs-4 fw-bold tracking-tight text-white font-heading">
                 PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
               </span>
-              <span className="badge bio-pill-cyan ms-1" style={{ fontSize: "10px" }}>
+              <span className="badge bio-pill-orange ms-1" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>
             </div>
@@ -64,15 +64,15 @@ const Footer = () => {
 
             <div className="d-flex flex-wrap align-items-center gap-2">
               <span
-                className="badge px-2 py-1 font-mono text-success d-inline-flex align-items-center gap-1"
-                style={{ background: "rgba(16, 185, 129, 0.12)", border: "1px solid rgba(16, 185, 129, 0.3)", fontSize: "11px" }}
+                className="badge px-2 py-1 font-mono d-inline-flex align-items-center gap-1"
+                style={{ background: "rgba(0, 242, 255, 0.12)", border: "1px solid rgba(0, 242, 255, 0.35)", color: "#00F2FF", fontSize: "11px" }}
               >
-                <span className="rounded-circle bg-success" style={{ width: "6px", height: "6px", display: "inline-block" }}></span>
+                <span className="rounded-circle" style={{ width: "6px", height: "6px", display: "inline-block", background: "#00F2FF" }}></span>
                 Polygon Amoy #80002
               </span>
               <span
-                className="badge px-2 py-1 font-mono text-info d-inline-flex align-items-center gap-1"
-                style={{ background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.3)", fontSize: "11px" }}
+                className="badge px-2 py-1 font-mono d-inline-flex align-items-center gap-1"
+                style={{ background: "rgba(255, 202, 0, 0.12)", border: "1px solid rgba(255, 202, 0, 0.35)", color: "#FFCA00", fontSize: "11px" }}
               >
                 <FaLock size={9} />
                 21 CFR Part 11

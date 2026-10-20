@@ -1,44 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Bootstrap 5 theme overrides for high-contrast biotech dark mode */
-  --bs-body-color: #f8fafc;
-  --bs-body-color-rgb: 248, 250, 252;
-  --bs-body-bg: #070716;
-  --bs-body-bg-rgb: 7, 7, 22;
-  --bs-secondary-color: #cbd5e1;
-  --bs-tertiary-color: #94a3b8;
-  --bs-heading-color: #ffffff;
-  --bs-emphasis-color: #ffffff;
-  --bs-link-color: #38bdf8;
-  --bs-link-hover-color: #00f5d4;
-
-  /* BioAge Labs Inspired Biotech Palette */
-  --bio-bg: #070716;
-  --bio-bg-alt: #0d0b24;
-  --bio-bg-card: rgba(18, 16, 44, 0.75);
-  --bio-bg-card-hover: rgba(26, 23, 62, 0.88);
+  /* User Palette: #FFFFFF, #FFCA00, #FF6732, #00F2FF, #2A2F3D */
+  --bio-bg: #232733;            /* Rich deep slate foundation */
+  --bio-bg-alt: #1e222d;        /* Deep background base */
+  --bio-bg-card: #2A2F3D;       /* Swatch #5: Sleek Slate Surface */
+  --bio-bg-card-hover: #33394a; /* Slightly elevated surface */
   --bio-glass: rgba(255, 255, 255, 0.05);
   --bio-glass-border: rgba(255, 255, 255, 0.12);
-  --bio-glass-border-hover: rgba(192, 179, 208, 0.35);
+  --bio-glass-border-hover: rgba(0, 242, 255, 0.45);
 
-  --bio-cyan: #00f5d4;
-  --bio-cyan-glow: rgba(0, 245, 212, 0.35);
-  --bio-violet: #8b5cf6;
-  --bio-violet-glow: rgba(139, 92, 246, 0.35);
-  --bio-lilac: #c0b3d0;
-  --bio-emerald: #10b981;
-  --bio-rose: #f43f5e;
-  --bio-amber: #f59e0b;
-  --bio-indigo: #4338ca;
+  /* Primary Swatches */
+  --bio-cyan: #00F2FF;          /* Swatch #4: Electric Neon Cyan */
+  --bio-cyan-glow: rgba(0, 242, 255, 0.4);
+  --bio-orange: #FF6732;        /* Swatch #3: Electric Coral Orange */
+  --bio-orange-glow: rgba(255, 103, 50, 0.4);
+  --bio-gold: #FFCA00;          /* Swatch #2: Warm Luminous Gold */
+  --bio-gold-glow: rgba(255, 202, 0, 0.4);
+  --bio-white: #FFFFFF;         /* Swatch #1: Pure Crisp White */
 
-  --bio-text: #f8fafc;
+  /* Legacy variable mappings to maintain full component compatibility */
+  --bio-violet: #FF6732;        /* Map purple to vibrant coral orange */
+  --bio-violet-glow: rgba(255, 103, 50, 0.35);
+  --bio-lilac: #FFCA00;         /* Map lilac to warm luminous gold */
+  --bio-emerald: #00F2FF;       /* Map green to electric cyan */
+  --bio-rose: #FF6732;          /* Map red/rose to electric coral orange */
+  --bio-amber: #FFCA00;         /* Map amber to gold */
+  --bio-indigo: #00F2FF;
+
+  --bio-text: #FFFFFF;
   --bio-text-muted: #cbd5e1;
   --bio-text-subtle: #94a3b8;
 
   --font-heading: 'Space Grotesk', -apple-system, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Bootstrap 5 Theme Overrides for High Contrast */
+  --bs-body-color: #FFFFFF;
+  --bs-body-color-rgb: 255, 255, 255;
+  --bs-body-bg: #2A2F3D;
+  --bs-body-bg-rgb: 42, 47, 61;
+  --bs-secondary-color: #cbd5e1;
+  --bs-tertiary-color: #94a3b8;
+  --bs-heading-color: #FFFFFF;
+  --bs-emphasis-color: #FFFFFF;
+  --bs-link-color: #00F2FF;
+  --bs-link-hover-color: #FFCA00;
 }
 
 body {
@@ -56,14 +64,14 @@ h1, h2, h3, h4, h5, h6, .bio-heading {
   font-family: var(--font-heading);
   letter-spacing: -0.025em;
   font-weight: 700;
-  color: #f8fafc;
+  color: #FFFFFF;
 }
 
 code, pre, .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Universal high-contrast overrides: eliminates dark/black text on dark themes */
+/* Universal high-contrast overrides */
 .text-muted,
 .bio-ambient-mesh .text-muted,
 .bio-floating-window .text-muted,
@@ -74,11 +82,11 @@ code, pre, .font-mono {
 
 .lead,
 .bio-ambient-mesh .lead {
-  color: #f1f5f9 !important;
+  color: #FFFFFF !important;
 }
 
 .bio-ambient-mesh .text-dark {
-  color: #f8fafc !important;
+  color: #FFFFFF !important;
 }
 
 .bio-ambient-mesh small,
@@ -86,20 +94,20 @@ small.text-muted {
   color: #cbd5e1 !important;
 }
 
-/* Ambient Biotech Animated Mesh Background */
+/* Ambient Animated Mesh Background using #2A2F3D base with #00F2FF, #FF6732 & #FFCA00 glows */
 .bio-ambient-mesh {
   position: relative;
-  background-color: var(--bio-bg);
+  background-color: #232733;
   background-image: 
-    radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 85% 30%, rgba(0, 245, 212, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(67, 56, 202, 0.22) 0%, transparent 50%),
-    radial-gradient(circle at 75% 85%, rgba(192, 179, 208, 0.1) 0%, transparent 35%);
+    radial-gradient(circle at 12% 18%, rgba(0, 242, 255, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 88% 22%, rgba(255, 103, 50, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 75%, rgba(255, 202, 0, 0.13) 0%, transparent 45%),
+    radial-gradient(circle at 78% 85%, rgba(0, 242, 255, 0.11) 0%, transparent 40%);
   background-attachment: fixed;
-  color: #f8fafc;
+  color: #FFFFFF;
 }
 
-/* BioAge Floating Window Components */
+/* Floating Window Components using #2A2F3D */
 .bio-floating-window,
 .bio-ambient-mesh .card,
 .card.bio-floating-window {
@@ -110,7 +118,7 @@ small.text-muted {
   border-radius: 20px;
   box-shadow: 
     0 20px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 0.15);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
@@ -121,10 +129,10 @@ small.text-muted {
 .bio-floating-window:hover,
 .card.bio-floating-window:hover {
   transform: translateY(-6px) scale(1.01);
-  border-color: var(--bio-glass-border-hover) !important;
+  border-color: rgba(0, 242, 255, 0.45) !important;
   box-shadow: 
     0 30px 60px rgba(0, 0, 0, 0.6),
-    0 0 35px rgba(139, 92, 246, 0.22),
+    0 0 35px rgba(0, 242, 255, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
@@ -135,8 +143,8 @@ small.text-muted {
 .bio-role-card:hover {
   transform: translateY(-6px);
   background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(0, 245, 212, 0.6) !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 245, 212, 0.2) !important;
+  border-color: rgba(0, 242, 255, 0.7) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 242, 255, 0.3) !important;
 }
 
 /* Window Header Bar (macOS / Sci-Fi Terminal Style) */
@@ -247,42 +255,54 @@ small.text-muted {
 }
 
 .bio-pill-cyan {
-  background: rgba(0, 245, 212, 0.1);
-  border-color: rgba(0, 245, 212, 0.3);
-  color: var(--bio-cyan);
+  background: rgba(0, 242, 255, 0.12);
+  border-color: rgba(0, 242, 255, 0.4);
+  color: #00F2FF;
+}
+
+.bio-pill-orange {
+  background: rgba(255, 103, 50, 0.12);
+  border-color: rgba(255, 103, 50, 0.4);
+  color: #FF6732;
+}
+
+.bio-pill-gold {
+  background: rgba(255, 202, 0, 0.12);
+  border-color: rgba(255, 202, 0, 0.4);
+  color: #FFCA00;
 }
 
 .bio-pill-violet {
-  background: rgba(139, 92, 246, 0.12);
-  border-color: rgba(139, 92, 246, 0.35);
-  color: #c4b5fd;
+  background: rgba(255, 103, 50, 0.12);
+  border-color: rgba(255, 103, 50, 0.35);
+  color: #FFCA00;
 }
 
 .bio-pill-emerald {
-  background: rgba(16, 185, 129, 0.12);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #6ee7b7;
+  background: rgba(0, 242, 255, 0.12);
+  border-color: rgba(0, 242, 255, 0.35);
+  color: #00F2FF;
 }
 
 .bio-pill-rose {
-  background: rgba(244, 63, 94, 0.12);
-  border-color: rgba(244, 63, 94, 0.35);
-  color: #fda4af;
+  background: rgba(255, 103, 50, 0.14);
+  border-color: rgba(255, 103, 50, 0.4);
+  color: #FF6732;
 }
 
-/* Glowing Neon CTA Buttons */
+/* Glowing CTA Buttons matching palette */
 .bio-btn-glow {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4338ca 100%);
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #00F2FF 0%, #0284c7 70%, #FF6732 140%);
+  color: #1e222d !important;
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
   padding: 12px 28px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 
-    0 10px 25px rgba(99, 102, 241, 0.4),
-    0 0 15px rgba(139, 92, 246, 0.3);
+    0 10px 25px rgba(0, 242, 255, 0.35),
+    0 0 15px rgba(0, 242, 255, 0.25);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   display: inline-flex;
@@ -292,21 +312,22 @@ small.text-muted {
 
 .bio-btn-glow:hover {
   transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg, #FF6732 0%, #FFCA00 100%);
   box-shadow: 
-    0 15px 35px rgba(99, 102, 241, 0.55),
-    0 0 25px rgba(0, 245, 212, 0.4);
-  color: #ffffff !important;
+    0 15px 35px rgba(255, 103, 50, 0.45),
+    0 0 25px rgba(255, 202, 0, 0.35);
+  color: #1e222d !important;
 }
 
 .bio-btn-outline {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--bio-text) !important;
+  color: #FFFFFF !important;
   font-family: var(--font-heading);
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 12px 26px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(0, 242, 255, 0.35);
   backdrop-filter: blur(12px);
   transition: all 0.3s ease;
   text-decoration: none;
@@ -316,21 +337,27 @@ small.text-muted {
 }
 
 .bio-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--bio-lilac);
+  background: rgba(0, 242, 255, 0.12);
+  border-color: #00F2FF;
   transform: translateY(-2px);
-  color: #ffffff !important;
+  color: #00F2FF !important;
+  box-shadow: 0 0 18px rgba(0, 242, 255, 0.3);
 }
 
 /* Glowing Neon Borders & Rings */
 .bio-glow-border-cyan {
-  border: 1px solid rgba(0, 245, 212, 0.4) !important;
-  box-shadow: 0 0 20px rgba(0, 245, 212, 0.2) !important;
+  border: 1px solid rgba(0, 242, 255, 0.45) !important;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.25) !important;
 }
 
-.bio-glow-border-violet {
-  border: 1px solid rgba(139, 92, 246, 0.4) !important;
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.25) !important;
+.bio-glow-border-orange {
+  border: 1px solid rgba(255, 103, 50, 0.45) !important;
+  box-shadow: 0 0 25px rgba(255, 103, 50, 0.25) !important;
+}
+
+.bio-glow-border-gold {
+  border: 1px solid rgba(255, 202, 0, 0.45) !important;
+  box-shadow: 0 0 25px rgba(255, 202, 0, 0.25) !important;
 }
 
 /* Custom Scrollbars */
@@ -342,9 +369,9 @@ small.text-muted {
   background: var(--bio-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(0, 242, 255, 0.35);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 245, 212, 0.5);
+  background: rgba(255, 103, 50, 0.6);
 }
