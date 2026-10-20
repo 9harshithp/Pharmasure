@@ -469,107 +469,147 @@ const Home = () => {
 
         {/* 🚀 QUICK DEMO ROLE LAUNCHPAD */}
         <section id="quick-demo" className="py-5">
-          <div className="card bio-floating-window p-4 p-md-5 border-0">
-            <div className="text-center mb-4">
-              <span className="bio-pill bio-pill-violet mb-2">INSTANT ROLE ACCESS</span>
-              <h3 className="fw-bold bio-heading text-white">Experience PharmaSure In Action</h3>
-              <p className="small mx-auto" style={{ maxWidth: "600px", color: "#cbd5e1" }}>
-                Select a role below to automatically authenticate and explore the specialized interfaces engineered for patients, caretakers, and pharmacists.
-              </p>
+          <div className="bio-floating-window p-0 border-0 shadow-lg">
+            {/* Window Header Bar */}
+            <div className="bio-window-bar">
+              <div className="bio-window-dots">
+                <span className="bio-window-dot bio-dot-red"></span>
+                <span className="bio-window-dot bio-dot-yellow"></span>
+                <span className="bio-window-dot bio-dot-green"></span>
+              </div>
+              <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                fast-role-launchpad.exec
+              </span>
+              <span className="badge bio-pill-violet text-white" style={{ fontSize: "10px" }}>
+                1-Click Fast Auth
+              </span>
             </div>
 
-            <div className="row g-3">
-              {/* Patient Card */}
-              <div className="col-md-4">
-                <div
-                  className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between transition"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", cursor: "pointer" }}
-                  onClick={() => handleQuickLogin("harshithp914@gmail.com", "student123")}
-                  role="button"
-                >
-                  <div>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <span className="p-3 rounded-circle bg-primary bg-opacity-20 text-primary">
-                        <FaUserInjured size={22} />
-                      </span>
-                      <span className="badge bio-pill-cyan">Patient Role</span>
-                    </div>
-                    <h5 className="fw-bold text-white mb-2">Patient Dashboard</h5>
-                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
-                      Track dosage schedules, adherence rings, zero-risk alerts, and 1-tap quick dose intake.
-                    </p>
-                  </div>
-                  <button className="btn btn-sm btn-outline-primary w-100 fw-bold mt-2">
-                    Enter as Patient →
-                  </button>
-                </div>
+            <div className="p-4 p-md-5">
+              <div className="text-center mb-4">
+                <span className="bio-pill bio-pill-violet mb-2">INSTANT ROLE ACCESS</span>
+                <h3 className="fw-bold bio-heading text-white">Experience PharmaSure In Action</h3>
+                <p className="small mx-auto" style={{ maxWidth: "600px", color: "#cbd5e1" }}>
+                  Select a role below to automatically authenticate and explore the specialized interfaces engineered for patients, caretakers, and pharmacists.
+                </p>
               </div>
 
-              {/* Caretaker Card */}
-              <div className="col-md-4">
-                <div
-                  className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between transition"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", cursor: "pointer" }}
-                  onClick={() => handleQuickLogin("harshithp9141@gmail.com", "student123")}
-                  role="button"
-                >
-                  <div>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <span className="p-3 rounded-circle bg-warning bg-opacity-20 text-warning">
-                        <FaUserNurse size={22} />
-                      </span>
-                      <span className="badge bio-pill-rose">Caretaker Role</span>
+              <div className="row g-3">
+                {/* Patient Card */}
+                <div className="col-md-4">
+                  <div
+                    className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(0, 245, 212, 0.3)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleQuickLogin("harshithp914@gmail.com", "student123")}
+                    role="button"
+                  >
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <span
+                          className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
+                          style={{ background: "rgba(0, 245, 212, 0.15)", color: "var(--bio-cyan)" }}
+                        >
+                          <FaUserInjured size={22} />
+                        </span>
+                        <span className="badge bio-pill-cyan">Patient Role</span>
+                      </div>
+                      <h5 className="fw-bold text-white mb-2">Patient Dashboard</h5>
+                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                        Track dosage schedules, adherence rings, zero-risk alerts, and 1-tap quick dose intake.
+                      </p>
                     </div>
-                    <h5 className="fw-bold text-white mb-2">Caretaker Terminal</h5>
-                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
-                      Monitor associated patients, review missed medication alerts, and dispatch WhatsApp alerts.
-                    </p>
+                    <button className="bio-btn-glow btn-sm w-100 mt-2 py-2">
+                      <span>Enter as Patient</span>
+                      <FaArrowRight size={12} />
+                    </button>
                   </div>
-                  <button className="btn btn-sm btn-outline-warning w-100 fw-bold mt-2">
-                    Enter as Caretaker →
-                  </button>
                 </div>
-              </div>
 
-              {/* Pharmacist / Admin Card */}
-              <div className="col-md-4">
-                <div
-                  className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between transition"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", cursor: "pointer" }}
-                  onClick={() => handleQuickLogin("pharmacist@pharmasure.com", "admin123")}
-                  role="button"
-                >
-                  <div>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <span className="p-3 rounded-circle bg-success bg-opacity-20 text-success">
-                        <FaPrescriptionBottleAlt size={22} />
-                      </span>
-                      <span className="badge bio-pill-emerald">Pharmacist</span>
+                {/* Caretaker Card */}
+                <div className="col-md-4">
+                  <div
+                    className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(245, 158, 11, 0.3)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleQuickLogin("harshithp9141@gmail.com", "student123")}
+                    role="button"
+                  >
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <span
+                          className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
+                          style={{ background: "rgba(245, 158, 11, 0.15)", color: "var(--bio-amber)" }}
+                        >
+                          <FaUserNurse size={22} />
+                        </span>
+                        <span className="badge bio-pill-rose">Caretaker Role</span>
+                      </div>
+                      <h5 className="fw-bold text-white mb-2">Caretaker Terminal</h5>
+                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                        Monitor associated patients, review missed medication alerts, and dispatch WhatsApp alerts.
+                      </p>
                     </div>
-                    <h5 className="fw-bold text-white mb-2">Pharmacy Operations</h5>
-                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
-                      FEFO batch inventory, GS1 QR codes, Smart Dispense Assistant, and B2B distributor returns.
-                    </p>
+                    <button
+                      className="bio-btn-outline btn-sm w-100 mt-2 py-2"
+                      style={{ borderColor: "var(--bio-amber)", color: "var(--bio-amber)" }}
+                    >
+                      <span>Enter as Caretaker</span>
+                      <FaArrowRight size={12} />
+                    </button>
                   </div>
-                  <button className="btn btn-sm btn-outline-success w-100 fw-bold mt-2">
-                    Enter as Pharmacist →
-                  </button>
+                </div>
+
+                {/* Pharmacist / Admin Card */}
+                <div className="col-md-4">
+                  <div
+                    className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(16, 185, 129, 0.3)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleQuickLogin("pharmacist@pharmasure.com", "admin123")}
+                    role="button"
+                  >
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <span
+                          className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
+                          style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--bio-emerald)" }}
+                        >
+                          <FaPrescriptionBottleAlt size={22} />
+                        </span>
+                        <span className="badge bio-pill-emerald">Pharmacist</span>
+                      </div>
+                      <h5 className="fw-bold text-white mb-2">Pharmacy Operations</h5>
+                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                        FEFO batch inventory, GS1 QR codes, Smart Dispense Assistant, and B2B distributor returns.
+                      </p>
+                    </div>
+                    <button
+                      className="bio-btn-outline btn-sm w-100 mt-2 py-2"
+                      style={{ borderColor: "var(--bio-emerald)", color: "var(--bio-emerald)" }}
+                    >
+                      <span>Enter as Pharmacist</span>
+                      <FaArrowRight size={12} />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="border-top border-secondary border-opacity-25 py-4 text-center small position-relative" style={{ zIndex: 10, color: "#cbd5e1" }}>
-        <div className="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
-          <span>© 2026 PharmaSure • Zero-Risk Predictive Dispensing System</span>
-          <span className="font-mono text-light" style={{ fontSize: "11px" }}>
-            EVM Contract: <code>0x89e2F7...5C41</code> (Polygon Amoy 80002)
-          </span>
-        </div>
-      </footer>
     </div>
   );
 };
