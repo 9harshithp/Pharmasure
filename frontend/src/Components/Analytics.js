@@ -62,8 +62,10 @@ const Analytics = () => {
     datasets: [
       {
         data: [expired.length, expiringSoon.length, safeCount],
-        backgroundColor: ["#dc3545", "#ffc107", "#28a745"],
-        hoverOffset: 10,
+        backgroundColor: ["#EF4444", "#F59E0B", "#10B981"],
+        borderColor: "#FFFFFF",
+        borderWidth: 2,
+        hoverOffset: 8,
       },
     ],
   };
@@ -72,18 +74,24 @@ const Analytics = () => {
     plugins: {
       legend: {
         position: "bottom",
+        labels: {
+          color: "#0F2942",
+          font: { weight: "600", size: 12 },
+          padding: 16,
+        },
       },
     },
+    maintainAspectRatio: false,
   };
 
-  if (loading) return <div className="text-center mt-5">Loading...</div>;
+  if (loading) return <div className="text-center mt-5 text-muted">Loading Analytics...</div>;
 
   const cards = [
-    { title: "Total Medicines", value: totalMedicines, color: "primary", icon: "💊" },
-    { title: "Expired (Loss)", value: expired.length, color: "danger", icon: "⛔" },
-    { title: "Expiring <15d", value: expiringSoon.length, color: "warning", icon: "⏳" },
-    { title: "Distributor Returns", value: `${distributorReturns.length} (₹${totalCreditRefundValue.toFixed(0)})`, color: "info", icon: "🔄" },
-    { title: "Total Value (₹)", value: totalValue.toFixed(2), color: "success", icon: "💰" },
+    { title: "Total Medicines", value: totalMedicines, accent: "#0F2942", bgAccent: "rgba(15, 41, 66, 0.08)", icon: "💊" },
+    { title: "Expired (Loss)", value: expired.length, accent: "#EF4444", bgAccent: "rgba(239, 68, 68, 0.1)", icon: "⛔" },
+    { title: "Expiring ≤15d", value: expiringSoon.length, accent: "#F59E0B", bgAccent: "rgba(245, 158, 11, 0.12)", icon: "⏳" },
+    { title: "Distributor Returns", value: `${distributorReturns.length} (₹${totalCreditRefundValue.toFixed(0)})`, accent: "#06B6D4", bgAccent: "rgba(6, 182, 212, 0.12)", icon: "🔄" },
+    { title: "Total Inventory Value", value: `₹${totalValue.toFixed(2)}`, accent: "#10B981", bgAccent: "rgba(16, 185, 129, 0.12)", icon: "💰" },
   ];
 
   const handleRowClick = (item) => setSelectedItem(item);
@@ -192,82 +200,157 @@ const Analytics = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div className="container-fluid px-0">
+      {/* Top Header */}
+      <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-          <h4 className="fw-bold mb-1 text-primary">📊 Inventory Analytics & Enterprise Returns</h4>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span
+              className="badge rounded-pill px-3 py-1 text-uppercase fw-semibold"
+              style={{ backgroundColor: "rgba(6, 182, 212, 0.12)", color: "#0891B2", fontSize: "0.75rem" }}
+            >
+              Clinical Intelligence & Recalls
+            </span>
+          </div>
+          <h3 className="fw-bold mb-1" style={{ color: "#0F2942", letterSpacing: "-0.02em" }}>
+            Inventory Analytics & Enterprise Returns
+          </h3>
           <p className="text-muted small mb-0">
             Real-time shelf intelligence, wastage forecasting, and automated B2B distributor credit claims.
           </p>
         </div>
         {distributorReturns.length > 0 && (
           <button
-            className="btn btn-primary fw-bold d-flex align-items-center gap-2 shadow-sm"
+            className="btn fw-semibold d-flex align-items-center gap-2 shadow-sm rounded-3 px-3 py-2 transition"
+            style={{ backgroundColor: "#06B6D4", color: "#FFFFFF", border: "none" }}
             onClick={generateDistributorCreditNotePDF}
           >
-            <FaFilePdf size={18} />
-            Export Distributor Credit Claim (PDF)
+            <FaFilePdf size={17} />
+            Export Credit Claim (PDF)
           </button>
         )}
       </div>
 
-      {/* ✅ Summary Cards */}
+      {/* ✅ Clean Clinical Summary Cards */}
       <div className="row g-3 mb-4">
         {cards.map((card, index) => (
-          <div key={index} className="col-6 col-md">
+          <div key={index} className="col-12 col-sm-6 col-lg">
             <div
-              className={`card text-white bg-${card.color} shadow-sm border-0 h-100`}
+              className="card h-100 p-3 rounded-4 shadow-sm"
+              style={{
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E2E8F0",
+                transition: "all 0.2s ease-in-out",
+              }}
             >
-              <div className="card-body d-flex flex-column align-items-center justify-content-center text-center p-3">
-                <div style={{ fontSize: "1.8rem" }}>{card.icon}</div>
-                <h6 className="mt-2 mb-1 small">{card.title}</h6>
-                <h5 className="fw-bold mb-0">{card.value}</h5>
+              <div className="d-flex align-items-center gap-3">
+                <div
+                  className="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    backgroundColor: card.bgAccent,
+                    fontSize: "1.4rem",
+                  }}
+                >
+                  {card.icon}
+                </div>
+                <div className="overflow-hidden">
+                  <div
+                    className="small fw-semibold text-muted text-uppercase text-truncate"
+                    style={{ fontSize: "0.72rem", letterSpacing: "0.03em" }}
+                  >
+                    {card.title}
+                  </div>
+                  <div
+                    className="h5 fw-bold mb-0 text-truncate"
+                    style={{ color: card.accent || "#0F2942" }}
+                  >
+                    {card.value}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* ✅ Pie Chart */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-header bg-light text-center fw-bold">
-          Inventory Health & Expiry Distribution
+      {/* ✅ Pie Chart Card */}
+      <div
+        className="card shadow-sm mb-4 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
+        <div
+          className="card-header py-3 px-4 bg-white border-bottom d-flex align-items-center justify-content-between"
+          style={{ borderColor: "#E2E8F0" }}
+        >
+          <h6 className="fw-bold mb-0" style={{ color: "#0F2942" }}>
+            Inventory Health & Expiry Distribution
+          </h6>
+          <span
+            className="badge rounded-pill px-2.5 py-1 text-muted"
+            style={{ backgroundColor: "#F1F5F9", fontSize: "0.75rem" }}
+          >
+            Live Shelf Breakdown
+          </span>
         </div>
-        <div className="card-body d-flex justify-content-center">
-          <div style={{ width: "300px", height: "300px" }}>
+        <div className="card-body d-flex justify-content-center py-4">
+          <div style={{ width: "320px", height: "260px" }}>
             <Pie data={chartData} options={chartOptions} />
           </div>
         </div>
       </div>
 
       {/* ✅ ENTERPRISE DISTRIBUTOR RETURN & CREDIT-NOTE SECTION */}
-      <div className="card shadow-sm mb-4 border-info">
-        <div className="card-header bg-info text-white fw-bold d-flex justify-content-between align-items-center">
-          <span className="d-flex align-items-center gap-2">
-            <FaUndoAlt /> B2B Distributor Return Window (&le; 90 Days Expiry)
-          </span>
+      <div
+        className="card shadow-sm mb-4 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
+        <div
+          className="card-header py-3 px-4 d-flex flex-wrap justify-content-between align-items-center gap-2"
+          style={{ backgroundColor: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}
+        >
+          <div className="d-flex align-items-center gap-2">
+            <span
+              className="p-1.5 rounded-2 d-flex align-items-center justify-content-center"
+              style={{ backgroundColor: "rgba(6, 182, 212, 0.15)", color: "#0891B2" }}
+            >
+              <FaUndoAlt size={14} />
+            </span>
+            <span className="fw-bold" style={{ color: "#0F2942" }}>
+              B2B Distributor Return Window (&le; 90 Days Expiry)
+            </span>
+          </div>
           <button
-            className="btn btn-sm btn-light text-info fw-bold d-flex align-items-center gap-1 shadow-sm"
+            className="btn btn-sm fw-semibold d-flex align-items-center gap-2 rounded-3 px-3 py-1.5"
+            style={{ backgroundColor: "#E2E8F0", color: "#0F2942", border: "1px solid #CBD5E1" }}
             onClick={generateDistributorCreditNotePDF}
             disabled={distributorReturns.length === 0}
           >
-            <FaFilePdf className="text-danger" /> Download Credit Claim
+            <FaFilePdf style={{ color: "#EF4444" }} /> Download Credit Claim
           </button>
         </div>
-        <div className="card-body p-3">
-          <div className="d-flex justify-content-between align-items-center mb-2">
+        <div className="card-body p-4">
+          <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
             <small className="text-muted">
               Batches nearing expiration qualify for 100% distributor credit or replacement before reaching dead-stock.
             </small>
-            <span className="badge bg-success py-2 px-3">
+            <span
+              className="badge py-2 px-3 rounded-pill fw-semibold"
+              style={{
+                backgroundColor: "rgba(16, 185, 129, 0.12)",
+                color: "#047857",
+                border: "1px solid rgba(16, 185, 129, 0.25)",
+              }}
+            >
               Total Recoverable Credit: ₹{totalCreditRefundValue.toFixed(2)}
             </span>
           </div>
-          <div className="table-responsive" style={{ maxHeight: "250px", overflowY: "auto" }}>
-            <table className="table table-striped table-hover align-middle text-center mb-0">
-              <thead className="table-light">
+          <div className="table-responsive rounded-3" style={{ maxHeight: "250px", overflowY: "auto", border: "1px solid #E2E8F0" }}>
+            <table className="table table-hover align-middle text-center mb-0">
+              <thead style={{ backgroundColor: "#F8FAFC", color: "#475569", fontSize: "0.8rem", textTransform: "uppercase" }}>
                 <tr>
-                  <th>Batch</th>
+                  <th className="py-2.5">Batch</th>
                   <th>Medicine Name</th>
                   <th>Units</th>
                   <th>Expiry Date</th>
@@ -283,21 +366,39 @@ const Analytics = () => {
                     const diffDays = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
                     return (
                       <tr key={item.id} style={{ cursor: "pointer" }} onClick={() => handleRowClick(item)}>
-                        <td><span className="badge bg-secondary font-monospace">BATCH-{item.id}</span></td>
-                        <td className="fw-semibold text-start ps-3">{item.tableName}</td>
-                        <td className="fw-bold">{item.tabletQty}</td>
-                        <td className="font-monospace">{item.expiryDate}</td>
                         <td>
-                          <span className={diffDays <= 30 ? "badge bg-danger" : "badge bg-warning text-dark"}>
+                          <span
+                            className="badge font-monospace px-2 py-1 rounded"
+                            style={{ backgroundColor: "#E2E8F0", color: "#334155" }}
+                          >
+                            BATCH-{item.id}
+                          </span>
+                        </td>
+                        <td className="fw-semibold text-start ps-3" style={{ color: "#0F2942" }}>{item.tableName}</td>
+                        <td className="fw-bold">{item.tabletQty}</td>
+                        <td className="font-monospace text-muted">{item.expiryDate}</td>
+                        <td>
+                          <span
+                            className="badge px-2.5 py-1 rounded-pill fw-semibold"
+                            style={{
+                              backgroundColor: diffDays <= 30 ? "rgba(239, 68, 68, 0.12)" : "rgba(245, 158, 11, 0.12)",
+                              color: diffDays <= 30 ? "#DC2626" : "#D97706",
+                            }}
+                          >
                             {diffDays} days
                           </span>
                         </td>
-                        <td className="fw-bold text-success">
+                        <td className="fw-bold" style={{ color: "#059669" }}>
                           ₹{item.amount ? parseFloat(item.amount).toFixed(2) : "0.00"}
                         </td>
                         <td>
                           <button
-                            className="btn btn-sm btn-outline-primary"
+                            className="btn btn-sm fw-semibold rounded-2 px-3"
+                            style={{
+                              backgroundColor: "rgba(6, 182, 212, 0.12)",
+                              color: "#0891B2",
+                              border: "1px solid rgba(6, 182, 212, 0.3)",
+                            }}
                             onClick={(e) => {
                               e.stopPropagation();
                               generateDistributorCreditNotePDF();
@@ -311,7 +412,7 @@ const Analytics = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="7" className="text-muted py-3">
+                    <td colSpan="7" className="text-muted py-4">
                       No stock currently in the 30-90 days distributor return window. All stock is healthy!
                     </td>
                   </tr>
@@ -323,23 +424,30 @@ const Analytics = () => {
       </div>
 
       {/* ✅ Expiring Soon Table */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
-          <span>Expiring Soon (&le; 15 days)</span>
+      <div
+        className="card shadow-sm mb-4 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
+        <div
+          className="card-header py-3 px-4 d-flex justify-content-between align-items-center"
+          style={{ backgroundColor: "#FEF3C7", borderBottom: "1px solid #FDE68A" }}
+        >
+          <span className="fw-bold" style={{ color: "#92400E" }}>
+            ⏳ Expiring Soon (&le; 15 days)
+          </span>
           <FaFilePdf
-            size={20}
-            className="text-danger"
-            style={{ cursor: "pointer" }}
+            size={18}
+            style={{ color: "#DC2626", cursor: "pointer" }}
             title="Download Expiring Soon Report"
             onClick={() => generatePDF("Expiring Soon Medicines Report", expiringSoon)}
           />
         </div>
         <div className="card-body p-0">
           <div className="table-responsive" style={{ maxHeight: "200px", overflowY: "auto" }}>
-            <table className="table table-striped align-middle text-center mb-0">
-              <thead className="table-light">
+            <table className="table table-hover align-middle text-center mb-0">
+              <thead style={{ backgroundColor: "#F8FAFC", color: "#475569", fontSize: "0.8rem", textTransform: "uppercase" }}>
                 <tr>
-                  <th>Name</th>
+                  <th className="py-2.5">Name</th>
                   <th>Expiry Date</th>
                   <th>Quantity</th>
                 </tr>
@@ -348,14 +456,14 @@ const Analytics = () => {
                 {expiringSoon.length > 0 ? (
                   expiringSoon.map((item) => (
                     <tr key={item.id} style={{ cursor: "pointer" }} onClick={() => handleRowClick(item)}>
-                      <td>{item.tableName}</td>
-                      <td>{item.expiryDate}</td>
-                      <td>{item.tabletQty}</td>
+                      <td className="fw-semibold text-start ps-4" style={{ color: "#0F2942" }}>{item.tableName}</td>
+                      <td className="font-monospace text-muted">{item.expiryDate}</td>
+                      <td className="fw-bold">{item.tabletQty}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="text-muted">No expiring medicines</td>
+                    <td colSpan="3" className="text-muted py-3">No expiring medicines</td>
                   </tr>
                 )}
               </tbody>
@@ -365,23 +473,30 @@ const Analytics = () => {
       </div>
 
       {/* ✅ Expired Table */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-header bg-danger text-white fw-bold d-flex justify-content-between align-items-center">
-          <span>Expired Medicines (Total Loss)</span>
+      <div
+        className="card shadow-sm mb-4 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
+        <div
+          className="card-header py-3 px-4 d-flex justify-content-between align-items-center"
+          style={{ backgroundColor: "#FEE2E2", borderBottom: "1px solid #FECACA" }}
+        >
+          <span className="fw-bold" style={{ color: "#991B1B" }}>
+            ⛔ Expired Medicines (Total Loss)
+          </span>
           <FaFilePdf
-            size={20}
-            className="text-light"
-            style={{ cursor: "pointer" }}
+            size={18}
+            style={{ color: "#991B1B", cursor: "pointer" }}
             title="Download Expired Report"
             onClick={() => generatePDF("Expired Medicines Report", expired)}
           />
         </div>
         <div className="card-body p-0">
           <div className="table-responsive" style={{ maxHeight: "200px", overflowY: "auto" }}>
-            <table className="table table-striped align-middle text-center mb-0">
-              <thead className="table-light">
+            <table className="table table-hover align-middle text-center mb-0">
+              <thead style={{ backgroundColor: "#F8FAFC", color: "#475569", fontSize: "0.8rem", textTransform: "uppercase" }}>
                 <tr>
-                  <th>Name</th>
+                  <th className="py-2.5">Name</th>
                   <th>Expiry Date</th>
                   <th>Quantity</th>
                 </tr>
@@ -390,14 +505,14 @@ const Analytics = () => {
                 {expired.length > 0 ? (
                   expired.map((item) => (
                     <tr key={item.id} style={{ cursor: "pointer" }} onClick={() => handleRowClick(item)}>
-                      <td>{item.tableName}</td>
-                      <td>{item.expiryDate}</td>
-                      <td>{item.tabletQty}</td>
+                      <td className="fw-semibold text-start ps-4" style={{ color: "#0F2942" }}>{item.tableName}</td>
+                      <td className="font-monospace text-muted">{item.expiryDate}</td>
+                      <td className="fw-bold text-danger">{item.tabletQty}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="text-muted">No expired medicines</td>
+                    <td colSpan="3" className="text-muted py-3">No expired medicines</td>
                   </tr>
                 )}
               </tbody>
@@ -408,14 +523,14 @@ const Analytics = () => {
 
       {/* ✅ Modal for Full Details */}
       {selectedItem && (
-        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(15, 41, 66, 0.45)", backdropFilter: "blur(4px)" }}>
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title text-primary">Tablet Details: {selectedItem.tableName}</h5>
+            <div className="modal-content border-0 shadow-lg rounded-4 overflow-hidden" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="modal-header py-3 px-4" style={{ backgroundColor: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
+                <h5 className="modal-title fw-bold" style={{ color: "#0F2942" }}>Tablet Details: {selectedItem.tableName}</h5>
                 <button type="button" className="btn-close" onClick={handleCloseModal}></button>
               </div>
-              <div className="modal-body text-start">
+              <div className="modal-body text-start p-4">
                 <p><strong>Tablet Name:</strong> {selectedItem.tableName}</p>
                 <p><strong>Quantity:</strong> {selectedItem.tabletQty}</p>
                 <p>
@@ -424,10 +539,16 @@ const Analytics = () => {
                     ? parseFloat(selectedItem.amount).toFixed(2)
                     : "—"}
                 </p>
-                <p><strong>Expiry Date:</strong> {selectedItem.expiryDate}</p>
+                <p className="mb-0"><strong>Expiry Date:</strong> {selectedItem.expiryDate}</p>
               </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
+              <div className="modal-footer py-2 px-4" style={{ backgroundColor: "#F8FAFC", borderTop: "1px solid #E2E8F0" }}>
+                <button
+                  className="btn fw-semibold rounded-3 px-4"
+                  style={{ backgroundColor: "#E2E8F0", color: "#0F2942" }}
+                  onClick={handleCloseModal}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>

@@ -311,7 +311,17 @@ const Inventory = () => {
       {/* Header & Quick Action */}
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-          <h3 className="fw-bold text-primary mb-1">💊 Pharmacist FEFO Inventory & Dispensing</h3>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span
+              className="badge rounded-pill px-3 py-1 text-uppercase fw-semibold"
+              style={{ backgroundColor: "rgba(6, 182, 212, 0.12)", color: "#0891B2", fontSize: "0.75rem" }}
+            >
+              FEFO Dispense Verification
+            </span>
+          </div>
+          <h3 className="fw-bold mb-1" style={{ color: "#0F2942", letterSpacing: "-0.02em" }}>
+            Pharmacist FEFO Inventory & Dispensing
+          </h3>
           <p className="text-muted small mb-0">
             Enterprise First-Expired, First-Out batch tracking with automated Zero-Risk Dispense Verification.
           </p>
@@ -319,7 +329,8 @@ const Inventory = () => {
         <div className="d-flex align-items-center gap-2">
           <LanguageSelector />
           <button
-            className="btn btn-success fw-bold d-flex align-items-center gap-2 shadow-sm px-4 py-2"
+            className="btn fw-semibold d-flex align-items-center gap-2 shadow-sm px-4 py-2 rounded-3 transition"
+            style={{ backgroundColor: "#06B6D4", color: "#FFFFFF", border: "none" }}
             onClick={handleOpenDispenseModal}
           >
             <FaShieldAlt size={18} />
@@ -329,15 +340,18 @@ const Inventory = () => {
       </div>
 
       {/* ✅ OCR Section */}
-      <div className="card shadow-sm p-3 mb-4">
-        <h5 className="mb-2 fw-semibold">📷 Extract Tablet Details via Multimodal OCR</h5>
-        <p className="text-muted small">Upload or capture blister packaging for automated name & expiry extraction.</p>
+      <div
+        className="card shadow-sm p-4 mb-4 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
+        <h5 className="mb-1 fw-bold" style={{ color: "#0F2942" }}>📷 Extract Tablet Details via Multimodal OCR</h5>
+        <p className="text-muted small mb-3">Upload or capture blister packaging for automated name & expiry extraction.</p>
         <div className="d-flex flex-column align-items-center">
           <input
             type="file"
             accept="image/*"
-            className="form-control mb-3"
-            style={{ maxWidth: "400px" }}
+            className="form-control mb-3 rounded-3"
+            style={{ maxWidth: "400px", border: "1px solid #E2E8F0" }}
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
@@ -351,12 +365,13 @@ const Inventory = () => {
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="img-thumbnail mb-2"
+                className="img-thumbnail mb-2 rounded-3 shadow-sm"
                 style={{ maxWidth: "200px" }}
               />
               <button
                 type="button"
-                className="btn btn-warning btn-sm"
+                className="btn btn-sm mb-2 rounded-2"
+                style={{ backgroundColor: "#FEF3C7", color: "#B45309", border: "1px solid #FDE68A" }}
                 onClick={() => {
                   setImagePreview(null);
                   setImageFile(null);
@@ -368,20 +383,25 @@ const Inventory = () => {
           )}
           <button
             type="button"
-            className="btn btn-outline-primary mt-3"
+            className="btn fw-semibold mt-2 px-4 py-2 rounded-3"
+            style={{
+              backgroundColor: !imageFile || isScanning ? "#E2E8F0" : "#0F2942",
+              color: !imageFile || isScanning ? "#94A3B8" : "#FFFFFF",
+              border: "none",
+            }}
             onClick={handleScan}
             disabled={!imageFile || isScanning}
           >
             {isScanning ? scanProgress || "Scanning..." : "Extract Details"}
           </button>
           {scanProgress && isScanning && (
-            <div className="text-primary mt-2 small fw-semibold">⏳ {scanProgress}</div>
+            <div className="mt-2 small fw-semibold" style={{ color: "#0891B2" }}>⏳ {scanProgress}</div>
           )}
           {scanSuccess && (
-            <div className="alert alert-success mt-2 py-1 px-3 small">✅ {scanSuccess}</div>
+            <div className="alert alert-success mt-2 py-1 px-3 small rounded-3">✅ {scanSuccess}</div>
           )}
           {scanError && (
-            <div className="alert alert-warning mt-2 py-1 px-3 small">⚠️ {scanError}</div>
+            <div className="alert alert-warning mt-2 py-1 px-3 small rounded-3">⚠️ {scanError}</div>
           )}
         </div>
       </div>
@@ -389,18 +409,20 @@ const Inventory = () => {
       {/* ✅ Add/Edit Form */}
       <form
         onSubmit={handleSubmit}
-        className="border p-4 rounded bg-light shadow-sm mb-4"
+        className="p-4 rounded-4 shadow-sm mb-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
       >
-        <h5 className="fw-semibold mb-3">
+        <h5 className="fw-bold mb-3" style={{ color: "#0F2942" }}>
           {editingId ? "✏️ Edit Inventory Batch" : "➕ Add New Medication Batch"}
         </h5>
         <div className="row g-3">
           <div className="col-md-3">
-            <label className="form-label fw-semibold">Tablet Name</label>
+            <label className="form-label fw-semibold" style={{ color: "#334155" }}>Tablet Name</label>
             <input
               type="text"
               name="tableName"
-              className="form-control"
+              className="form-control rounded-3"
+              style={{ border: "1px solid #E2E8F0" }}
               placeholder="e.g. Metformin 500mg"
               value={form.tableName}
               onChange={handleChange}
@@ -409,11 +431,12 @@ const Inventory = () => {
           </div>
 
           <div className="col-md-3">
-            <label className="form-label fw-semibold">Batch Quantity</label>
+            <label className="form-label fw-semibold" style={{ color: "#334155" }}>Batch Quantity</label>
             <input
               type="number"
               name="tabletQty"
-              className="form-control"
+              className="form-control rounded-3"
+              style={{ border: "1px solid #E2E8F0" }}
               placeholder="Total units in batch"
               value={form.tabletQty}
               onChange={handleChange}
@@ -422,12 +445,13 @@ const Inventory = () => {
           </div>
 
           <div className="col-md-3">
-            <label className="form-label fw-semibold">Amount (₹)</label>
+            <label className="form-label fw-semibold" style={{ color: "#334155" }}>Amount (₹)</label>
             <input
               type="number"
               step="0.01"
               name="amount"
-              className="form-control"
+              className="form-control rounded-3"
+              style={{ border: "1px solid #E2E8F0" }}
               placeholder="Unit/Batch price"
               value={form.amount}
               onChange={handleChange}
@@ -436,11 +460,12 @@ const Inventory = () => {
           </div>
 
           <div className="col-md-3">
-            <label className="form-label fw-semibold">Expiry Date</label>
+            <label className="form-label fw-semibold" style={{ color: "#334155" }}>Expiry Date</label>
             <input
               type="date"
               name="expiryDate"
-              className="form-control"
+              className="form-control rounded-3"
+              style={{ border: "1px solid #E2E8F0" }}
               value={form.expiryDate}
               onChange={handleChange}
               required
@@ -451,7 +476,8 @@ const Inventory = () => {
         <div className="text-center mt-4">
           <button
             type="submit"
-            className="btn btn-primary fw-bold px-4"
+            className="btn fw-semibold px-4 py-2 rounded-3 shadow-sm"
+            style={{ backgroundColor: "#06B6D4", color: "#FFFFFF", border: "none" }}
             disabled={loading}
           >
             {loading ? "Saving..." : editingId ? "Update Record" : "Add Tablet"}
@@ -459,7 +485,8 @@ const Inventory = () => {
           {editingId && (
             <button
               type="button"
-              className="btn btn-secondary ms-3 fw-bold px-4"
+              className="btn ms-3 fw-semibold px-4 py-2 rounded-3"
+              style={{ backgroundColor: "#E2E8F0", color: "#0F2942", border: "1px solid #CBD5E1" }}
               onClick={handleCancelEdit}
             >
               Cancel
@@ -469,42 +496,55 @@ const Inventory = () => {
       </form>
 
       {/* ✅ FEFO Filter Bar */}
-      <div className="card shadow-sm p-3 mb-3 bg-white">
+      <div
+        className="card shadow-sm p-3 mb-3 rounded-4"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
         <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
           <div className="d-flex flex-wrap gap-2 align-items-center">
             <span className="fw-semibold text-secondary small d-flex align-items-center gap-1">
               <FaSortAmountDown /> Dispense Mode:
             </span>
             <button
-              className={`btn btn-sm ${
-                filterMode === "fefo" ? "btn-primary fw-bold" : "btn-outline-secondary"
-              }`}
+              className="btn btn-sm rounded-3 px-3 fw-semibold transition"
+              style={{
+                backgroundColor: filterMode === "fefo" ? "#0F2942" : "transparent",
+                color: filterMode === "fefo" ? "#FFFFFF" : "#475569",
+                border: filterMode === "fefo" ? "none" : "1px solid #E2E8F0",
+              }}
               onClick={() => setFilterMode("fefo")}
             >
               ⚡ FEFO Priority (First Expired First Out)
             </button>
             <button
-              className={`btn btn-sm ${
-                filterMode === "all" ? "btn-primary fw-bold" : "btn-outline-secondary"
-              }`}
+              className="btn btn-sm rounded-3 px-3 fw-semibold transition"
+              style={{
+                backgroundColor: filterMode === "all" ? "#0F2942" : "transparent",
+                color: filterMode === "all" ? "#FFFFFF" : "#475569",
+                border: filterMode === "all" ? "none" : "1px solid #E2E8F0",
+              }}
               onClick={() => setFilterMode("all")}
             >
               All Batches
             </button>
             <button
-              className={`btn btn-sm ${
-                filterMode === "expiringSoon"
-                  ? "btn-warning text-dark fw-bold"
-                  : "btn-outline-warning text-dark"
-              }`}
+              className="btn btn-sm rounded-3 px-3 fw-semibold transition"
+              style={{
+                backgroundColor: filterMode === "expiringSoon" ? "#FEF3C7" : "transparent",
+                color: filterMode === "expiringSoon" ? "#92400E" : "#92400E",
+                border: filterMode === "expiringSoon" ? "1px solid #F59E0B" : "1px solid #FDE68A",
+              }}
               onClick={() => setFilterMode("expiringSoon")}
             >
               ⏳ Expiring &le; 30 Days
             </button>
             <button
-              className={`btn btn-sm ${
-                filterMode === "expired" ? "btn-danger fw-bold" : "btn-outline-danger"
-              }`}
+              className="btn btn-sm rounded-3 px-3 fw-semibold transition"
+              style={{
+                backgroundColor: filterMode === "expired" ? "#FEE2E2" : "transparent",
+                color: filterMode === "expired" ? "#991B1B" : "#DC2626",
+                border: filterMode === "expired" ? "1px solid #EF4444" : "1px solid #FECACA",
+              }}
               onClick={() => setFilterMode("expired")}
             >
               ⛔ Expired
@@ -514,7 +554,8 @@ const Inventory = () => {
           <div style={{ maxWidth: "260px", width: "100%" }}>
             <input
               type="text"
-              className="form-control form-control-sm"
+              className="form-control form-control-sm rounded-3"
+              style={{ border: "1px solid #E2E8F0" }}
               placeholder="🔍 Search tablet name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -524,12 +565,26 @@ const Inventory = () => {
       </div>
 
       {/* ✅ Enhanced Inventory Table */}
-      <div className="card shadow-sm border-0 mb-4">
+      <div
+        className="card shadow-sm mb-4 rounded-4 overflow-hidden"
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
+      >
         <div className="table-responsive" style={{ maxHeight: "400px", overflowY: "auto" }}>
-          <table className="table table-hover table-striped align-middle text-center mb-0">
-            <thead className="table-dark" style={{ position: "sticky", top: 0, zIndex: 1 }}>
+          <table className="table table-hover align-middle text-center mb-0">
+            <thead
+              style={{
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+                backgroundColor: "#0F2942",
+                color: "#FFFFFF",
+                fontSize: "0.82rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.03em",
+              }}
+            >
               <tr>
-                <th>FEFO Rank</th>
+                <th className="py-3">FEFO Rank</th>
                 <th>{t("medicineName")}</th>
                 <th>{t("quantity")}</th>
                 <th>Batch Value (₹)</th>
