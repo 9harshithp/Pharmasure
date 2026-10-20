@@ -13,6 +13,7 @@ import {
   FaFilePdf,
   FaVolumeUp,
   FaStop,
+  FaWhatsapp,
 } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,6 +24,7 @@ import { generateDoctorSummaryReport } from "../utils/clinicalReportGenerator";
 import { toggleSpeech } from "../utils/voiceAssistant";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
+import WhatsAppAlertModal from "./WhatsAppAlertModal";
 
 const UserDashBoard = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -36,6 +38,9 @@ const UserDashBoard = () => {
   const [missedTablets, setMissedTablets] = useState([]);
   const [showMissedModal, setShowMissedModal] = useState(false);
   const [isVoiceAlertPlaying, setIsVoiceAlertPlaying] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [whatsAppType, setWhatsAppType] = useState("missed");
+  const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
 
   const handleToggleVoiceAlert = async () => {
     let text = `Critical Zero-risk alert. You have ${zeroRiskAlerts.length} medications whose remaining supply extends past their batch expiry date. Please review your regimen.`;
@@ -370,6 +375,19 @@ const UserDashBoard = () => {
           <FaFilePdf /> {t("downloadDoctorReport")}
         </button>
       </li>
+      <li className="nav-item mt-2">
+        <button
+          className="btn btn-outline-success w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
+          onClick={() => {
+            setWhatsAppType("schedule");
+            setWhatsAppAlertData({ medications: [] });
+            setShowWhatsAppModal(true);
+          }}
+          title="Send medication schedules or alerts via WhatsApp & SMS"
+        >
+          <FaWhatsapp size={16} /> {t("whatsAppAlerts") || "WhatsApp Alerts"}
+        </button>
+      </li>
       {role === "patient" && (
         <li className="nav-item mt-3">
           <button
@@ -415,6 +433,18 @@ const UserDashBoard = () => {
           >
             {isVoiceAlertPlaying ? <FaStop /> : <FaVolumeUp />}
             <span>{isVoiceAlertPlaying ? t("stopVoice") : t("voiceAlert")}</span>
+          </button>
+          <button
+            className="btn btn-sm btn-outline-success fw-bold d-flex align-items-center gap-1 text-nowrap"
+            onClick={() => {
+              const firstAlert = zeroRiskAlerts[0] || {};
+              setWhatsAppType("zeroRisk");
+              setWhatsAppAlertData(firstAlert);
+              setShowWhatsAppModal(true);
+            }}
+            title="Send hazard warning via WhatsApp to patient or family"
+          >
+            <FaWhatsapp /> <span>WhatsApp Alert</span>
           </button>
           <Link
             to="/userDashBoard/manageMedication"
@@ -497,12 +527,22 @@ const UserDashBoard = () => {
             Please take them as soon as possible!
           </p>
         </div>
-        <div className="modal-footer">
+        <div className="modal-footer d-flex justify-content-between">
+          <button
+            className="btn btn-success fw-bold d-flex align-items-center gap-2"
+            onClick={() => {
+              setWhatsAppType("missed");
+              setWhatsAppAlertData({ tablets: missedTablets, slot: "Current Slot" });
+              setShowWhatsAppModal(true);
+            }}
+          >
+            <FaWhatsapp size={16} /> {t("sendWhatsAppAlert") || "Send via WhatsApp / SMS"}
+          </button>
           <button
             className="btn btn-secondary"
             onClick={() => setShowMissedModal(false)}
           >
-            Close
+            {t("close")}
           </button>
         </div>
       </div>
@@ -510,9 +550,15 @@ const UserDashBoard = () => {
   </div>
 )}
 
+  {/* 📲 WhatsApp & SMS Alert Dispatcher Modal */}
+  <WhatsAppAlertModal
+    show={showWhatsAppModal}
+    onClose={() => setShowWhatsAppModal(false)}
+    initialType={whatsAppType}
+    alertData={whatsAppAlertData}
+    patientName={name}
+  />
 </div>
-
-
   );
 };
 

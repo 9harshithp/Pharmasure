@@ -17,8 +17,10 @@ import {
   FaStop,
   FaEdit,
   FaLink,
+  FaWhatsapp,
 } from "react-icons/fa";
 import BlockchainAuditModal from "./BlockchainAuditModal";
+import WhatsAppAlertModal from "./WhatsAppAlertModal";
 
 const Inventory = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -33,6 +35,9 @@ const Inventory = () => {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedBlockchainItem, setSelectedBlockchainItem] = useState(null);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [whatsAppType, setWhatsAppType] = useState("refill");
+  const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
   const [loading, setLoading] = useState(false);
 
   // FEFO sorting & filtering state
@@ -954,6 +959,22 @@ const Inventory = () => {
                 </button>
                 <div className="d-flex gap-2">
                   <button
+                    className="btn btn-success fw-bold btn-sm d-flex align-items-center gap-1"
+                    onClick={() => {
+                      setWhatsAppAlertData({
+                        medicineName: selectedItem.tableName,
+                        remainingQty: selectedItem.tabletQty,
+                        expiryDate: selectedItem.expiryDate,
+                        daysLeft: 14,
+                      });
+                      setWhatsAppType("refill");
+                      setShowWhatsAppModal(true);
+                    }}
+                    title="Send batch advice to patient via WhatsApp"
+                  >
+                    <FaWhatsapp size={14} /> WhatsApp
+                  </button>
+                  <button
                     className="btn btn-warning fw-bold btn-sm"
                     onClick={() => {
                       handleEdit(selectedItem);
@@ -980,6 +1001,15 @@ const Inventory = () => {
         show={!!selectedBlockchainItem}
         onClose={() => setSelectedBlockchainItem(null)}
         item={selectedBlockchainItem}
+      />
+
+      {/* 📲 WhatsApp & SMS Alert Modal */}
+      <WhatsAppAlertModal
+        show={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        initialType={whatsAppType}
+        alertData={whatsAppAlertData}
+        patientName="Valued Customer"
       />
     </div>
   );

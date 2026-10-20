@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink } from "react-icons/fa";
+import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { baseUrl } from "../App";
 import { performMedicationOCR } from "../utils/ocrScanner";
@@ -11,6 +11,7 @@ import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
 import PrescriptionScannerModal from "./PrescriptionScannerModal";
 import BlockchainAuditModal from "./BlockchainAuditModal";
+import WhatsAppAlertModal from "./WhatsAppAlertModal";
 
 const ManageMedication = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -38,6 +39,9 @@ const ManageMedication = () => {
 
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
   const [selectedBlockchainItem, setSelectedBlockchainItem] = useState(null);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [whatsAppType, setWhatsAppType] = useState("schedule");
+  const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
 
   const [editingId, setEditingId] = useState(null);
   const patientId = sessionStorage.getItem("pid");
@@ -185,6 +189,18 @@ const handleScan = async () => {
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
         <h3 className="mb-0 fw-bold text-primary">💊 {t("manageMedication")}</h3>
         <div className="d-flex align-items-center gap-2">
+          <button
+            className="btn btn-outline-success d-flex align-items-center gap-2 shadow-sm"
+            onClick={() => {
+              setWhatsAppType("schedule");
+              setWhatsAppAlertData({ medications });
+              setShowWhatsAppModal(true);
+            }}
+            title="Send full medication regimen to WhatsApp"
+          >
+            <FaWhatsapp />
+            <span>{t("whatsAppAlerts") || "WhatsApp Schedule"}</span>
+          </button>
           {role !== "patient" && (
             <button
               className="btn btn-primary d-flex align-items-center gap-2 shadow-sm"
@@ -537,6 +553,26 @@ const handleScan = async () => {
                         >
                           {activeSpeechMid === med.mid ? <FaStop size={10} /> : <FaVolumeUp size={11} />}
                         </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-success p-1 me-2 rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ width: "26px", height: "26px", minWidth: "26px" }}
+                          title="Send alert/reminder for this medicine via WhatsApp"
+                          onClick={() => {
+                            const isExpiryIssue = risk.status === "RUNOUT_EXCEEDS_EXPIRY";
+                            setWhatsAppType(isExpiryIssue ? "zeroRisk" : "refill");
+                            setWhatsAppAlertData({
+                              medicineName: med.tableName,
+                              runoutDateStr: risk.runoutDateStr,
+                              expiryDate: med.expiryDate,
+                              daysDifference: risk.daysDifference,
+                              remainingQty: med.tabletQty,
+                            });
+                            setShowWhatsAppModal(true);
+                          }}
+                        >
+                          <FaWhatsapp size={12} />
+                        </button>
                         <span>{med.tableName}</span>
                       </div>
                     </td>
@@ -750,6 +786,15 @@ const handleScan = async () => {
         show={!!selectedBlockchainItem}
         onClose={() => setSelectedBlockchainItem(null)}
         item={selectedBlockchainItem}
+      />
+
+      {/* 📲 WhatsApp & SMS Alert Modal */}
+      <WhatsAppAlertModal
+        show={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        initialType={whatsAppType}
+        alertData={whatsAppAlertData}
+        patientName={sessionStorage.getItem("name") || "Patient"}
       />
     </div>
   );

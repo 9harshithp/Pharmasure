@@ -344,6 +344,11 @@ Pharmasure now incorporates enterprise-grade clinical safety and zero-risk dispe
 * Complete multi-lingual support spanning **English** (default), **Kannada (ಕನ್ನಡ)**, **Hindi (हिन्दी)**, **Tamil (தமிழ்)**, and **Telugu (తెలుగు)**.
 * Dynamic phrase caching with automatic speech synthesis dialect alignment for elderly care and inclusive healthcare.
 
+### 13. 📲 WhatsApp & SMS Clinical Alert Dispatcher (`notificationService.js` & `WhatsAppAlertModal.jsx`)
+* **1-Tap Direct WhatsApp Dispatch:** Opens WhatsApp Web / App with pre-filled clinical notifications for Missed Doses, Zero-Risk Expiry Conflict Warnings, Low-Stock Refills, and Full Daily Regimen Schedules.
+* **Native SMS Mobile Gateway:** Supports direct SMS composition and Cloud Gateway delivery simulation with unique Message SIDs.
+* **Live Chat Bubble Preview:** Interactive chat preview matching WhatsApp UI with timestamps and double-check read receipts.
+
 ---
 
 ## 🔐 Security Note
