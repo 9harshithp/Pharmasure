@@ -92,7 +92,7 @@ The project combines a **React frontend** with a **Spring Boot backend**, **MySQ
 ```text
 Pharmasure/
 │
-├── Blister/
+├── backend/
 │   ├── src/
 │   │   ├── main/
 │   │   │   ├── java/com/Blister/
@@ -174,7 +174,7 @@ GEMINI_API_KEY
 Use:
 
 ```text
-Blister/src/main/resources/application-example.properties
+backend/src/main/resources/application-example.properties
 ```
 
 as the configuration reference.
@@ -183,10 +183,10 @@ Never commit real API keys, passwords, or email credentials.
 
 ### 4. Start the backend
 
-From the `Blister` directory:
+From the `backend` directory:
 
 ```bash
-cd Blister
+cd backend
 mvn spring-boot:run
 ```
 

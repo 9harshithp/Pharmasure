@@ -19,7 +19,7 @@ export MAIL_USERNAME=pharmasure@example.com
 export MAIL_PASSWORD=pharmasure_dummy
 export GEMINI_API_KEY=dummy_key
 
-(cd Blister && ./mvnw spring-boot:run) &
+(cd backend && ./mvnw spring-boot:run) &
 BACKEND_PID=$!
 echo "Backend running with PID $BACKEND_PID"
 
