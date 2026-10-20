@@ -39,6 +39,7 @@ function App() {
                 <Route path="mentalSupport" element={<MentalSupport />} />
               </Route>
               <Route path="/pharmaDashBoard" element={<PharmaDashboard />}>
+                <Route index element={<Inventory />} />
                 <Route path="inventory" element={<Inventory />} />
                 <Route path="analytics" element={<Analytics />} />
               </Route>

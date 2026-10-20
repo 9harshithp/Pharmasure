@@ -20,8 +20,8 @@ const PharmaDashboard = () => {
     setTimeout(() => navigate("/login"), 1500);
   };
 
-  const isInventory = location.pathname.includes("/inventory");
   const isAnalytics = location.pathname.includes("/analytics");
+  const isInventory = !isAnalytics;
 
   return (
     <div
