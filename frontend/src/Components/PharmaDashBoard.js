@@ -33,9 +33,15 @@ const PharmaDashboard = () => {
       {/* Mobile Navbar */}
       <nav className="navbar navbar-dark d-md-none" style={{ backgroundColor: "#0F2942" }}>
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          <span className="navbar-brand fw-bold mb-0 text-white" role="button" onClick={() => navigate("/")}>
-            💊 PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
-          </span>
+          <div className="navbar-brand mb-0 d-flex align-items-center" role="button" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+            <div className="bg-white rounded-2 px-2 py-1 d-inline-flex align-items-center shadow-sm">
+              <img
+                src="/pharmasure-logo-full.png"
+                alt="PharmaSure"
+                style={{ height: "26px", objectFit: "contain" }}
+              />
+            </div>
+          </div>
           <div className="d-flex align-items-center gap-2">
             <LanguageSelector variant="dark" />
             <button
@@ -94,16 +100,17 @@ const PharmaDashboard = () => {
         }}
       >
         {/* Brand Logo */}
-        <div className="d-flex align-items-center gap-2 justify-content-center mb-4 pt-2" role="button" onClick={() => navigate("/")}>
-          <div
-            className="p-2 rounded-3 d-flex align-items-center justify-content-center"
-            style={{ background: "rgba(6, 182, 212, 0.2)", border: "1px solid rgba(6, 182, 212, 0.4)" }}
-          >
-            <span className="fs-5">💊</span>
-          </div>
-          <h4 className="mb-0 fw-bold bio-heading text-white" style={{ letterSpacing: "-0.02em" }}>
-            PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
-          </h4>
+        <div
+          className="d-flex align-items-center justify-content-center mb-4 pt-1 px-3 py-2 rounded-3"
+          style={{ background: "#FFFFFF", boxShadow: "0 2px 10px rgba(0,0,0,0.15)", cursor: "pointer" }}
+          role="button"
+          onClick={() => navigate("/")}
+        >
+          <img
+            src="/pharmasure-logo-full.png"
+            alt="PharmaSure Logo"
+            style={{ height: "38px", maxWidth: "100%", objectFit: "contain" }}
+          />
         </div>
         
         {/* Language Selector */}

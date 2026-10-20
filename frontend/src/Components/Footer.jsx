@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  FaShieldAlt,
   FaArrowUp,
   FaExternalLinkAlt,
   FaLock,
@@ -28,21 +27,16 @@ const Footer = () => {
           {/* Column 1: Brand & Mission */}
           <div className="col-lg-4 col-md-6">
             <div className="d-flex align-items-center gap-2 mb-3">
-              <span
-                className="d-inline-flex align-items-center justify-content-center rounded-3"
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  background: "#06B6D4",
-                  color: "#FFFFFF",
-                  boxShadow: "0 2px 10px rgba(6, 182, 212, 0.4)",
-                }}
+              <div
+                className="bg-white rounded-3 px-2 py-1.5 d-inline-flex align-items-center"
+                style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.25)" }}
               >
-                <FaShieldAlt size={18} />
-              </span>
-              <span className="fs-4 fw-bold tracking-tight text-white font-heading">
-                PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
-              </span>
+                <img
+                  src="/pharmasure-logo-full.png"
+                  alt="PharmaSure"
+                  style={{ height: "32px", width: "auto", objectFit: "contain" }}
+                />
+              </div>
               <span className="badge bio-pill-cyan ms-1" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>

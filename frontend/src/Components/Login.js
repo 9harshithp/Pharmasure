@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
-import { FaShieldAlt, FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope } from "react-icons/fa";
+import { FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -120,15 +120,11 @@ const Login = () => {
       {/* Top Bar with Brand & Language */}
       <div className="position-absolute top-0 start-0 end-0 p-4 d-flex justify-content-between align-items-center" style={{ zIndex: 100 }}>
         <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
-          <div
-            className="p-2 rounded-3 d-flex align-items-center justify-content-center"
-            style={{ background: "rgba(6, 182, 212, 0.12)", border: "1px solid rgba(6, 182, 212, 0.3)" }}
-          >
-            <FaShieldAlt style={{ color: "#06B6D4", fontSize: "1.25rem" }} />
-          </div>
-          <span className="fs-5 fw-bold bio-heading" style={{ color: "#0F2942" }}>
-            PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
-          </span>
+          <img
+            src="/pharmasure-logo-full.png"
+            alt="PharmaSure"
+            style={{ height: "40px", objectFit: "contain" }}
+          />
         </div>
         <LanguageSelector variant="light" />
       </div>
@@ -163,7 +159,12 @@ const Login = () => {
 
         <div className="p-4 p-md-5">
           <div className="text-center mb-4">
-            <h3 className="fw-bold bio-heading mb-1" style={{ color: "#0F2942" }}>{t("login")}</h3>
+            <img
+              src="/pharmasure-logo-full.png"
+              alt="PharmaSure"
+              style={{ height: "46px", objectFit: "contain", marginBottom: "1rem" }}
+            />
+            <h4 className="fw-bold bio-heading mb-1" style={{ color: "#0F2942" }}>{t("login")}</h4>
             <p className="small mb-0" style={{ color: "#64748B" }}>Enter credentials or tap a 1-click role below</p>
           </div>
 

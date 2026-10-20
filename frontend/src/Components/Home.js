@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  FaShieldAlt,
   FaLink,
   FaWhatsapp,
   FaCheckCircle,
@@ -79,25 +78,15 @@ const Home = () => {
       <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid #E2E8F0", background: "rgba(255, 255, 255, 0.9)" }}>
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
-          <div className="d-flex align-items-center gap-3" role="button" onClick={() => navigate("/")}>
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 p-2"
-              style={{
-                background: "rgba(6, 182, 212, 0.12)",
-                border: "1px solid rgba(6, 182, 212, 0.3)",
-                boxShadow: "0 2px 8px rgba(6, 182, 212, 0.15)",
-              }}
-            >
-              <FaShieldAlt style={{ color: "#06B6D4", fontSize: "1.25rem" }} />
-            </div>
-            <div>
-              <span className="fs-4 fw-bold tracking-tight bio-heading" style={{ color: "#0F2942", letterSpacing: "-0.03em" }}>
-                PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
-              </span>
-              <span className="badge ms-2 bio-pill-cyan" style={{ fontSize: "10px" }}>
-                DSCSA 2.0
-              </span>
-            </div>
+          <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
+            <img
+              src="/pharmasure-logo-full.png"
+              alt="PharmaSure: Predictive Expiry & Decentralized Provenance"
+              style={{ height: "44px", width: "auto", objectFit: "contain" }}
+            />
+            <span className="badge bio-pill-cyan d-none d-sm-inline-block ms-1" style={{ fontSize: "10px" }}>
+              DSCSA 2.0
+            </span>
           </div>
 
           {/* Desktop Nav Pills */}
