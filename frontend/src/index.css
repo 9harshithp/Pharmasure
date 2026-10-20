@@ -1,52 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* User Palette: #FFFFFF, #FFCA00, #FF6732, #00F2FF, #2A2F3D */
-  --bio-bg: #232733;            /* Rich deep slate foundation */
-  --bio-bg-alt: #1e222d;        /* Deep background base */
-  --bio-bg-card: #2A2F3D;       /* Swatch #5: Sleek Slate Surface */
-  --bio-bg-card-hover: #33394a; /* Slightly elevated surface */
-  --bio-glass: rgba(255, 255, 255, 0.05);
-  --bio-glass-border: rgba(255, 255, 255, 0.12);
-  --bio-glass-border-hover: rgba(0, 242, 255, 0.45);
+  /* Modern Clinical Light Mode */
+  /* Canvas Base (60%): Crisp White / Light Slate */
+  --bio-bg: #F8FAFC;
+  --bio-bg-alt: #FFFFFF;
+  --bio-bg-card: #FFFFFF;
+  --bio-bg-card-hover: #F1F5F9;
 
-  /* Primary Swatches */
-  --bio-cyan: #00F2FF;          /* Swatch #4: Electric Neon Cyan */
-  --bio-cyan-glow: rgba(0, 242, 255, 0.4);
-  --bio-orange: #FF6732;        /* Swatch #3: Electric Coral Orange */
-  --bio-orange-glow: rgba(255, 103, 50, 0.4);
-  --bio-gold: #FFCA00;          /* Swatch #2: Warm Luminous Gold */
-  --bio-gold-glow: rgba(255, 202, 0, 0.4);
-  --bio-white: #FFFFFF;         /* Swatch #1: Pure Crisp White */
+  /* Primary Structure (30%): Deep Navy */
+  --bio-primary: #0F2942;
+  --bio-heading: #0F2942;
+  --bio-text: #0F2942;
+  --bio-text-muted: #64748B;
+  --bio-text-subtle: #94A3B8;
 
-  /* Legacy variable mappings to maintain full component compatibility */
-  --bio-violet: #FF6732;        /* Map purple to vibrant coral orange */
-  --bio-violet-glow: rgba(255, 103, 50, 0.35);
-  --bio-lilac: #FFCA00;         /* Map lilac to warm luminous gold */
-  --bio-emerald: #00F2FF;       /* Map green to electric cyan */
-  --bio-rose: #FF6732;          /* Map red/rose to electric coral orange */
-  --bio-amber: #FFCA00;         /* Map amber to gold */
-  --bio-indigo: #00F2FF;
+  /* Primary Accent (10%): Signature Teal / Cyan */
+  --bio-cyan: #06B6D4;
+  --bio-cyan-hover: #0891B2;
+  --bio-cyan-glow: rgba(6, 182, 212, 0.25);
 
-  --bio-text: #FFFFFF;
-  --bio-text-muted: #cbd5e1;
-  --bio-text-subtle: #94a3b8;
+  /* Secondary Button: Light Slate */
+  --bio-slate: #E2E8F0;
+  --bio-slate-hover: #CBD5E1;
+  --bio-glass-border: #E2E8F0;
+  --bio-glass-border-hover: #06B6D4;
+
+  /* Clinical Status Accents */
+  --bio-orange: #EA580C;
+  --bio-gold: #D97706;
+  --bio-emerald: #0D9488;
+  --bio-rose: #E11D48;
+  --bio-violet: #0F2942;
+  --bio-amber: #D97706;
+  --bio-indigo: #06B6D4;
 
   --font-heading: 'Space Grotesk', -apple-system, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Bootstrap 5 Theme Overrides for High Contrast */
-  --bs-body-color: #FFFFFF;
-  --bs-body-color-rgb: 255, 255, 255;
-  --bs-body-bg: #2A2F3D;
-  --bs-body-bg-rgb: 42, 47, 61;
-  --bs-secondary-color: #cbd5e1;
-  --bs-tertiary-color: #94a3b8;
-  --bs-heading-color: #FFFFFF;
-  --bs-emphasis-color: #FFFFFF;
-  --bs-link-color: #00F2FF;
-  --bs-link-hover-color: #FFCA00;
+  /* Bootstrap 5 Theme Overrides for Clean Healthcare SaaS */
+  --bs-body-color: #0F2942;
+  --bs-body-color-rgb: 15, 41, 66;
+  --bs-body-bg: #F8FAFC;
+  --bs-body-bg-rgb: 248, 250, 252;
+  --bs-secondary-color: #64748B;
+  --bs-tertiary-color: #94A3B8;
+  --bs-heading-color: #0F2942;
+  --bs-emphasis-color: #0F2942;
+  --bs-link-color: #06B6D4;
+  --bs-link-hover-color: #0891B2;
 }
 
 body {
@@ -64,97 +67,98 @@ h1, h2, h3, h4, h5, h6, .bio-heading {
   font-family: var(--font-heading);
   letter-spacing: -0.025em;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #0F2942;
 }
 
 code, pre, .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Universal high-contrast overrides */
+/* Universal high-contrast readability overrides */
 .text-muted,
 .bio-ambient-mesh .text-muted,
 .bio-floating-window .text-muted,
 .bio-text-muted,
 .text-bio-muted {
-  color: #cbd5e1 !important;
+  color: #64748B !important;
 }
 
 .lead,
 .bio-ambient-mesh .lead {
-  color: #FFFFFF !important;
+  color: #475569 !important;
 }
 
 .bio-ambient-mesh .text-dark {
-  color: #FFFFFF !important;
+  color: #0F2942 !important;
 }
 
 .bio-ambient-mesh small,
 small.text-muted {
-  color: #cbd5e1 !important;
+  color: #64748B !important;
 }
 
-/* Ambient Animated Mesh Background using #2A2F3D base with #00F2FF, #FF6732 & #FFCA00 glows */
+/* Modern Clinical Canvas Base (#F8FAFC) with soft ambient healthcare glow */
 .bio-ambient-mesh {
   position: relative;
-  background-color: #232733;
+  background-color: #F8FAFC;
   background-image: 
-    radial-gradient(circle at 12% 18%, rgba(0, 242, 255, 0.16) 0%, transparent 45%),
-    radial-gradient(circle at 88% 22%, rgba(255, 103, 50, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 50% 75%, rgba(255, 202, 0, 0.13) 0%, transparent 45%),
-    radial-gradient(circle at 78% 85%, rgba(0, 242, 255, 0.11) 0%, transparent 40%);
+    radial-gradient(circle at 10% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(226, 232, 240, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 80% 85%, rgba(6, 182, 212, 0.05) 0%, transparent 35%);
   background-attachment: fixed;
-  color: #FFFFFF;
+  color: #0F2942;
 }
 
-/* Floating Window Components using #2A2F3D */
+/* Floating Window Components in Crisp Enterprise White */
 .bio-floating-window,
 .bio-ambient-mesh .card,
 .card.bio-floating-window {
-  background: var(--bio-bg-card) !important;
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--bio-glass-border) !important;
+  background: #FFFFFF !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #E2E8F0 !important;
   border-radius: 20px;
   box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    0 10px 30px rgba(15, 41, 66, 0.06),
+    0 1px 3px rgba(15, 41, 66, 0.04);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   position: relative;
-  color: var(--bio-text) !important;
+  color: #0F2942 !important;
 }
 
 .bio-floating-window:hover,
 .card.bio-floating-window:hover {
-  transform: translateY(-6px) scale(1.01);
-  border-color: rgba(0, 242, 255, 0.45) !important;
+  transform: translateY(-5px);
+  border-color: #06B6D4 !important;
   box-shadow: 
-    0 30px 60px rgba(0, 0, 0, 0.6),
-    0 0 35px rgba(0, 242, 255, 0.25),
-    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    0 20px 40px rgba(15, 41, 66, 0.1),
+    0 0 20px rgba(6, 182, 212, 0.15);
 }
 
 .bio-role-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 12px rgba(15, 41, 66, 0.04);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .bio-role-card:hover {
-  transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(0, 242, 255, 0.7) !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 242, 255, 0.3) !important;
+  transform: translateY(-5px);
+  background: #FFFFFF !important;
+  border-color: #06B6D4 !important;
+  box-shadow: 0 16px 32px rgba(15, 41, 66, 0.12), 0 0 15px rgba(6, 182, 212, 0.18) !important;
 }
 
-/* Window Header Bar (macOS / Sci-Fi Terminal Style) */
+/* Window Header Bar (macOS / Enterprise Terminal Style) */
 .bio-window-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
 }
 
 .bio-window-dots {
@@ -248,61 +252,58 @@ small.text-muted {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--bio-text);
-  backdrop-filter: blur(12px);
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  color: #0F2942;
 }
 
 .bio-pill-cyan {
-  background: rgba(0, 242, 255, 0.12);
-  border-color: rgba(0, 242, 255, 0.4);
-  color: #00F2FF;
+  background: rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.3);
+  color: #0891B2;
 }
 
 .bio-pill-orange {
-  background: rgba(255, 103, 50, 0.12);
-  border-color: rgba(255, 103, 50, 0.4);
-  color: #FF6732;
+  background: rgba(234, 88, 12, 0.1);
+  border-color: rgba(234, 88, 12, 0.25);
+  color: #C2410C;
 }
 
 .bio-pill-gold {
-  background: rgba(255, 202, 0, 0.12);
-  border-color: rgba(255, 202, 0, 0.4);
-  color: #FFCA00;
+  background: rgba(217, 119, 6, 0.1);
+  border-color: rgba(217, 119, 6, 0.25);
+  color: #B45309;
 }
 
 .bio-pill-violet {
-  background: rgba(255, 103, 50, 0.12);
-  border-color: rgba(255, 103, 50, 0.35);
-  color: #FFCA00;
+  background: rgba(15, 41, 66, 0.08);
+  border-color: rgba(15, 41, 66, 0.15);
+  color: #0F2942;
 }
 
 .bio-pill-emerald {
-  background: rgba(0, 242, 255, 0.12);
-  border-color: rgba(0, 242, 255, 0.35);
-  color: #00F2FF;
+  background: rgba(13, 148, 136, 0.1);
+  border-color: rgba(13, 148, 136, 0.25);
+  color: #0F766E;
 }
 
 .bio-pill-rose {
-  background: rgba(255, 103, 50, 0.14);
-  border-color: rgba(255, 103, 50, 0.4);
-  color: #FF6732;
+  background: rgba(225, 29, 72, 0.1);
+  border-color: rgba(225, 29, 72, 0.25);
+  color: #BE123C;
 }
 
-/* Glowing CTA Buttons matching palette */
+/* Primary Accent Button ("Launch Clinical Workspace") - Signature Teal / Cyan #06B6D4 */
 .bio-btn-glow {
-  background: linear-gradient(135deg, #00F2FF 0%, #0284c7 70%, #FF6732 140%);
-  color: #1e222d !important;
+  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+  color: #FFFFFF !important;
   font-family: var(--font-heading);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   padding: 12px 28px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 
-    0 10px 25px rgba(0, 242, 255, 0.35),
-    0 0 15px rgba(0, 242, 255, 0.25);
+  border-radius: 12px;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   display: inline-flex;
@@ -311,25 +312,24 @@ small.text-muted {
 }
 
 .bio-btn-glow:hover {
-  transform: translateY(-2px) scale(1.02);
-  background: linear-gradient(135deg, #FF6732 0%, #FFCA00 100%);
-  box-shadow: 
-    0 15px 35px rgba(255, 103, 50, 0.45),
-    0 0 25px rgba(255, 202, 0, 0.35);
-  color: #1e222d !important;
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
+  color: #FFFFFF !important;
 }
 
+/* Secondary Button - Clean #E2E8F0 (Light Slate) with #0F2942 (Deep Navy) text */
 .bio-btn-outline {
-  background: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF !important;
+  background: #E2E8F0 !important;
+  color: #0F2942 !important;
   font-family: var(--font-heading);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   padding: 12px 26px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 242, 255, 0.35);
-  backdrop-filter: blur(12px);
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(15, 41, 66, 0.04);
+  transition: all 0.25s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -337,41 +337,41 @@ small.text-muted {
 }
 
 .bio-btn-outline:hover {
-  background: rgba(0, 242, 255, 0.12);
-  border-color: #00F2FF;
+  background: #CBD5E1 !important;
+  color: #0F2942 !important;
+  border-color: #94A3B8 !important;
   transform: translateY(-2px);
-  color: #00F2FF !important;
-  box-shadow: 0 0 18px rgba(0, 242, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(15, 41, 66, 0.08);
 }
 
-/* Glowing Neon Borders & Rings */
+/* Clinical Glow Borders */
 .bio-glow-border-cyan {
-  border: 1px solid rgba(0, 242, 255, 0.45) !important;
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.25) !important;
+  border: 1px solid #06B6D4 !important;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2) !important;
 }
 
 .bio-glow-border-orange {
-  border: 1px solid rgba(255, 103, 50, 0.45) !important;
-  box-shadow: 0 0 25px rgba(255, 103, 50, 0.25) !important;
+  border: 1px solid #EA580C !important;
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.2) !important;
 }
 
 .bio-glow-border-gold {
-  border: 1px solid rgba(255, 202, 0, 0.45) !important;
-  box-shadow: 0 0 25px rgba(255, 202, 0, 0.25) !important;
+  border: 1px solid #D97706 !important;
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.2) !important;
 }
 
-/* Custom Scrollbars */
+/* Custom Healthcare Scrollbars */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bio-bg);
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 242, 255, 0.35);
+  background: #CBD5E1;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 103, 50, 0.6);
+  background: #06B6D4;
 }

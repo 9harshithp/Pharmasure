@@ -75,50 +75,50 @@ const Home = () => {
         }}
       />
 
-      {/* Floating Modern Biotech Navbar */}
-      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(42, 47, 61, 0.75)" }}>
+      {/* Floating Modern Healthcare Navbar */}
+      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid #E2E8F0", background: "rgba(255, 255, 255, 0.9)" }}>
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
           <div className="d-flex align-items-center gap-3" role="button" onClick={() => navigate("/")}>
             <div
               className="d-flex align-items-center justify-content-center rounded-3 p-2"
               style={{
-                background: "linear-gradient(135deg, rgba(0, 242, 255, 0.25), rgba(255, 103, 50, 0.25))",
-                border: "1px solid rgba(0, 242, 255, 0.45)",
-                boxShadow: "0 0 20px rgba(0, 242, 255, 0.3)",
+                background: "rgba(6, 182, 212, 0.12)",
+                border: "1px solid rgba(6, 182, 212, 0.3)",
+                boxShadow: "0 2px 8px rgba(6, 182, 212, 0.15)",
               }}
             >
-              <FaShieldAlt style={{ color: "var(--bio-cyan)", fontSize: "1.25rem" }} />
+              <FaShieldAlt style={{ color: "#06B6D4", fontSize: "1.25rem" }} />
             </div>
             <div>
-              <span className="fs-4 fw-bold tracking-tight bio-heading text-white" style={{ letterSpacing: "-0.03em" }}>
-                PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+              <span className="fs-4 fw-bold tracking-tight bio-heading" style={{ color: "#0F2942", letterSpacing: "-0.03em" }}>
+                PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
               </span>
-              <span className="badge ms-2 bio-pill-orange" style={{ fontSize: "10px" }}>
+              <span className="badge ms-2 bio-pill-cyan" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>
             </div>
           </div>
 
           {/* Desktop Nav Pills */}
-          <div className="d-none d-lg-flex align-items-center gap-4 small fw-semibold" style={{ color: "#cbd5e1" }}>
-            <a href="#features" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
+          <div className="d-none d-lg-flex align-items-center gap-4 small fw-semibold">
+            <a href="#features" className="text-decoration-none transition fw-semibold" style={{ color: "#0F2942" }}>
               Clinical Platform
             </a>
-            <a href="#floating-windows" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
+            <a href="#floating-windows" className="text-decoration-none transition fw-semibold" style={{ color: "#0F2942" }}>
               Live Architecture
             </a>
-            <a href="#quick-demo" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
+            <a href="#quick-demo" className="text-decoration-none transition fw-semibold" style={{ color: "#0F2942" }}>
               Instant Roles
             </a>
-            <div className="d-flex align-items-center gap-1 font-monospace text-light opacity-85">
-              <span style={{ color: "#FFCA00" }}>●</span> PoS #{liveBlock.toLocaleString()}
+            <div className="d-flex align-items-center gap-1 font-monospace fw-semibold" style={{ color: "#0F2942" }}>
+              <span style={{ color: "#06B6D4" }}>●</span> PoS #{liveBlock.toLocaleString()}
             </div>
           </div>
 
           {/* Right Actions */}
           <div className="d-flex align-items-center gap-3">
-            <LanguageSelector variant="dark" />
+            <LanguageSelector variant="light" />
             <button
               className="bio-btn-glow btn-sm"
               onClick={() => navigate("/login")}
@@ -135,7 +135,7 @@ const Home = () => {
         <div className="text-center mx-auto" style={{ maxWidth: "860px" }}>
           {/* Eyebrow Pill */}
           <div className="d-inline-flex align-items-center mb-4">
-            <span className="bio-pill bio-pill-orange shadow-sm">
+            <span className="bio-pill bio-pill-cyan shadow-sm">
               <span className="badge rounded-circle p-1 bg-success me-1"></span>
               FDA DSCSA Track & Trace • Polygon PoS Chain
             </span>
@@ -146,23 +146,21 @@ const Home = () => {
             className="display-4 fw-bolder mb-3 bio-heading"
             style={{
               lineHeight: 1.15,
-              background: "linear-gradient(135deg, #FFFFFF 25%, #00F2FF 65%, #FFCA00 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: "#0F2942",
+              letterSpacing: "-0.03em",
             }}
           >
-            Zero-Risk Predictive Expiry & Decentralized Drug Provenance
+            Zero-Risk Predictive Expiry & <span style={{ color: "#06B6D4" }}>Decentralized Drug Provenance</span>
           </h1>
 
-          {/* Hero Subtitle - High Contrast Pure Legibility */}
+          {/* Hero Subtitle */}
           <p
             className="lead mb-4 fs-5 mx-auto"
             style={{
-              color: "#FFFFFF",
+              color: "#475569",
               lineHeight: 1.65,
               maxWidth: "800px",
               fontWeight: 400,
-              textShadow: "0 2px 10px rgba(0,0,0,0.5)",
             }}
           >
             Eliminating clinical expiry hazards before dispensing occurs. Powered by mathematical course-inversion risk modeling, Gemini Multimodal vision, and immutable Polygon PoS blockchain serialization.
@@ -171,7 +169,7 @@ const Home = () => {
           {/* Hero CTAs */}
           <div className="d-flex flex-wrap justify-content-center gap-3 mb-5">
             <button
-              className="bio-btn-glow fs-6 py-3 px-4 shadow-lg"
+              className="bio-btn-glow fs-6 py-3 px-4 shadow-sm"
               onClick={() => navigate("/login")}
             >
               <span>Launch Clinical Workspace</span>
@@ -186,48 +184,48 @@ const Home = () => {
           </div>
 
           {/* BioMetrics Strip */}
-          <div className="row g-3 justify-content-center pt-2 pb-5 border-top border-bottom border-secondary border-opacity-25 my-4">
+          <div className="row g-3 justify-content-center pt-2 pb-5 border-top border-bottom my-4" style={{ borderColor: "#E2E8F0" }}>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-cyan)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "#06B6D4" }}>
                 0.00%
               </div>
-              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+              <div className="small fw-semibold mt-1" style={{ color: "#64748B" }}>
                 Expired Dispense Rate
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-gold)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "#0F2942" }}>
                 64-Block
               </div>
-              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+              <div className="small fw-semibold mt-1" style={{ color: "#64748B" }}>
                 Polygon PoS Consensus
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-orange)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "#EA580C" }}>
                 5 Regional
               </div>
-              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+              <div className="small fw-semibold mt-1" style={{ color: "#64748B" }}>
                 Languages & Voice Synthesis
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-cyan)" }}>
+              <div className="fs-3 fw-bold bio-heading" style={{ color: "#0D9488" }}>
                 &lt; 1.2s
               </div>
-              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+              <div className="small fw-semibold mt-1" style={{ color: "#64748B" }}>
                 AI Prescription Parsing
               </div>
             </div>
           </div>
         </div>
 
-        {/* 🌟 SIGNATURE SECTION: BIOAGE-INSPIRED DYNAMIC FLOATING WINDOWS */}
+        {/* 🌟 SIGNATURE SECTION: DYNAMIC SYSTEM ARCHITECTURE */}
         <section id="floating-windows" className="py-5">
           <div className="text-center mb-5">
             <span className="bio-pill bio-pill-cyan mb-2">INTERACTIVE CLINICAL WINDOWS</span>
-            <h2 className="fs-2 fw-bold bio-heading text-white">Dynamic System Architecture</h2>
-            <p className="small mb-0" style={{ color: "#cbd5e1", fontSize: "14px" }}>
+            <h2 className="fs-2 fw-bold bio-heading" style={{ color: "#0F2942" }}>Dynamic System Architecture</h2>
+            <p className="small mb-0" style={{ color: "#64748B", fontSize: "14px" }}>
               Real-time modular interfaces driving Zero-Risk patient safety.
             </p>
           </div>
@@ -243,10 +241,10 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
                     predictive-risk-engine.sys
                   </span>
-                  <span className="badge bio-pill-rose text-white" style={{ fontSize: "10px" }}>
+                  <span className="badge bio-pill-rose" style={{ fontSize: "10px" }}>
                     Inversion Check
                   </span>
                 </div>
@@ -254,47 +252,47 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                      <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Monitored Drug Entity
                       </span>
-                      <h5 className="fw-bold mb-0 text-white">Amoxicillin 500mg (Course: 30 Days)</h5>
+                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Amoxicillin 500mg (Course: 30 Days)</h5>
                     </div>
-                    <span className="badge bg-danger bg-opacity-20 text-danger border border-danger px-2 py-1">
+                    <span className="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
                       ⚠️ Hazard Flagged
                     </span>
                   </div>
 
                   {/* Mathematical Model Card */}
-                  <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-3 font-mono small">
-                    <div className="d-flex justify-content-between mb-1" style={{ color: "#e2e8f0" }}>
+                  <div className="p-3 rounded-3 mb-3 font-mono small" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                    <div className="d-flex justify-content-between mb-1" style={{ color: "#0F2942" }}>
                       <span>Daily Dosing: 2 tabs/day</span>
                       <span>Stock: 60 tabs</span>
                     </div>
-                    <div className="d-flex justify-content-between mb-2" style={{ color: "#e2e8f0" }}>
+                    <div className="d-flex justify-content-between mb-2" style={{ color: "#0F2942" }}>
                       <span>Course Runout Date:</span>
                       <strong className="text-danger">2027-02-15</strong>
                     </div>
-                    <div className="d-flex justify-content-between border-top border-secondary border-opacity-25 pt-2" style={{ color: "#e2e8f0" }}>
+                    <div className="d-flex justify-content-between border-top pt-2" style={{ borderColor: "#E2E8F0", color: "#0F2942" }}>
                       <span>Batch Expiration Date:</span>
-                      <strong className="text-warning">2026-11-20</strong>
+                      <strong style={{ color: "#D97706" }}>2026-11-20</strong>
                     </div>
                   </div>
 
                   {/* Timeline Progress Graphic */}
                   <div className="mb-3">
-                    <div className="d-flex justify-content-between small mb-1 font-mono" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                    <div className="d-flex justify-content-between small mb-1 font-mono" style={{ fontSize: "11px", color: "#64748B" }}>
                       <span>Start: Today</span>
-                      <span className="text-warning">Batch Expires (Day 20)</span>
-                      <span className="text-danger">Patient Course Finishes (Day 30)</span>
+                      <span style={{ color: "#D97706" }}>Batch Expires (Day 20)</span>
+                      <span className="text-danger">Patient Finishes (Day 30)</span>
                     </div>
-                    <div className="progress" style={{ height: "8px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+                    <div className="progress" style={{ height: "8px", backgroundColor: "#E2E8F0" }}>
                       <div className="progress-bar bg-success" style={{ width: "45%" }}></div>
                       <div className="progress-bar bg-warning" style={{ width: "20%" }}></div>
                       <div className="progress-bar bg-danger" style={{ width: "35%" }}></div>
                     </div>
                   </div>
 
-                  <div className="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 p-2 small mb-0 text-white">
+                  <div className="p-3 rounded-3 small mb-0" style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#991B1B" }}>
                     🛑 <strong>Zero-Risk Action:</strong> Prescription locked. System prevents patient from consuming expired medication during the final 10 days of treatment.
                   </div>
                 </div>
@@ -311,10 +309,10 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
                     polygon-amoy-pos.ledger
                   </span>
-                  <span className="badge bio-pill-cyan text-white" style={{ fontSize: "10px" }}>
+                  <span className="badge bio-pill-cyan" style={{ fontSize: "10px" }}>
                     Chain ID 80002
                   </span>
                 </div>
@@ -322,29 +320,29 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                      <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Consensus State
                       </span>
-                      <h5 className="fw-bold mb-0 text-white">Decentralized Batch Registry</h5>
+                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Decentralized Batch Registry</h5>
                     </div>
-                    <span className="badge bg-success bg-opacity-20 text-success border border-success px-2 py-1">
+                    <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
                       <FaCheckCircle className="me-1" /> Block #{liveBlock.toLocaleString()}
                     </span>
                   </div>
 
                   {/* On-Chain Receipt Preview */}
-                  <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-3 font-mono small">
-                    <div className="mb-1" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                  <div className="p-3 rounded-3 mb-3 font-mono small" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                    <div className="mb-1" style={{ fontSize: "11px", color: "#64748B" }}>
                       Transaction Hash (Keccak-256):
                     </div>
-                    <code className="text-info d-block text-truncate mb-2" style={{ fontSize: "12px" }}>
+                    <code className="d-block text-truncate mb-2" style={{ fontSize: "12px", color: "#0891B2" }}>
                       0xe936c27a329f67a526f4cf42397e324150e14ec6207655168b99a1c46bb0a294
                     </code>
 
-                    <div className="row g-2" style={{ fontSize: "12px", color: "#cbd5e1" }}>
+                    <div className="row g-2" style={{ fontSize: "12px", color: "#64748B" }}>
                       <div className="col-6">
                         <span>Smart Contract:</span>
-                        <div className="text-light fw-bold">0x89e2F7...5C41</div>
+                        <div className="fw-bold" style={{ color: "#0F2942" }}>0x89e2F7...5C41</div>
                       </div>
                       <div className="col-6">
                         <span>Genesis Seal:</span>
@@ -353,13 +351,13 @@ const Home = () => {
                     </div>
                   </div>
 
-                  <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                  <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                     Every pharmaceutical lot is permanently inscribed at manufacture. Unauthorized date extensions or counterfeit batches immediately fail on-chain cryptographic comparison.
                   </p>
 
                   <div className="d-flex gap-2">
                     <button
-                      className="btn btn-sm btn-outline-info w-100 fw-bold d-flex align-items-center justify-content-center gap-1"
+                      className="bio-btn-outline w-100 justify-content-center py-2"
                       onClick={() => navigate("/login")}
                     >
                       <FaLink size={12} /> Inspect Full Ledger
@@ -379,10 +377,10 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
                     multimodal-vision-ocr.ai
                   </span>
-                  <span className="badge bio-pill-violet text-white" style={{ fontSize: "10px" }}>
+                  <span className="badge bio-pill-gold" style={{ fontSize: "10px" }}>
                     Gemini Vision
                   </span>
                 </div>
@@ -390,12 +388,12 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                      <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Multimodal Deciphering
                       </span>
-                      <h5 className="fw-bold mb-0 text-white">Handwritten Doctor Slip Parser</h5>
+                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Handwritten Doctor Slip Parser</h5>
                     </div>
-                    <span className="badge px-2 py-1 text-white" style={{ backgroundColor: "var(--bio-violet)" }}>
+                    <span className="badge px-2 py-1" style={{ background: "rgba(217, 119, 6, 0.12)", color: "#B45309", border: "1px solid rgba(217, 119, 6, 0.25)" }}>
                       Neural OCR
                     </span>
                   </div>
@@ -403,17 +401,17 @@ const Home = () => {
                   {/* Handwriting to JSON Simulation */}
                   <div className="row g-2 mb-3">
                     <div className="col-6">
-                      <div className="p-2 rounded-2 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
-                        <span className="font-mono" style={{ fontSize: "10px", color: "#94a3b8" }}>DOCTOR'S HANDWRITING:</span>
-                        <div className="fst-italic text-warning pt-2" style={{ fontSize: "14px", fontFamily: "serif" }}>
+                      <div className="p-2 rounded-2 h-100" style={{ background: "#FFFBEB", border: "1px solid #FDE68A" }}>
+                        <span className="font-mono" style={{ fontSize: "10px", color: "#92400E" }}>DOCTOR'S HANDWRITING:</span>
+                        <div className="fst-italic pt-2" style={{ fontSize: "13px", fontFamily: "serif", color: "#78350F" }}>
                           "Tab Metformin 500mg 1-0-1 x 30d after food - Dr. Sharma"
                         </div>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className="p-2 rounded-2 bg-dark bg-opacity-50 border border-info border-opacity-25 h-100">
-                        <span className="text-info font-mono" style={{ fontSize: "10px" }}>NORMALIZED SCHEDULE:</span>
-                        <div className="text-light font-mono small pt-1">
+                      <div className="p-2 rounded-2 h-100" style={{ background: "#F0FDFA", border: "1px solid #99F6E4" }}>
+                        <span className="font-mono" style={{ fontSize: "10px", color: "#0F766E" }}>NORMALIZED SCHEDULE:</span>
+                        <div className="font-mono small pt-1" style={{ color: "#115E59", fontSize: "12px" }}>
                           • Drug: Metformin<br/>
                           • Dose: Morning + Night<br/>
                           • Qty: 60 Tabs
@@ -422,8 +420,8 @@ const Home = () => {
                     </div>
                   </div>
 
-                  <p className="small mb-0" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
-                    Translates medical shorthand (<code className="text-info">OD</code>, <code className="text-info">BD</code>, <code className="text-info">1-0-1</code>, <code className="text-info">TDS</code>) directly into patient schedules with 1-tap bulk intake.
+                  <p className="small mb-0" style={{ color: "#64748B", lineHeight: 1.5 }}>
+                    Translates medical shorthand (<code className="text-primary">OD</code>, <code className="text-primary">BD</code>, <code className="text-primary">1-0-1</code>, <code className="text-primary">TDS</code>) directly into patient schedules with 1-tap bulk intake.
                   </p>
                 </div>
               </div>
@@ -439,10 +437,10 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
                     whatsapp-adherence-hub.msg
                   </span>
-                  <span className="badge bio-pill-emerald text-white" style={{ fontSize: "10px" }}>
+                  <span className="badge bio-pill-emerald" style={{ fontSize: "10px" }}>
                     Cloud API
                   </span>
                 </div>
@@ -450,28 +448,28 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                      <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Mobile Patient Gateway
                       </span>
-                      <h5 className="fw-bold mb-0 text-white">Instant WhatsApp / SMS Dispatch</h5>
+                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Instant WhatsApp / SMS Dispatch</h5>
                     </div>
-                    <span className="badge bg-success bg-opacity-20 text-success border border-success px-2 py-1">
+                    <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
                       <FaWhatsapp className="me-1" /> Active
                     </span>
                   </div>
 
                   {/* Mini WhatsApp Bubble */}
-                  <div className="p-3 rounded-3 mb-3" style={{ backgroundColor: "#0b141a", border: "1px solid rgba(37, 211, 102, 0.2)" }}>
-                    <div className="d-flex align-items-center gap-2 mb-2 pb-1 border-bottom border-secondary border-opacity-25">
+                  <div className="p-3 rounded-3 mb-3" style={{ backgroundColor: "#EFEAE2", border: "1px solid #CBD5E1" }}>
+                    <div className="d-flex align-items-center gap-2 mb-2 pb-1 border-bottom" style={{ borderColor: "#CBD5E1" }}>
                       <span className="badge bg-success rounded-circle p-1"></span>
-                      <strong className="text-success small font-mono">PharmaSure Clinical Bot</strong>
+                      <strong className="small font-mono" style={{ color: "#075E54" }}>PharmaSure Clinical Bot</strong>
                     </div>
-                    <div className="p-2 rounded-2 text-white font-mono small" style={{ backgroundColor: "#005c4b", fontSize: "12px", lineHeight: "1.4" }}>
+                    <div className="p-2 rounded-2 font-mono small shadow-sm" style={{ backgroundColor: "#DCF8C6", fontSize: "12px", lineHeight: "1.4", color: "#128C7E" }}>
                       🚨 *CLINICAL ALERT*: Patient John has a pending *Morning* dose for *Atorvastatin 20mg*. Please take with water to maintain therapeutic levels.
                     </div>
                   </div>
 
-                  <p className="small mb-0" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                  <p className="small mb-0" style={{ color: "#64748B", lineHeight: 1.5 }}>
                     Bridges elderly patients and caretakers. Dispatches missed dose alerts, expiry hazards, and refill alerts directly to mobile devices without needing a computer.
                   </p>
                 </div>
@@ -482,7 +480,7 @@ const Home = () => {
 
         {/* 🚀 QUICK DEMO ROLE LAUNCHPAD */}
         <section id="quick-demo" className="py-5">
-          <div className="bio-floating-window p-0 border-0 shadow-lg">
+          <div className="bio-floating-window p-0 border-0 shadow-sm">
             {/* Window Header Bar */}
             <div className="bio-window-bar">
               <div className="bio-window-dots">
@@ -490,19 +488,19 @@ const Home = () => {
                 <span className="bio-window-dot bio-dot-yellow"></span>
                 <span className="bio-window-dot bio-dot-green"></span>
               </div>
-              <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
+              <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
                 fast-role-launchpad.exec
               </span>
-              <span className="badge bio-pill-violet text-white" style={{ fontSize: "10px" }}>
+              <span className="badge bio-pill-cyan" style={{ fontSize: "10px" }}>
                 1-Click Fast Auth
               </span>
             </div>
 
             <div className="p-4 p-md-5">
               <div className="text-center mb-4">
-                <span className="bio-pill bio-pill-violet mb-2">INSTANT ROLE ACCESS</span>
-                <h3 className="fw-bold bio-heading text-white">Experience PharmaSure In Action</h3>
-                <p className="small mx-auto" style={{ maxWidth: "600px", color: "#cbd5e1" }}>
+                <span className="bio-pill bio-pill-cyan mb-2">INSTANT ROLE ACCESS</span>
+                <h3 className="fw-bold bio-heading" style={{ color: "#0F2942" }}>Experience PharmaSure In Action</h3>
+                <p className="small mx-auto" style={{ maxWidth: "600px", color: "#64748B" }}>
                   Select a role below to automatically authenticate and explore the specialized interfaces engineered for patients, caretakers, and pharmacists.
                 </p>
               </div>
@@ -513,9 +511,9 @@ const Home = () => {
                   <div
                     className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
                     style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(0, 245, 212, 0.3)",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      background: "#FFFFFF",
+                      border: "1px solid #06B6D4",
+                      boxShadow: "0 4px 16px rgba(6, 182, 212, 0.08)",
                       cursor: "pointer",
                     }}
                     onClick={() => handleQuickLogin("harshithp914@gmail.com", "student123")}
@@ -525,14 +523,14 @@ const Home = () => {
                       <div className="d-flex align-items-center justify-content-between mb-3">
                         <span
                           className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
-                          style={{ background: "rgba(0, 245, 212, 0.15)", color: "var(--bio-cyan)" }}
+                          style={{ background: "rgba(6, 182, 212, 0.12)", color: "#06B6D4" }}
                         >
                           <FaUserInjured size={22} />
                         </span>
                         <span className="badge bio-pill-cyan">Patient Role</span>
                       </div>
-                      <h5 className="fw-bold text-white mb-2">Patient Dashboard</h5>
-                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Patient Dashboard</h5>
+                      <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         Track dosage schedules, adherence rings, zero-risk alerts, and 1-tap quick dose intake.
                       </p>
                     </div>
@@ -548,9 +546,9 @@ const Home = () => {
                   <div
                     className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
                     style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(245, 158, 11, 0.3)",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      background: "#FFFFFF",
+                      border: "1px solid #E2E8F0",
+                      boxShadow: "0 4px 12px rgba(15, 41, 66, 0.04)",
                       cursor: "pointer",
                     }}
                     onClick={() => handleQuickLogin("harshithp9141@gmail.com", "student123")}
@@ -560,21 +558,18 @@ const Home = () => {
                       <div className="d-flex align-items-center justify-content-between mb-3">
                         <span
                           className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
-                          style={{ background: "rgba(245, 158, 11, 0.15)", color: "var(--bio-amber)" }}
+                          style={{ background: "rgba(234, 88, 12, 0.12)", color: "#EA580C" }}
                         >
                           <FaUserNurse size={22} />
                         </span>
-                        <span className="badge bio-pill-rose">Caretaker Role</span>
+                        <span className="badge bio-pill-orange">Caretaker Role</span>
                       </div>
-                      <h5 className="fw-bold text-white mb-2">Caretaker Terminal</h5>
-                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Caretaker Terminal</h5>
+                      <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         Monitor associated patients, review missed medication alerts, and dispatch WhatsApp alerts.
                       </p>
                     </div>
-                    <button
-                      className="bio-btn-outline btn-sm w-100 mt-2 py-2"
-                      style={{ borderColor: "var(--bio-amber)", color: "var(--bio-amber)" }}
-                    >
+                    <button className="bio-btn-outline btn-sm w-100 mt-2 py-2">
                       <span>Enter as Caretaker</span>
                       <FaArrowRight size={12} />
                     </button>
@@ -586,9 +581,9 @@ const Home = () => {
                   <div
                     className="p-4 rounded-3 h-100 d-flex flex-column justify-content-between bio-role-card"
                     style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(16, 185, 129, 0.3)",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      background: "#FFFFFF",
+                      border: "1px solid #E2E8F0",
+                      boxShadow: "0 4px 12px rgba(15, 41, 66, 0.04)",
                       cursor: "pointer",
                     }}
                     onClick={() => handleQuickLogin("pharmacist@pharmasure.com", "admin123")}
@@ -598,21 +593,18 @@ const Home = () => {
                       <div className="d-flex align-items-center justify-content-between mb-3">
                         <span
                           className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center"
-                          style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--bio-emerald)" }}
+                          style={{ background: "rgba(13, 148, 136, 0.12)", color: "#0D9488" }}
                         >
                           <FaPrescriptionBottleAlt size={22} />
                         </span>
                         <span className="badge bio-pill-emerald">Pharmacist</span>
                       </div>
-                      <h5 className="fw-bold text-white mb-2">Pharmacy Operations</h5>
-                      <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
+                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Pharmacy Operations</h5>
+                      <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         FEFO batch inventory, GS1 QR codes, Smart Dispense Assistant, and B2B distributor returns.
                       </p>
                     </div>
-                    <button
-                      className="bio-btn-outline btn-sm w-100 mt-2 py-2"
-                      style={{ borderColor: "var(--bio-emerald)", color: "var(--bio-emerald)" }}
-                    >
+                    <button className="bio-btn-outline btn-sm w-100 mt-2 py-2">
                       <span>Enter as Pharmacist</span>
                       <FaArrowRight size={12} />
                     </button>

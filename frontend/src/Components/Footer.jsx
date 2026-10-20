@@ -16,23 +16,13 @@ const Footer = () => {
     <footer
       className="bio-footer position-relative mt-auto"
       style={{
-        background: "linear-gradient(180deg, rgba(42, 47, 61, 0.98) 0%, #1a1e27 100%)",
-        borderTop: "1px solid rgba(0, 242, 255, 0.25)",
-        boxShadow: "0 -10px 40px rgba(0, 0, 0, 0.5)",
+        background: "#0F2942",
+        borderTop: "3px solid #06B6D4",
+        boxShadow: "0 -8px 30px rgba(15, 41, 66, 0.15)",
         zIndex: 20,
-        color: "#cbd5e1",
+        color: "#CBD5E1",
       }}
     >
-      {/* Ambient Gradient Glow Line on Top */}
-      <div
-        style={{
-          height: "2px",
-          width: "100%",
-          background: "linear-gradient(90deg, transparent 0%, #00F2FF 25%, #FF6732 50%, #FFCA00 75%, transparent 100%)",
-          opacity: 0.9,
-        }}
-      />
-
       <div className="container py-5">
         <div className="row g-4 justify-content-between">
           {/* Column 1: Brand & Mission */}
@@ -43,17 +33,17 @@ const Footer = () => {
                 style={{
                   width: "36px",
                   height: "36px",
-                  background: "linear-gradient(135deg, #00F2FF 0%, #FF6732 100%)",
-                  color: "#1a1e27",
-                  boxShadow: "0 0 15px rgba(0, 242, 255, 0.4)",
+                  background: "#06B6D4",
+                  color: "#FFFFFF",
+                  boxShadow: "0 2px 10px rgba(6, 182, 212, 0.4)",
                 }}
               >
                 <FaShieldAlt size={18} />
               </span>
               <span className="fs-4 fw-bold tracking-tight text-white font-heading">
-                PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+                PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
               </span>
-              <span className="badge bio-pill-orange ms-1" style={{ fontSize: "10px" }}>
+              <span className="badge bio-pill-cyan ms-1" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>
             </div>

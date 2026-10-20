@@ -122,26 +122,28 @@ const Login = () => {
         <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
           <div
             className="p-2 rounded-3 d-flex align-items-center justify-content-center"
-            style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.3)" }}
+            style={{ background: "rgba(6, 182, 212, 0.12)", border: "1px solid rgba(6, 182, 212, 0.3)" }}
           >
-            <FaShieldAlt className="text-info fs-5" />
+            <FaShieldAlt style={{ color: "#06B6D4", fontSize: "1.25rem" }} />
           </div>
-          <span className="fs-5 fw-bold bio-heading text-white">
-            PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+          <span className="fs-5 fw-bold bio-heading" style={{ color: "#0F2942" }}>
+            PHARMA<span style={{ color: "#06B6D4" }}>SURE</span>
           </span>
         </div>
-        <LanguageSelector variant="dark" />
+        <LanguageSelector variant="light" />
       </div>
 
-      {/* BioAge Floating Window Login Box */}
+      {/* Floating Window Login Box */}
       <div
-        className={`bio-floating-window bio-animate-float-3 w-100 p-0 shadow-2xl transition`}
+        className={`bio-floating-window bio-animate-float-3 w-100 p-0 shadow-sm transition`}
         style={{
           maxWidth: "460px",
           transform: loaded ? "translateY(0)" : "translateY(30px)",
           opacity: loaded ? 1 : 0,
           transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
           zIndex: 10,
+          background: "#FFFFFF",
+          border: "1px solid #E2E8F0",
         }}
       >
         {/* Window Titlebar */}
@@ -151,7 +153,7 @@ const Login = () => {
             <span className="bio-window-dot bio-dot-yellow"></span>
             <span className="bio-window-dot bio-dot-green"></span>
           </div>
-          <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+          <span className="font-mono small" style={{ fontSize: "11px", color: "#64748B" }}>
             pharmasure-auth.protocol
           </span>
           <span className="badge bio-pill-cyan" style={{ fontSize: "10px" }}>
@@ -161,22 +163,23 @@ const Login = () => {
 
         <div className="p-4 p-md-5">
           <div className="text-center mb-4">
-            <h3 className="fw-bold bio-heading text-white mb-1">{t("login")}</h3>
-            <p className="text-muted small">Enter credentials or tap a 1-click role below</p>
+            <h3 className="fw-bold bio-heading mb-1" style={{ color: "#0F2942" }}>{t("login")}</h3>
+            <p className="small mb-0" style={{ color: "#64748B" }}>Enter credentials or tap a 1-click role below</p>
           </div>
 
           <form onSubmit={handleLogin}>
             <div className="mb-3">
-              <label className="form-label small text-muted font-mono d-flex align-items-center gap-1">
-                <FaEnvelope className="text-info" /> EMAIL ADDRESS:
+              <label className="form-label small font-mono d-flex align-items-center gap-1" style={{ color: "#0F2942" }}>
+                <FaEnvelope style={{ color: "#06B6D4" }} /> EMAIL ADDRESS:
               </label>
               <input
                 type="email"
-                className="form-control font-mono py-2 px-3 text-white"
+                className="form-control font-mono py-2 px-3"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
                   borderRadius: "10px",
+                  color: "#0F2942",
                 }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -186,16 +189,17 @@ const Login = () => {
             </div>
 
             <div className="mb-4">
-              <label className="form-label small text-muted font-mono d-flex align-items-center gap-1">
-                <FaLock className="text-info" /> SECURITY KEY / PASSWORD:
+              <label className="form-label small font-mono d-flex align-items-center gap-1" style={{ color: "#0F2942" }}>
+                <FaLock style={{ color: "#06B6D4" }} /> SECURITY KEY / PASSWORD:
               </label>
               <input
                 type="password"
-                className="form-control font-mono py-2 px-3 text-white"
+                className="form-control font-mono py-2 px-3"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
                   borderRadius: "10px",
+                  color: "#0F2942",
                 }}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -224,43 +228,43 @@ const Login = () => {
           </form>
 
           {/* 1-Click Fast Role Selection for Quick Evaluator Access */}
-          <div className="mt-4 pt-3 border-top border-secondary border-opacity-25">
-            <span className="text-muted small font-mono d-block text-center mb-2" style={{ fontSize: "11px" }}>
+          <div className="mt-4 pt-3 border-top" style={{ borderColor: "#E2E8F0" }}>
+            <span className="small font-mono d-block text-center mb-2" style={{ fontSize: "11px", color: "#64748B" }}>
               ⚡ QUICK DEMO AUTO-FILL:
             </span>
             <div className="d-flex gap-2 justify-content-center">
               <button
                 type="button"
-                className="btn btn-sm btn-outline-info d-flex align-items-center gap-1 rounded-pill px-3 py-1"
-                style={{ fontSize: "11px" }}
+                className="bio-btn-outline d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px", height: "auto" }}
                 onClick={() => handleRoleQuickFill("harshithp914@gmail.com", "student123")}
               >
-                <FaUserInjured /> Patient
+                <FaUserInjured style={{ color: "#06B6D4" }} /> Patient
               </button>
               <button
                 type="button"
-                className="btn btn-sm btn-outline-warning d-flex align-items-center gap-1 rounded-pill px-3 py-1"
-                style={{ fontSize: "11px" }}
+                className="bio-btn-outline d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px", height: "auto" }}
                 onClick={() => handleRoleQuickFill("harshithp9141@gmail.com", "student123")}
               >
-                <FaUserNurse /> Caretaker
+                <FaUserNurse style={{ color: "#EA580C" }} /> Caretaker
               </button>
               <button
                 type="button"
-                className="btn btn-sm btn-outline-success d-flex align-items-center gap-1 rounded-pill px-3 py-1"
-                style={{ fontSize: "11px" }}
+                className="bio-btn-outline d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px", height: "auto" }}
                 onClick={() => handleRoleQuickFill("pharmacist@pharmasure.com", "admin123")}
               >
-                <FaPrescriptionBottleAlt /> Pharmacist
+                <FaPrescriptionBottleAlt style={{ color: "#0D9488" }} /> Pharmacist
               </button>
             </div>
           </div>
 
-          <p className="mt-4 text-center text-muted small mb-0">
+          <p className="mt-4 text-center small mb-0" style={{ color: "#64748B" }}>
             Need a fresh patient profile?{" "}
             <span
-              className="text-info fw-bold"
-              style={{ cursor: "pointer", textDecoration: "underline" }}
+              className="fw-bold"
+              style={{ cursor: "pointer", textDecoration: "underline", color: "#06B6D4" }}
               onClick={() => navigate("/register")}
             >
               Register here
