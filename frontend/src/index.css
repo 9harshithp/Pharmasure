@@ -1,13 +1,298 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* BioAge Labs Inspired Biotech Palette */
+  --bio-bg: #070716;
+  --bio-bg-alt: #0d0b24;
+  --bio-bg-card: rgba(18, 16, 44, 0.75);
+  --bio-bg-card-hover: rgba(26, 23, 62, 0.88);
+  --bio-glass: rgba(255, 255, 255, 0.05);
+  --bio-glass-border: rgba(255, 255, 255, 0.12);
+  --bio-glass-border-hover: rgba(192, 179, 208, 0.35);
+
+  --bio-cyan: #00f5d4;
+  --bio-cyan-glow: rgba(0, 245, 212, 0.35);
+  --bio-violet: #8b5cf6;
+  --bio-violet-glow: rgba(139, 92, 246, 0.35);
+  --bio-lilac: #c0b3d0;
+  --bio-emerald: #10b981;
+  --bio-rose: #f43f5e;
+  --bio-amber: #f59e0b;
+  --bio-indigo: #4338ca;
+
+  --bio-text: #f8fafc;
+  --bio-text-muted: #94a3b8;
+  --bio-text-subtle: #64748b;
+
+  --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background-color: var(--bio-bg);
+  color: var(--bio-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .bio-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Ambient Biotech Animated Mesh Background */
+.bio-ambient-mesh {
+  position: relative;
+  background-color: var(--bio-bg);
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(0, 245, 212, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(67, 56, 202, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 75% 85%, rgba(192, 179, 208, 0.1) 0%, transparent 35%);
+  background-attachment: fixed;
+}
+
+/* BioAge Floating Window Components */
+.bio-floating-window {
+  background: var(--bio-bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--bio-glass-border);
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.bio-floating-window:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--bio-glass-border-hover);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(139, 92, 246, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Window Header Bar (macOS / Sci-Fi Terminal Style) */
+.bio-window-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bio-window-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bio-window-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bio-dot-red { background-color: #ff5f56; box-shadow: 0 0 6px rgba(255, 95, 86, 0.5); }
+.bio-dot-yellow { background-color: #ffbd2e; box-shadow: 0 0 6px rgba(255, 189, 46, 0.5); }
+.bio-dot-green { background-color: #27c93f; box-shadow: 0 0 6px rgba(39, 201, 63, 0.5); }
+
+/* Floating Motion Animations */
+@keyframes bioFloat1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0.4deg);
+  }
+}
+
+@keyframes bioFloat2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(-0.5deg);
+  }
+}
+
+@keyframes bioFloat3 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bioPulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes bioRadarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bio-animate-float-1 {
+  animation: bioFloat1 7s ease-in-out infinite;
+}
+
+.bio-animate-float-2 {
+  animation: bioFloat2 9s ease-in-out infinite;
+}
+
+.bio-animate-float-3 {
+  animation: bioFloat3 6s ease-in-out infinite;
+}
+
+.bio-glow-pulse {
+  animation: bioPulseGlow 3s ease-in-out infinite;
+}
+
+/* Glass Pill Badges */
+.bio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--bio-text);
+  backdrop-filter: blur(12px);
+}
+
+.bio-pill-cyan {
+  background: rgba(0, 245, 212, 0.1);
+  border-color: rgba(0, 245, 212, 0.3);
+  color: var(--bio-cyan);
+}
+
+.bio-pill-violet {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.35);
+  color: #c4b5fd;
+}
+
+.bio-pill-emerald {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}
+
+.bio-pill-rose {
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+  color: #fda4af;
+}
+
+/* Glowing Neon CTA Buttons */
+.bio-btn-glow {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4338ca 100%);
+  color: #ffffff !important;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 10px 25px rgba(99, 102, 241, 0.4),
+    0 0 15px rgba(139, 92, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bio-btn-glow:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 15px 35px rgba(99, 102, 241, 0.55),
+    0 0 25px rgba(0, 245, 212, 0.4);
+  color: #ffffff !important;
+}
+
+.bio-btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--bio-text) !important;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 12px 26px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bio-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--bio-lilac);
+  transform: translateY(-2px);
+  color: #ffffff !important;
+}
+
+/* Glowing Neon Borders & Rings */
+.bio-glow-border-cyan {
+  border: 1px solid rgba(0, 245, 212, 0.4) !important;
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.2) !important;
+}
+
+.bio-glow-border-violet {
+  border: 1px solid rgba(139, 92, 246, 0.4) !important;
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bio-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 212, 0.5);
 }

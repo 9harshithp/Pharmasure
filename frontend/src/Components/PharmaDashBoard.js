@@ -68,30 +68,47 @@ const PharmaDashboard = () => {
 
       {/* Desktop Sidebar */}
       <div
-        className="bg-dark text-white p-3 d-none d-md-flex flex-column"
-        style={{ width: "260px", minHeight: "100vh" }}
+        className="d-none d-md-flex flex-column p-3 text-white"
+        style={{
+          width: "270px",
+          minHeight: "100vh",
+          background: "linear-gradient(180deg, #09081e 0%, #0d0b27 50%, #070716 100%)",
+          borderRight: "1px solid rgba(255, 255, 255, 0.08)",
+          boxShadow: "4px 0 25px rgba(0, 0, 0, 0.3)",
+        }}
       >
-        <h4 className="fw-bold mb-2 text-center text-primary">💊 {t("appName")}</h4>
+        {/* Brand Logo */}
+        <div className="d-flex align-items-center gap-2 justify-content-center mb-3 pt-2" role="button" onClick={() => navigate("/")}>
+          <div
+            className="p-2 rounded-3 d-flex align-items-center justify-content-center"
+            style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.3)" }}
+          >
+            <span className="fs-5">💊</span>
+          </div>
+          <h4 className="mb-0 fw-bold bio-heading text-white" style={{ letterSpacing: "-0.02em" }}>
+            PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+          </h4>
+        </div>
         
         {/* Language Selector */}
         <div className="mb-4 text-center">
           <LanguageSelector variant="dark" />
         </div>
 
-        <ul className="nav flex-column">
-          <li className="nav-item mb-3">
-            <Link to="/pharmaDashBoard/inventory" className="nav-link text-white">
-              <FaBoxes className="me-2 text-primary" /> {t("inventory")}
+        <ul className="nav flex-column gap-2">
+          <li className="nav-item">
+            <Link to="/pharmaDashBoard/inventory" className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition" style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
+              <FaBoxes className="me-2 text-info" /> {t("inventory")}
             </Link>
           </li>
-          <li className="nav-item mb-3">
-            <Link to="/pharmaDashBoard/analytics" className="nav-link text-white">
-              <FaChartBar className="me-2 text-info" /> {t("analytics")}
+          <li className="nav-item">
+            <Link to="/pharmaDashBoard/analytics" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
+              <FaChartBar className="me-2 text-primary" /> {t("analytics")}
             </Link>
           </li>
         </ul>
         <button
-          className="btn btn-danger mt-auto fw-bold d-flex align-items-center justify-content-center gap-2"
+          className="btn btn-danger mt-auto fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 shadow-sm"
           onClick={handleLogout}
         >
           <FaSignOutAlt /> {t("logout")}

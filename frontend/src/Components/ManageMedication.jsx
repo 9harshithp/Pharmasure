@@ -490,21 +490,22 @@ const handleScan = async () => {
       </div>
 
       {/* Medication Table */}
-      <div className="table-responsive">
-        <table className="table table-hover table-bordered align-middle">
-          <thead className="table-dark">
-            <tr>
-              <th>{t("medicineName")}</th>
-              <th>{t("quantity")}</th>
-              <th>{t("doctor")}</th>
-              <th>{t("timing")}</th>
-              <th>{t("expiryDate")}</th>
-              <th>{t("projectedRunout")}</th>
-              <th>{t("zeroRiskStatus")}</th>
-              <th>{t("verifyBlockchain") || "Blockchain Audit"}</th>
-              {role !== "patient" && <th>{t("actions")}</th>}
-            </tr>
-          </thead>
+      <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div className="table-responsive">
+          <table className="table table-hover align-middle mb-0">
+            <thead style={{ background: "linear-gradient(135deg, #09081e 0%, #151336 100%)", color: "#ffffff" }}>
+              <tr>
+                <th className="py-3 px-3 text-white">{t("medicineName")}</th>
+                <th className="py-3 text-white">{t("quantity")}</th>
+                <th className="py-3 text-white">{t("doctor")}</th>
+                <th className="py-3 text-white">{t("timing")}</th>
+                <th className="py-3 text-white">{t("expiryDate")}</th>
+                <th className="py-3 text-white">{t("projectedRunout")}</th>
+                <th className="py-3 text-white">{t("zeroRiskStatus")}</th>
+                <th className="py-3 text-white">{t("verifyBlockchain") || "Blockchain Audit"}</th>
+                {role !== "patient" && <th className="py-3 text-white">{t("actions")}</th>}
+              </tr>
+            </thead>
           <tbody>
             {medications.length > 0 ? (
               medications.map((med) => {
@@ -633,6 +634,7 @@ const handleScan = async () => {
           </tbody>
         </table>
       </div>
+    </div>
 
       {/* 🔬 AI Clinical Interaction Modal */}
       {showSafetyModal && safetyData && (

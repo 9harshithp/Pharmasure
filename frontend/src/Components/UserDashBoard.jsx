@@ -333,51 +333,72 @@ const UserDashBoard = () => {
   </nav>
 
   {/* Sidebar (Desktop Only) */}
-  <div className="bg-dark text-white d-none d-md-flex flex-column p-3" style={{ width: "260px" }}>
-    <h4 className="mb-2 text-center fw-bold text-primary">💊 {t("appName")}</h4>
+  <div
+    className="d-none d-md-flex flex-column p-3 text-white"
+    style={{
+      width: "270px",
+      minHeight: "100vh",
+      background: "linear-gradient(180deg, #09081e 0%, #0d0b27 50%, #070716 100%)",
+      borderRight: "1px solid rgba(255, 255, 255, 0.08)",
+      boxShadow: "4px 0 25px rgba(0, 0, 0, 0.3)",
+    }}
+  >
+    {/* Logo */}
+    <div className="d-flex align-items-center gap-2 justify-content-center mb-3 pt-2" role="button" onClick={() => navigate("/")}>
+      <div
+        className="p-2 rounded-3 d-flex align-items-center justify-content-center"
+        style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.3)" }}
+      >
+        <span className="fs-5">💊</span>
+      </div>
+      <h4 className="mb-0 fw-bold bio-heading text-white" style={{ letterSpacing: "-0.02em" }}>
+        PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+      </h4>
+    </div>
     
     {/* Global Language Selector */}
     <div className="mb-4 text-center">
       <LanguageSelector variant="dark" />
     </div>
 
-    <ul className="nav flex-column text-start ">
-      <li className="nav-item mb-2">
-        <Link to="/userDashBoard/manageMedication" className="nav-link text-white">
+    <ul className="nav flex-column text-start gap-1">
+      <li className="nav-item">
+        <Link to="/userDashBoard/manageMedication" className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition" style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
           <FaPills className="me-2 text-primary" /> {t("manageMedication")}
         </Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/userDashBoard/consumedChart" className="nav-link text-white">
+      <li className="nav-item">
+        <Link to="/userDashBoard/consumedChart" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
           <FaChartLine className="me-2 text-info" /> {t("consumedChart")}
         </Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/userDashBoard/ConsumedCount" className="nav-link text-white">
+      <li className="nav-item">
+        <Link to="/userDashBoard/ConsumedCount" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
           <FaCheckCircle className="me-2 text-success" /> {t("consumedCount")}
         </Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/userDashBoard/mentalSupport" className="nav-link text-white">
+      <li className="nav-item">
+        <Link to="/userDashBoard/mentalSupport" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
           <FaBrain className="me-2 text-warning" /> {t("mentalSupport")}
         </Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/userDashBoard/profile" className="nav-link text-white">
+      <li className="nav-item">
+        <Link to="/userDashBoard/profile" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
           <FaUser className="me-2 text-light" /> {t("profile")}
         </Link>
       </li>
-      <li className="nav-item mb-2">
+
+      <li className="nav-item mt-2">
         <button
-          className="btn btn-outline-info w-100 text-white text-start d-flex align-items-center gap-2"
+          className="btn btn-outline-info w-100 text-white text-start d-flex align-items-center gap-2 rounded-3 py-2"
           onClick={handleGenerateDoctorReport}
         >
           <FaFilePdf /> {t("downloadDoctorReport")}
         </button>
       </li>
-      <li className="nav-item mt-2">
+      <li className="nav-item mt-1">
         <button
-          className="btn btn-outline-success w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
+          className="btn btn-outline-success w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2"
           onClick={() => {
             setWhatsAppType("schedule");
             setWhatsAppAlertData({ medications: [] });
@@ -389,9 +410,9 @@ const UserDashBoard = () => {
         </button>
       </li>
       {role === "patient" && (
-        <li className="nav-item mt-3">
+        <li className="nav-item mt-2">
           <button
-            className={`btn ${alertStatus ? "btn-secondary" : "btn-warning"} w-100 fw-bold d-flex align-items-center justify-content-center gap-2`}
+            className={`btn ${alertStatus ? "btn-secondary" : "btn-warning"} w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2`}
             disabled={alertStatus}
             onClick={handleAlert}
           >
@@ -399,9 +420,9 @@ const UserDashBoard = () => {
           </button>
         </li>
       )}
-      <li className="nav-item mt-auto">
+      <li className="nav-item mt-auto pt-3">
         <button
-          className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center mt-3 gap-2"
+          className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 shadow-sm"
           onClick={handleLogout}
         >
           <FaSignOutAlt /> {t("logout")}
@@ -411,7 +432,7 @@ const UserDashBoard = () => {
   </div>
 
   {/* Main Content */}
-  <div className="flex-grow-1 p-3 p-md-4" style={{ backgroundColor: "#ffffff" }}>
+  <div className="flex-grow-1 p-3 p-md-4" style={{ backgroundColor: "#f8fafc", minHeight: "100vh" }}>
     {/* 🚨 Global Zero-Risk Expiry Conflict Banner */}
     {zeroRiskAlerts.length > 0 && (
       <div className="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 p-3 rounded-3">

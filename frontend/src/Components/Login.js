@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseUrl } from "../App";
-import loginBg from "../Assets/home123.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
+import { FaShieldAlt, FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,205 +18,257 @@ const Login = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 200); // fade-in delay
+    const timer = setTimeout(() => setLoaded(true), 150);
+    const autoEmail = sessionStorage.getItem("demo_auto_email");
+    const autoPass = sessionStorage.getItem("demo_auto_pass");
+    if (autoEmail) {
+      setEmail(autoEmail);
+      sessionStorage.removeItem("demo_auto_email");
+    }
+    if (autoPass) {
+      setPassword(autoPass);
+      sessionStorage.removeItem("demo_auto_pass");
+    }
     return () => clearTimeout(timer);
   }, []);
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleRoleQuickFill = (demoEmail, demoPass) => {
+    setEmail(demoEmail);
+    setPassword(demoPass);
+    toast.info(`Filled credentials for ${demoEmail.split("@")[0]}`);
+  };
 
-  try {
-    const response = await axios.post(`${baseUrl}/login`, { email, password });
-    console.log("Login success:", response.data);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    // ✅ Store each field individually in sessionStorage
-    sessionStorage.setItem("role", response.data.role); // store role as well
+    try {
+      const response = await axios.post(`${baseUrl}/login`, { email, password });
+      console.log("Login success:", response.data);
 
-    if (response.data.role === "PHARMASURE") {
-      const admin = response.data.admin;
-      sessionStorage.setItem("id", admin.id);
-      sessionStorage.setItem("email", admin.email);
+      sessionStorage.setItem("role", response.data.role);
 
-      toast.success("Login successful!", {
+      if (response.data.role === "PHARMASURE") {
+        const admin = response.data.admin;
+        sessionStorage.setItem("id", admin.id);
+        sessionStorage.setItem("email", admin.email);
+
+        toast.success("Welcome Pharmacist! Directing to terminal...", {
+          position: "top-center",
+          autoClose: 1800,
+        });
+
+        setTimeout(() => {
+          navigate("/pharmaDashBoard");
+        }, 1800);
+      } else {
+        const patient = response.data.patient;
+
+        sessionStorage.setItem("pid", patient.pid);
+        sessionStorage.setItem("name", patient.name);
+        sessionStorage.setItem("email", patient.email);
+        sessionStorage.setItem("careTakerEmail", patient.careTakerEmail);
+
+        toast.success(`Welcome back, ${patient.name}!`, {
+          position: "top-center",
+          autoClose: 1800,
+        });
+
+        setTimeout(() => {
+          navigate("/userDashboard");
+        }, 1800);
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Invalid credentials. Try our 1-click demo roles below!", {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 3000,
       });
-
-      setTimeout(() => {
-        navigate("/pharmaDashBoard");
-      }, 2200);
-    } else {
-      // Since patient details are nested inside "patient"
-      const patient = response.data.patient;
-
-      sessionStorage.setItem("pid", patient.pid);
-      sessionStorage.setItem("name", patient.name);
-      sessionStorage.setItem("email", patient.email);
-      sessionStorage.setItem("careTakerEmail", patient.careTakerEmail);
-
-      toast.success("Login successful!", {
-        position: "top-center",
-        autoClose: 2000,
-      });
-
-      setTimeout(() => {
-        navigate("/userDashBoard");
-      }, 2200);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Login failed:", error.response?.data || error.message);
-    toast.error("Login failed. Check your credentials.", {
-      position: "top-center",
-      autoClose: 3000,
-    });
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center vh-100"
-      style={{
-        backgroundImage: `url(${loginBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        filter: "blur(5%)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Dark overlay */}
+    <div className="bio-ambient-mesh min-vh-100 d-flex justify-content-center align-items-center position-relative p-3">
+      {/* Background Glow Orbs */}
       <div
-        className="position-absolute top-0 start-0 w-100 h-100"
-        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-      ></div>
+        className="position-absolute rounded-circle bio-glow-pulse"
+        style={{
+          width: "450px",
+          height: "450px",
+          background: "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)",
+          top: "10%",
+          left: "10%",
+          pointerEvents: "none",
+          filter: "blur(60px)",
+        }}
+      />
+      <div
+        className="position-absolute rounded-circle bio-glow-pulse"
+        style={{
+          width: "450px",
+          height: "450px",
+          background: "radial-gradient(circle, rgba(0, 245, 212, 0.2) 0%, transparent 70%)",
+          bottom: "10%",
+          right: "10%",
+          pointerEvents: "none",
+          filter: "blur(60px)",
+        }}
+      />
 
-      {/* Top Right Language Selector */}
-      <div className="position-absolute top-0 end-0 p-4" style={{ zIndex: 100 }}>
+      {/* Top Bar with Brand & Language */}
+      <div className="position-absolute top-0 start-0 end-0 p-4 d-flex justify-content-between align-items-center" style={{ zIndex: 100 }}>
+        <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
+          <div
+            className="p-2 rounded-3 d-flex align-items-center justify-content-center"
+            style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.3)" }}
+          >
+            <FaShieldAlt className="text-info fs-5" />
+          </div>
+          <span className="fs-5 fw-bold bio-heading text-white">
+            PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
+          </span>
+        </div>
         <LanguageSelector variant="dark" />
       </div>
 
-      {/* Glass card */}
+      {/* BioAge Floating Window Login Box */}
       <div
-        className="p-4 text-white"
+        className={`bio-floating-window bio-animate-float-3 w-100 p-0 shadow-2xl transition`}
         style={{
-          backdropFilter: "blur(15px)",
-          background: "rgba(255,255,255,0.12)",
-          boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
-          borderRadius: "20px",
-          width: "350px",
-          transform: loaded ? "translateY(0)" : "translateY(-50px)",
+          maxWidth: "460px",
+          transform: loaded ? "translateY(0)" : "translateY(30px)",
           opacity: loaded ? 1 : 0,
-          transition: "all 1s ease",
+          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
           zIndex: 10,
         }}
       >
-        <h3
-          className="text-center mb-4 fw-bold"
-          style={{ textShadow: "2px 2px 10px rgba(0,0,0,0.7)" }}
-        >
-          {t("login")}
-        </h3>
-        <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-            />
+        {/* Window Titlebar */}
+        <div className="bio-window-bar">
+          <div className="bio-window-dots">
+            <span className="bio-window-dot bio-dot-red"></span>
+            <span className="bio-window-dot bio-dot-yellow"></span>
+            <span className="bio-window-dot bio-dot-green"></span>
           </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn w-100 fw-bold d-flex justify-content-center align-items-center"
-            style={{
-              background: "linear-gradient(90deg, #6a11cb, #2575fc)",
-              border: "none",
-              color: "#fff",
-              fontSize: "1.1rem",
-              transition: "all 0.4s ease",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-              height: "45px",
-            }}
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <div
-                  className="spinner-border spinner-border-sm text-light me-2"
-                  role="status"
-                >
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-                Logging in...
-              </>
-            ) : (
-              "Login"
-            )}
-          </button>
-        </form>
-
-        <p className="mt-3 text-center">
-          Don't have an account?{" "}
-          <span
-            className="text-primary"
-            style={{ cursor: "pointer", textDecoration: "underline" }}
-            onClick={() => navigate("/register")}
-          >
-            Register
+          <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+            pharmasure-auth.protocol
           </span>
-        </p>
+          <span className="badge bio-pill-cyan" style={{ fontSize: "10px" }}>
+            Secure SSL
+          </span>
+        </div>
+
+        <div className="p-4 p-md-5">
+          <div className="text-center mb-4">
+            <h3 className="fw-bold bio-heading text-white mb-1">{t("login")}</h3>
+            <p className="text-muted small">Enter credentials or tap a 1-click role below</p>
+          </div>
+
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label className="form-label small text-muted font-mono d-flex align-items-center gap-1">
+                <FaEnvelope className="text-info" /> EMAIL ADDRESS:
+              </label>
+              <input
+                type="email"
+                className="form-control font-mono py-2 px-3 text-white"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "10px",
+                }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="name@pharmasure.com"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="form-label small text-muted font-mono d-flex align-items-center gap-1">
+                <FaLock className="text-info" /> SECURITY KEY / PASSWORD:
+              </label>
+              <input
+                type="password"
+                className="form-control font-mono py-2 px-3 text-white"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "10px",
+                }}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="bio-btn-glow w-100 py-3 d-flex align-items-center justify-content-center gap-2"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <div className="spinner-border spinner-border-sm text-light" role="status" />
+                  <span>Verifying Credentials...</span>
+                </>
+              ) : (
+                <>
+                  <span>Authenticate & Enter</span>
+                  <FaArrowRight size={13} />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* 1-Click Fast Role Selection for Quick Evaluator Access */}
+          <div className="mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <span className="text-muted small font-mono d-block text-center mb-2" style={{ fontSize: "11px" }}>
+              ⚡ QUICK DEMO AUTO-FILL:
+            </span>
+            <div className="d-flex gap-2 justify-content-center">
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-info d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px" }}
+                onClick={() => handleRoleQuickFill("harshithp914@gmail.com", "student123")}
+              >
+                <FaUserInjured /> Patient
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-warning d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px" }}
+                onClick={() => handleRoleQuickFill("harshithp9141@gmail.com", "student123")}
+              >
+                <FaUserNurse /> Caretaker
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-success d-flex align-items-center gap-1 rounded-pill px-3 py-1"
+                style={{ fontSize: "11px" }}
+                onClick={() => handleRoleQuickFill("pharmacist@pharmasure.com", "admin123")}
+              >
+                <FaPrescriptionBottleAlt /> Pharmacist
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-4 text-center text-muted small mb-0">
+            Need a fresh patient profile?{" "}
+            <span
+              className="text-info fw-bold"
+              style={{ cursor: "pointer", textDecoration: "underline" }}
+              onClick={() => navigate("/register")}
+            >
+              Register here
+            </span>
+          </p>
+        </div>
       </div>
 
-      {/* Optional sparkles */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-          animation: "moveBg 60s linear infinite",
-        }}
-      ></div>
-
-      <style>
-        {`
-          @keyframes moveBg {
-            0% { background-position: 0 0; }
-            100% { background-position: 1000px 1000px; }
-          }
-        `}
-      </style>
-
-      {/* Toast container */}
       <ToastContainer />
     </div>
   );
