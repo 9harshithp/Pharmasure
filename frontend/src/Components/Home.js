@@ -33,7 +33,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bio-ambient-mesh min-vh-100 text-white position-relative overflow-hidden">
+    <div className="bio-ambient-mesh min-vh-100 text-white position-relative overflow-hidden" style={{ color: "#f8fafc" }}>
       {/* Background Decorative Glowing Orbs */}
       <div
         className="position-absolute rounded-circle bio-glow-pulse"
@@ -78,27 +78,27 @@ const Home = () => {
               <FaShieldAlt className="text-info fs-5" />
             </div>
             <div>
-              <span className="fs-4 fw-bold tracking-tight bio-heading" style={{ letterSpacing: "-0.03em" }}>
+              <span className="fs-4 fw-bold tracking-tight bio-heading text-white" style={{ letterSpacing: "-0.03em" }}>
                 PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
               </span>
-              <span className="badge bg-purple ms-2 bio-pill-cyan" style={{ fontSize: "10px" }}>
+              <span className="badge ms-2 bio-pill-cyan" style={{ fontSize: "10px" }}>
                 DSCSA 2.0
               </span>
             </div>
           </div>
 
           {/* Desktop Nav Pills */}
-          <div className="d-none d-lg-flex align-items-center gap-4 text-muted small fw-semibold">
-            <a href="#features" className="text-decoration-none text-light opacity-75 hover-opacity-100 transition">
+          <div className="d-none d-lg-flex align-items-center gap-4 small fw-semibold" style={{ color: "#e2e8f0" }}>
+            <a href="#features" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
               Clinical Platform
             </a>
-            <a href="#floating-windows" className="text-decoration-none text-light opacity-75 hover-opacity-100 transition">
+            <a href="#floating-windows" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
               Live Architecture
             </a>
-            <a href="#quick-demo" className="text-decoration-none text-light opacity-75 hover-opacity-100 transition">
+            <a href="#quick-demo" className="text-decoration-none text-light opacity-85 hover-opacity-100 transition">
               Instant Roles
             </a>
-            <div className="d-flex align-items-center gap-1 font-monospace text-light opacity-75">
+            <div className="d-flex align-items-center gap-1 font-monospace text-light opacity-85">
               <span className="text-success">●</span> PoS #{liveBlock.toLocaleString()}
             </div>
           </div>
@@ -141,7 +141,17 @@ const Home = () => {
             Zero-Risk Predictive Expiry & Decentralized Drug Provenance
           </h1>
 
-          <p className="lead text-muted mb-4 fs-5" style={{ color: "#94a3b8", lineHeight: 1.6 }}>
+          {/* Hero Subtitle - High Contrast Pure Legibility */}
+          <p
+            className="lead mb-4 fs-5 mx-auto"
+            style={{
+              color: "#e2e8f0",
+              lineHeight: 1.65,
+              maxWidth: "800px",
+              fontWeight: 400,
+              textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+            }}
+          >
             Eliminating clinical expiry hazards before dispensing occurs. Powered by mathematical course-inversion risk modeling, Gemini Multimodal vision, and immutable Polygon PoS blockchain serialization.
           </p>
 
@@ -168,25 +178,33 @@ const Home = () => {
               <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-cyan)" }}>
                 0.00%
               </div>
-              <small className="text-muted">Expired Dispense Rate</small>
+              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+                Expired Dispense Rate
+              </div>
             </div>
             <div className="col-6 col-md-3">
               <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-violet)" }}>
                 64-Block
               </div>
-              <small className="text-muted">Polygon PoS Consensus</small>
+              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+                Polygon PoS Consensus
+              </div>
             </div>
             <div className="col-6 col-md-3">
               <div className="fs-3 fw-bold bio-heading" style={{ color: "#38bdf8" }}>
                 5 Regional
               </div>
-              <small className="text-muted">Languages & Voice Synthesis</small>
+              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+                Languages & Voice Synthesis
+              </div>
             </div>
             <div className="col-6 col-md-3">
               <div className="fs-3 fw-bold bio-heading" style={{ color: "var(--bio-emerald)" }}>
                 &lt; 1.2s
               </div>
-              <small className="text-muted">AI Prescription Parsing</small>
+              <div className="small fw-semibold mt-1" style={{ color: "#cbd5e1" }}>
+                AI Prescription Parsing
+              </div>
             </div>
           </div>
         </div>
@@ -195,8 +213,10 @@ const Home = () => {
         <section id="floating-windows" className="py-5">
           <div className="text-center mb-5">
             <span className="bio-pill bio-pill-cyan mb-2">INTERACTIVE CLINICAL WINDOWS</span>
-            <h2 className="fs-2 fw-bold bio-heading">Dynamic System Architecture</h2>
-            <p className="text-muted small">Real-time modular interfaces driving Zero-Risk patient safety.</p>
+            <h2 className="fs-2 fw-bold bio-heading text-white">Dynamic System Architecture</h2>
+            <p className="small mb-0" style={{ color: "#cbd5e1", fontSize: "14px" }}>
+              Real-time modular interfaces driving Zero-Risk patient safety.
+            </p>
           </div>
 
           <div className="row g-4 align-items-stretch">
@@ -210,7 +230,7 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                     predictive-risk-engine.sys
                   </span>
                   <span className="badge bio-pill-rose text-white" style={{ fontSize: "10px" }}>
@@ -221,7 +241,9 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="text-muted small text-uppercase font-mono">Monitored Drug Entity</span>
+                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                        Monitored Drug Entity
+                      </span>
                       <h5 className="fw-bold mb-0 text-white">Amoxicillin 500mg (Course: 30 Days)</h5>
                     </div>
                     <span className="badge bg-danger bg-opacity-20 text-danger border border-danger px-2 py-1">
@@ -231,15 +253,15 @@ const Home = () => {
 
                   {/* Mathematical Model Card */}
                   <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-3 font-mono small">
-                    <div className="d-flex justify-content-between text-muted mb-1">
+                    <div className="d-flex justify-content-between mb-1" style={{ color: "#e2e8f0" }}>
                       <span>Daily Dosing: 2 tabs/day</span>
                       <span>Stock: 60 tabs</span>
                     </div>
-                    <div className="d-flex justify-content-between text-muted mb-2">
+                    <div className="d-flex justify-content-between mb-2" style={{ color: "#e2e8f0" }}>
                       <span>Course Runout Date:</span>
                       <strong className="text-danger">2027-02-15</strong>
                     </div>
-                    <div className="d-flex justify-content-between text-muted border-top border-secondary border-opacity-25 pt-2">
+                    <div className="d-flex justify-content-between border-top border-secondary border-opacity-25 pt-2" style={{ color: "#e2e8f0" }}>
                       <span>Batch Expiration Date:</span>
                       <strong className="text-warning">2026-11-20</strong>
                     </div>
@@ -247,7 +269,7 @@ const Home = () => {
 
                   {/* Timeline Progress Graphic */}
                   <div className="mb-3">
-                    <div className="d-flex justify-content-between small text-muted mb-1 font-mono" style={{ fontSize: "11px" }}>
+                    <div className="d-flex justify-content-between small mb-1 font-mono" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                       <span>Start: Today</span>
                       <span className="text-warning">Batch Expires (Day 20)</span>
                       <span className="text-danger">Patient Course Finishes (Day 30)</span>
@@ -276,7 +298,7 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                     polygon-amoy-pos.ledger
                   </span>
                   <span className="badge bio-pill-cyan text-white" style={{ fontSize: "10px" }}>
@@ -287,7 +309,9 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="text-muted small text-uppercase font-mono">Consensus State</span>
+                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                        Consensus State
+                      </span>
                       <h5 className="fw-bold mb-0 text-white">Decentralized Batch Registry</h5>
                     </div>
                     <span className="badge bg-success bg-opacity-20 text-success border border-success px-2 py-1">
@@ -297,26 +321,26 @@ const Home = () => {
 
                   {/* On-Chain Receipt Preview */}
                   <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-3 font-mono small">
-                    <div className="text-muted mb-1" style={{ fontSize: "11px" }}>
+                    <div className="mb-1" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                       Transaction Hash (Keccak-256):
                     </div>
                     <code className="text-info d-block text-truncate mb-2" style={{ fontSize: "12px" }}>
                       0xe936c27a329f67a526f4cf42397e324150e14ec6207655168b99a1c46bb0a294
                     </code>
 
-                    <div className="row g-2 text-muted" style={{ fontSize: "12px" }}>
+                    <div className="row g-2" style={{ fontSize: "12px", color: "#cbd5e1" }}>
                       <div className="col-6">
                         <span>Smart Contract:</span>
-                        <div className="text-light">0x89e2F7...5C41</div>
+                        <div className="text-light fw-bold">0x89e2F7...5C41</div>
                       </div>
                       <div className="col-6">
                         <span>Genesis Seal:</span>
-                        <div className="text-success">Verified Tamper-Free</div>
+                        <div className="text-success fw-bold">Verified Tamper-Free</div>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-muted small mb-3">
+                  <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                     Every pharmaceutical lot is permanently inscribed at manufacture. Unauthorized date extensions or counterfeit batches immediately fail on-chain cryptographic comparison.
                   </p>
 
@@ -342,7 +366,7 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                     multimodal-vision-ocr.ai
                   </span>
                   <span className="badge bio-pill-violet text-white" style={{ fontSize: "10px" }}>
@@ -353,10 +377,12 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="text-muted small text-uppercase font-mono">Multimodal Deciphering</span>
+                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                        Multimodal Deciphering
+                      </span>
                       <h5 className="fw-bold mb-0 text-white">Handwritten Doctor Slip Parser</h5>
                     </div>
-                    <span className="badge bg-purple px-2 py-1" style={{ backgroundColor: "var(--bio-violet)" }}>
+                    <span className="badge px-2 py-1 text-white" style={{ backgroundColor: "var(--bio-violet)" }}>
                       Neural OCR
                     </span>
                   </div>
@@ -365,8 +391,8 @@ const Home = () => {
                   <div className="row g-2 mb-3">
                     <div className="col-6">
                       <div className="p-2 rounded-2 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
-                        <span className="text-muted font-mono" style={{ fontSize: "10px" }}>DOCTOR'S HANDWRITING:</span>
-                        <div className="fst-italic text-warning pt-2 font-serif" style={{ fontSize: "14px" }}>
+                        <span className="font-mono" style={{ fontSize: "10px", color: "#94a3b8" }}>DOCTOR'S HANDWRITING:</span>
+                        <div className="fst-italic text-warning pt-2" style={{ fontSize: "14px", fontFamily: "serif" }}>
                           "Tab Metformin 500mg 1-0-1 x 30d after food - Dr. Sharma"
                         </div>
                       </div>
@@ -383,7 +409,7 @@ const Home = () => {
                     </div>
                   </div>
 
-                  <p className="text-muted small mb-0">
+                  <p className="small mb-0" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                     Translates medical shorthand (<code className="text-info">OD</code>, <code className="text-info">BD</code>, <code className="text-info">1-0-1</code>, <code className="text-info">TDS</code>) directly into patient schedules with 1-tap bulk intake.
                   </p>
                 </div>
@@ -400,7 +426,7 @@ const Home = () => {
                     <span className="bio-window-dot bio-dot-yellow"></span>
                     <span className="bio-window-dot bio-dot-green"></span>
                   </div>
-                  <span className="font-mono text-muted small" style={{ fontSize: "11px" }}>
+                  <span className="font-mono small" style={{ fontSize: "11px", color: "#cbd5e1" }}>
                     whatsapp-adherence-hub.msg
                   </span>
                   <span className="badge bio-pill-emerald text-white" style={{ fontSize: "10px" }}>
@@ -411,7 +437,9 @@ const Home = () => {
                 <div className="p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                      <span className="text-muted small text-uppercase font-mono">Mobile Patient Gateway</span>
+                      <span className="small text-uppercase font-mono" style={{ color: "#94a3b8", fontSize: "11px" }}>
+                        Mobile Patient Gateway
+                      </span>
                       <h5 className="fw-bold mb-0 text-white">Instant WhatsApp / SMS Dispatch</h5>
                     </div>
                     <span className="badge bg-success bg-opacity-20 text-success border border-success px-2 py-1">
@@ -430,7 +458,7 @@ const Home = () => {
                     </div>
                   </div>
 
-                  <p className="text-muted small mb-0">
+                  <p className="small mb-0" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                     Bridges elderly patients and caretakers. Dispatches missed dose alerts, expiry hazards, and refill alerts directly to mobile devices without needing a computer.
                   </p>
                 </div>
@@ -444,8 +472,8 @@ const Home = () => {
           <div className="card bio-floating-window p-4 p-md-5 border-0">
             <div className="text-center mb-4">
               <span className="bio-pill bio-pill-violet mb-2">INSTANT ROLE ACCESS</span>
-              <h3 className="fw-bold bio-heading">Experience PharmaSure In Action</h3>
-              <p className="text-muted small mx-auto" style={{ maxWidth: "600px" }}>
+              <h3 className="fw-bold bio-heading text-white">Experience PharmaSure In Action</h3>
+              <p className="small mx-auto" style={{ maxWidth: "600px", color: "#cbd5e1" }}>
                 Select a role below to automatically authenticate and explore the specialized interfaces engineered for patients, caretakers, and pharmacists.
               </p>
             </div>
@@ -467,7 +495,7 @@ const Home = () => {
                       <span className="badge bio-pill-cyan">Patient Role</span>
                     </div>
                     <h5 className="fw-bold text-white mb-2">Patient Dashboard</h5>
-                    <p className="text-muted small mb-3">
+                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                       Track dosage schedules, adherence rings, zero-risk alerts, and 1-tap quick dose intake.
                     </p>
                   </div>
@@ -493,7 +521,7 @@ const Home = () => {
                       <span className="badge bio-pill-rose">Caretaker Role</span>
                     </div>
                     <h5 className="fw-bold text-white mb-2">Caretaker Terminal</h5>
-                    <p className="text-muted small mb-3">
+                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                       Monitor associated patients, review missed medication alerts, and dispatch WhatsApp alerts.
                     </p>
                   </div>
@@ -519,7 +547,7 @@ const Home = () => {
                       <span className="badge bio-pill-emerald">Pharmacist</span>
                     </div>
                     <h5 className="fw-bold text-white mb-2">Pharmacy Operations</h5>
-                    <p className="text-muted small mb-3">
+                    <p className="small mb-3" style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
                       FEFO batch inventory, GS1 QR codes, Smart Dispense Assistant, and B2B distributor returns.
                     </p>
                   </div>
@@ -534,10 +562,10 @@ const Home = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-top border-secondary border-opacity-25 py-4 text-center text-muted small position-relative" style={{ zIndex: 10 }}>
+      <footer className="border-top border-secondary border-opacity-25 py-4 text-center small position-relative" style={{ zIndex: 10, color: "#cbd5e1" }}>
         <div className="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
           <span>© 2026 PharmaSure • Zero-Risk Predictive Dispensing System</span>
-          <span className="font-mono" style={{ fontSize: "11px" }}>
+          <span className="font-mono text-light" style={{ fontSize: "11px" }}>
             EVM Contract: <code>0x89e2F7...5C41</code> (Polygon Amoy 80002)
           </span>
         </div>
