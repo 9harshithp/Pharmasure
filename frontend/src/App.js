@@ -19,7 +19,7 @@ import {
 } from './Components';
 import { LanguageProvider } from './context/LanguageContext';
 
-export const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+export const baseUrl = process.env.REACT_APP_API_BASE_URL || "https://pharmasure-predictive-expiry-alerts-for.onrender.com";
 
 function App() {
   return (
