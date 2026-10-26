@@ -29,7 +29,8 @@
     "recharts": "^3.2.1",
     "styled-components": "^6.1.19",
     "tesseract.js": "^6.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "purgecss": "^8.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.57.1"
+    "eslint": "^8.57.1",
+    "purgecss": "^8.0.0"
   }
 }
