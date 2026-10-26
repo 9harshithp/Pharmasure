@@ -120,11 +120,16 @@ const Login = () => {
       {/* Top Bar with Brand & Language */}
       <div className="position-absolute top-0 start-0 end-0 p-4 d-flex justify-content-between align-items-center" style={{ zIndex: 100 }}>
         <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
-          <img
-            src="/pharmasure-logo-full.png"
-            alt="PharmaSure"
-            style={{ height: "40px", objectFit: "contain" }}
-          />
+          <picture>
+            <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+            <img
+              src="/pharmasure-logo-full.png"
+              alt="PharmaSure"
+              width="100"
+              height="40"
+              style={{ height: "40px", width: "auto", objectFit: "contain" }}
+            />
+          </picture>
         </div>
         <LanguageSelector variant="light" />
       </div>
@@ -159,11 +164,16 @@ const Login = () => {
 
         <div className="p-4 p-md-5">
           <div className="text-center mb-4">
-            <img
-              src="/pharmasure-logo-full.png"
-              alt="PharmaSure"
-              style={{ height: "46px", objectFit: "contain", marginBottom: "1rem" }}
-            />
+            <picture>
+              <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+              <img
+                src="/pharmasure-logo-full.png"
+                alt="PharmaSure"
+                width="115"
+                height="46"
+                style={{ height: "46px", width: "auto", objectFit: "contain", marginBottom: "1rem" }}
+              />
+            </picture>
             <h4 className="fw-bold bio-heading mb-1" style={{ color: "#0F2942" }}>{t("login")}</h4>
             <p className="small mb-0" style={{ color: "#64748B" }}>Enter credentials or tap a 1-click role below</p>
           </div>

@@ -31,11 +31,17 @@ const Footer = () => {
                 className="bg-white rounded-3 px-2 py-1.5 d-inline-flex align-items-center"
                 style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.25)" }}
               >
-                <img
-                  src="/pharmasure-logo-full.png"
-                  alt="PharmaSure"
-                  style={{ height: "32px", width: "auto", objectFit: "contain" }}
-                />
+                <picture>
+                  <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+                  <img
+                    src="/pharmasure-logo-full.png"
+                    alt="PharmaSure"
+                    width="80"
+                    height="32"
+                    loading="lazy"
+                    style={{ height: "32px", width: "auto", objectFit: "contain" }}
+                  />
+                </picture>
               </div>
               <span className="badge bio-pill-cyan ms-1" style={{ fontSize: "10px" }}>
                 DSCSA 2.0

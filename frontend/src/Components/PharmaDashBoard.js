@@ -35,11 +35,16 @@ const PharmaDashboard = () => {
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <div className="navbar-brand mb-0 d-flex align-items-center" role="button" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
             <div className="bg-white rounded-2 px-2 py-1 d-inline-flex align-items-center shadow-sm">
-              <img
-                src="/pharmasure-logo-full.png"
-                alt="PharmaSure"
-                style={{ height: "26px", objectFit: "contain" }}
-              />
+              <picture>
+                <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+                <img
+                  src="/pharmasure-logo-full.png"
+                  alt="PharmaSure"
+                  width="65"
+                  height="26"
+                  style={{ height: "26px", width: "auto", objectFit: "contain" }}
+                />
+              </picture>
             </div>
           </div>
           <div className="d-flex align-items-center gap-2">
@@ -106,11 +111,16 @@ const PharmaDashboard = () => {
           role="button"
           onClick={() => navigate("/")}
         >
-          <img
-            src="/pharmasure-logo-full.png"
-            alt="PharmaSure Logo"
-            style={{ height: "38px", maxWidth: "100%", objectFit: "contain" }}
-          />
+          <picture>
+            <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+            <img
+              src="/pharmasure-logo-full.png"
+              alt="PharmaSure Logo"
+              width="95"
+              height="38"
+              style={{ height: "38px", maxWidth: "100%", width: "auto", objectFit: "contain" }}
+            />
+          </picture>
         </div>
         
         {/* Language Selector */}

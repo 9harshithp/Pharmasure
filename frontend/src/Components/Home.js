@@ -79,11 +79,17 @@ const Home = () => {
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
           <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
-            <img
-              src="/pharmasure-logo-full.png"
-              alt="PharmaSure: Predictive Expiry & Decentralized Provenance"
-              style={{ height: "44px", width: "auto", objectFit: "contain" }}
-            />
+            <picture>
+              <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+              <img
+                src="/pharmasure-logo-full.png"
+                alt="PharmaSure: Predictive Expiry & Decentralized Provenance"
+                width="110"
+                height="44"
+                fetchPriority="high"
+                style={{ height: "44px", width: "auto", objectFit: "contain" }}
+              />
+            </picture>
             <span className="badge bio-pill-cyan d-none d-sm-inline-block ms-1" style={{ fontSize: "10px" }}>
               DSCSA 2.0
             </span>
