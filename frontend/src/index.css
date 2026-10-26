@@ -258,7 +258,7 @@ small.text-muted {
 .bio-pill-cyan {
   background: rgba(6, 182, 212, 0.1);
   border-color: rgba(6, 182, 212, 0.3);
-  color: #0E7490;
+  color: #155E75;
 }
 
 .bio-pill-orange {
@@ -282,7 +282,7 @@ small.text-muted {
 .bio-pill-emerald {
   background: rgba(13, 148, 136, 0.1);
   border-color: rgba(13, 148, 136, 0.25);
-  color: #0F766E;
+  color: #115E59;
 }
 
 .bio-pill-rose {

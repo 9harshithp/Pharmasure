@@ -43,7 +43,15 @@ const Footer = () => {
                   />
                 </picture>
               </div>
-              <span className="badge bio-pill-cyan ms-1" style={{ fontSize: "10px" }}>
+              <span
+                className="badge ms-1"
+                style={{
+                  fontSize: "10px",
+                  background: "rgba(6, 182, 212, 0.2)",
+                  border: "1px solid rgba(6, 182, 212, 0.4)",
+                  color: "#67E8F9",
+                }}
+              >
                 DSCSA 2.0
               </span>
             </div>
@@ -72,9 +80,9 @@ const Footer = () => {
 
           {/* Column 2: Clinical Modules */}
           <div className="col-lg-2 col-md-6 col-6">
-            <h6 className="text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
+            <h3 className="h6 text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
               Clinical Modules
-            </h6>
+            </h3>
             <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
               <li>
                 <Link to="/#floating-windows" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
@@ -113,9 +121,9 @@ const Footer = () => {
 
           {/* Column 3: Fast Role Access */}
           <div className="col-lg-3 col-md-6 col-6">
-            <h6 className="text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
+            <h3 className="h6 text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
               Direct Portals
-            </h6>
+            </h3>
             <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
               <li>
                 <Link to="/login" className="text-decoration-none transition d-flex align-items-center gap-2" style={{ color: "#cbd5e1" }}>
@@ -151,9 +159,9 @@ const Footer = () => {
 
           {/* Column 4: Compliance & Contract Ledger */}
           <div className="col-lg-3 col-md-6">
-            <h6 className="text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
+            <h3 className="h6 text-white fw-bold text-uppercase font-mono mb-3" style={{ fontSize: "12px", letterSpacing: "0.08em" }}>
               Compliance & Ledger
-            </h6>
+            </h3>
             <div
               className="p-3 rounded-3 mb-3 font-mono"
               style={{

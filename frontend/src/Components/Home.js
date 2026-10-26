@@ -252,7 +252,14 @@ const Home = () => {
                       </span>
                       <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Amoxicillin 500mg (Course: 30 Days)</h3>
                     </div>
-                    <span className="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
+                    <span
+                      className="badge px-2 py-1"
+                      style={{
+                        backgroundColor: "#FEF2F2",
+                        color: "#991B1B",
+                        border: "1px solid #FECACA",
+                      }}
+                    >
                       ⚠️ Hazard Flagged
                     </span>
                   </div>
@@ -265,11 +272,11 @@ const Home = () => {
                     </div>
                     <div className="d-flex justify-content-between mb-2" style={{ color: "#0F2942" }}>
                       <span>Course Runout Date:</span>
-                      <strong className="text-danger">2027-02-15</strong>
+                      <strong style={{ color: "#991B1B" }}>2027-02-15</strong>
                     </div>
                     <div className="d-flex justify-content-between border-top pt-2" style={{ borderColor: "#E2E8F0", color: "#0F2942" }}>
                       <span>Batch Expiration Date:</span>
-                      <strong style={{ color: "#D97706" }}>2026-11-20</strong>
+                      <strong style={{ color: "#92400E" }}>2026-11-20</strong>
                     </div>
                   </div>
 
@@ -277,8 +284,8 @@ const Home = () => {
                   <div className="mb-3">
                     <div className="d-flex justify-content-between small mb-1 font-mono" style={{ fontSize: "11px", color: "#64748B" }}>
                       <span>Start: Today</span>
-                      <span style={{ color: "#D97706" }}>Batch Expires (Day 20)</span>
-                      <span className="text-danger">Patient Finishes (Day 30)</span>
+                      <span style={{ color: "#92400E" }}>Batch Expires (Day 20)</span>
+                      <span style={{ color: "#991B1B" }}>Patient Finishes (Day 30)</span>
                     </div>
                     <div className="progress" style={{ height: "8px", backgroundColor: "#E2E8F0" }}>
                       <div className="progress-bar bg-success" style={{ width: "45%" }}></div>
@@ -320,7 +327,14 @@ const Home = () => {
                       </span>
                       <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Decentralized Batch Registry</h3>
                     </div>
-                    <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
+                    <span
+                      className="badge px-2 py-1"
+                      style={{
+                        backgroundColor: "#F0FDF4",
+                        color: "#166534",
+                        border: "1px solid #BBF7D0",
+                      }}
+                    >
                       <FaCheckCircle className="me-1" /> Block #{liveBlock.toLocaleString()}
                     </span>
                   </div>
@@ -330,7 +344,7 @@ const Home = () => {
                     <div className="mb-1" style={{ fontSize: "11px", color: "#64748B" }}>
                       Transaction Hash (Keccak-256):
                     </div>
-                    <code className="d-block text-truncate mb-2" style={{ fontSize: "12px", color: "#0891B2" }}>
+                    <code className="d-block text-truncate mb-2" style={{ fontSize: "12px", color: "#155E75" }}>
                       0xe936c27a329f67a526f4cf42397e324150e14ec6207655168b99a1c46bb0a294
                     </code>
 
@@ -341,7 +355,7 @@ const Home = () => {
                       </div>
                       <div className="col-6">
                         <span>Genesis Seal:</span>
-                        <div className="text-success fw-bold">Verified Tamper-Free</div>
+                        <div className="fw-bold" style={{ color: "#166534" }}>Verified Tamper-Free</div>
                       </div>
                     </div>
                   </div>
@@ -388,7 +402,7 @@ const Home = () => {
                       </span>
                       <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Handwritten Doctor Slip Parser</h3>
                     </div>
-                    <span className="badge px-2 py-1" style={{ background: "rgba(217, 119, 6, 0.12)", color: "#B45309", border: "1px solid rgba(217, 119, 6, 0.25)" }}>
+                    <span className="badge px-2 py-1" style={{ background: "#FFFBEB", color: "#92400E", border: "1px solid #FDE68A" }}>
                       Neural OCR
                     </span>
                   </div>
@@ -416,7 +430,7 @@ const Home = () => {
                   </div>
 
                   <p className="small mb-0" style={{ color: "#64748B", lineHeight: 1.5 }}>
-                    Translates medical shorthand (<code className="text-primary">OD</code>, <code className="text-primary">BD</code>, <code className="text-primary">1-0-1</code>, <code className="text-primary">TDS</code>) directly into patient schedules with 1-tap bulk intake.
+                    Translates medical shorthand (<code style={{ color: "#1D4ED8" }}>OD</code>, <code style={{ color: "#1D4ED8" }}>BD</code>, <code style={{ color: "#1D4ED8" }}>1-0-1</code>, <code style={{ color: "#1D4ED8" }}>TDS</code>) directly into patient schedules with 1-tap bulk intake.
                   </p>
                 </div>
               </div>
@@ -448,7 +462,14 @@ const Home = () => {
                       </span>
                       <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Instant WhatsApp / SMS Dispatch</h3>
                     </div>
-                    <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
+                    <span
+                      className="badge px-2 py-1"
+                      style={{
+                        backgroundColor: "#F0FDF4",
+                        color: "#166534",
+                        border: "1px solid #BBF7D0",
+                      }}
+                    >
                       <FaWhatsapp className="me-1" /> Active
                     </span>
                   </div>
@@ -459,7 +480,7 @@ const Home = () => {
                       <span className="badge bg-success rounded-circle p-1"></span>
                       <strong className="small font-mono" style={{ color: "#075E54" }}>PharmaSure Clinical Bot</strong>
                     </div>
-                    <div className="p-2 rounded-2 font-mono small shadow-sm" style={{ backgroundColor: "#DCF8C6", fontSize: "12px", lineHeight: "1.4", color: "#128C7E" }}>
+                    <div className="p-2 rounded-2 font-mono small shadow-sm" style={{ backgroundColor: "#DCF8C6", fontSize: "12px", lineHeight: "1.4", color: "#064E3B" }}>
                       🚨 *CLINICAL ALERT*: Patient John has a pending *Morning* dose for *Atorvastatin 20mg*. Please take with water to maintain therapeutic levels.
                     </div>
                   </div>
