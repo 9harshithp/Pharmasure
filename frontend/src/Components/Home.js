@@ -250,7 +250,7 @@ const Home = () => {
                       <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Monitored Drug Entity
                       </span>
-                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Amoxicillin 500mg (Course: 30 Days)</h5>
+                      <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Amoxicillin 500mg (Course: 30 Days)</h3>
                     </div>
                     <span className="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
                       ⚠️ Hazard Flagged
@@ -318,7 +318,7 @@ const Home = () => {
                       <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Consensus State
                       </span>
-                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Decentralized Batch Registry</h5>
+                      <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Decentralized Batch Registry</h3>
                     </div>
                     <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
                       <FaCheckCircle className="me-1" /> Block #{liveBlock.toLocaleString()}
@@ -386,7 +386,7 @@ const Home = () => {
                       <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Multimodal Deciphering
                       </span>
-                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Handwritten Doctor Slip Parser</h5>
+                      <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Handwritten Doctor Slip Parser</h3>
                     </div>
                     <span className="badge px-2 py-1" style={{ background: "rgba(217, 119, 6, 0.12)", color: "#B45309", border: "1px solid rgba(217, 119, 6, 0.25)" }}>
                       Neural OCR
@@ -446,7 +446,7 @@ const Home = () => {
                       <span className="small text-uppercase font-mono" style={{ color: "#64748B", fontSize: "11px" }}>
                         Mobile Patient Gateway
                       </span>
-                      <h5 className="fw-bold mb-0" style={{ color: "#0F2942" }}>Instant WhatsApp / SMS Dispatch</h5>
+                      <h3 className="h5 fw-bold mb-0" style={{ color: "#0F2942" }}>Instant WhatsApp / SMS Dispatch</h3>
                     </div>
                     <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
                       <FaWhatsapp className="me-1" /> Active
@@ -494,7 +494,7 @@ const Home = () => {
             <div className="p-4 p-md-5">
               <div className="text-center mb-4">
                 <span className="bio-pill bio-pill-cyan mb-2">INSTANT ROLE ACCESS</span>
-                <h3 className="fw-bold bio-heading" style={{ color: "#0F2942" }}>Experience PharmaSure In Action</h3>
+                <h2 className="fs-2 fw-bold bio-heading" style={{ color: "#0F2942" }}>Experience PharmaSure In Action</h2>
                 <p className="small mx-auto" style={{ maxWidth: "600px", color: "#64748B" }}>
                   Select a role below to automatically authenticate and explore the specialized interfaces engineered for patients, caretakers, and pharmacists.
                 </p>
@@ -524,7 +524,7 @@ const Home = () => {
                         </span>
                         <span className="badge bio-pill-cyan">Patient Role</span>
                       </div>
-                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Patient Dashboard</h5>
+                      <h3 className="h5 fw-bold mb-2" style={{ color: "#0F2942" }}>Patient Dashboard</h3>
                       <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         Track dosage schedules, adherence rings, zero-risk alerts, and 1-tap quick dose intake.
                       </p>
@@ -559,7 +559,7 @@ const Home = () => {
                         </span>
                         <span className="badge bio-pill-orange">Caretaker Role</span>
                       </div>
-                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Caretaker Terminal</h5>
+                      <h3 className="h5 fw-bold mb-2" style={{ color: "#0F2942" }}>Caretaker Terminal</h3>
                       <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         Monitor associated patients, review missed medication alerts, and dispatch WhatsApp alerts.
                       </p>
@@ -594,7 +594,7 @@ const Home = () => {
                         </span>
                         <span className="badge bio-pill-emerald">Pharmacist</span>
                       </div>
-                      <h5 className="fw-bold mb-2" style={{ color: "#0F2942" }}>Pharmacy Operations</h5>
+                      <h3 className="h5 fw-bold mb-2" style={{ color: "#0F2942" }}>Pharmacy Operations</h3>
                       <p className="small mb-3" style={{ color: "#64748B", lineHeight: 1.5 }}>
                         FEFO batch inventory, GS1 QR codes, Smart Dispense Assistant, and B2B distributor returns.
                       </p>
