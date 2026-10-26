@@ -226,18 +226,39 @@ small.text-muted {
 
 .bio-animate-float-1 {
   animation: bioFloat1 7s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .bio-animate-float-2 {
   animation: bioFloat2 9s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .bio-animate-float-3 {
   animation: bioFloat3 6s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .bio-glow-pulse {
   animation: bioPulseGlow 3s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Optimize mobile rendering: stop CPU-heavy continuous floating for zero main-thread tasks & reflow */
+@media (max-width: 768px) {
+  .bio-animate-float-1,
+  .bio-animate-float-2,
+  .bio-animate-float-3 {
+    animation: none !important;
+    transform: none !important;
+  }
+  .bio-glow-pulse {
+    animation: none !important;
+  }
 }
 
 /* Glass Pill Badges */
