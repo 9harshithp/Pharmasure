@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { baseUrl } from "../App";
 import {
   FaPills,

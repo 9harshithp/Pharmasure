@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseUrl } from "../App";
 import bgImage from "../Assets/home123.jpg";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Register = () => {
   const navigate = useNavigate();
