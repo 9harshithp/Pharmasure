@@ -2,11 +2,12 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './responsive.css';
+import { ToastContainer } from 'react-bootstrap';
+import Home from './Components/Home';
+import Footer from './Components/Footer';
 import { LanguageProvider } from './context/LanguageContext';
 
 // Dynamic lazy-loaded routes for optimal initial bundle & mobile performance
-const Home = lazy(() => import('./Components/Home'));
-const Footer = lazy(() => import('./Components/Footer'));
 const Login = lazy(() => import('./Components/Login'));
 const Register = lazy(() => import('./Components/Register'));
 const UserDashBoard = lazy(() => import('./Components/UserDashBoard'));
@@ -34,6 +35,7 @@ function App() {
     <LanguageProvider>
       <div className="App d-flex flex-column min-vh-100">
         <BrowserRouter>
+          <ToastContainer />
           <div className="flex-grow-1">
             <Suspense fallback={<RouteLoader />}>
               <Routes>
@@ -56,9 +58,7 @@ function App() {
               </Routes>
             </Suspense>
           </div>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
+          <Footer />
         </BrowserRouter>
       </div>
     </LanguageProvider>
