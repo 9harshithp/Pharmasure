@@ -169,3 +169,19 @@ body {
   font-weight: 600 !important;
   border-bottom: 2px solid #06B6D4 !important;
 }
+
+/* --- Footer Responsive Strict Separation --- */
+@media (max-width: 991.98px) {
+  .desktop-footer-columns {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .mobile-footer-compact {
+    display: none !important;
+  }
+  .desktop-footer-columns {
+    display: block !important;
+  }
+}
