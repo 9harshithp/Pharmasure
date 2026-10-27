@@ -23,7 +23,7 @@ const Footer = () => {
       }}
     >
       {/* 📱 MOBILE COMPACT FOOTER (reduced height, clean essentials) */}
-      <div className="d-block d-md-none container py-3">
+      <div className="d-block d-lg-none container py-3" style={{ paddingBottom: "75px" }}>
         <div className="d-flex align-items-center justify-content-between mb-2">
           <div className="d-flex align-items-center gap-2">
             <div
@@ -90,7 +90,7 @@ const Footer = () => {
       </div>
 
       {/* 💻 DESKTOP FULL FOOTER */}
-      <div className="d-none d-md-block container py-5">
+      <div className="d-none d-lg-block container py-5">
         <div className="row g-4 justify-content-between">
           {/* Column 1: Brand & Mission */}
           <div className="col-lg-4 col-md-6">
