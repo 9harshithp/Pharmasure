@@ -13,6 +13,7 @@ export const LanguageProvider = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState(() => {
     return localStorage.getItem("pharmasure_lang") || "en";
   });
+  const [version, setVersion] = useState(0);
 
   const clearResidualGoogleTranslateCookies = () => {
     try {
@@ -29,7 +30,9 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem("pharmasure_lang", currentLanguage);
     document.documentElement.lang = currentLanguage;
     if (currentLanguage !== "en") {
-      loadLanguage(currentLanguage);
+      loadLanguage(currentLanguage).then(() => {
+        setVersion((v) => v + 1);
+      });
     }
   }, [currentLanguage]);
 
@@ -39,7 +42,10 @@ export const LanguageProvider = ({ children }) => {
       if (langCode !== "en") {
         await loadLanguage(langCode);
       }
+      localStorage.setItem("pharmasure_lang", langCode);
+      document.documentElement.lang = langCode;
       setCurrentLanguage(langCode);
+      setVersion((v) => v + 1);
     }
   };
 
@@ -74,7 +80,7 @@ export const LanguageProvider = ({ children }) => {
         supportedLanguages: SUPPORTED_LANGUAGES,
       }}
     >
-      <div key={currentLanguage} style={{ display: "contents" }}>
+      <div key={`${currentLanguage}-${version}`} style={{ display: "contents" }}>
         {children}
       </div>
     </LanguageContext.Provider>
