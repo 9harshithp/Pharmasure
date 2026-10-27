@@ -14,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [serverSpinning, setServerSpinning] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 150);
@@ -39,9 +40,16 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setServerSpinning(false);
+
+    // If backend takes > 2.5s to respond, it is waking up from Render free-tier sleep
+    const wakeTimer = setTimeout(() => {
+      setServerSpinning(true);
+    }, 2500);
 
     try {
       const response = await axios.post(`${baseUrl}/login`, { email, password });
+      clearTimeout(wakeTimer);
       console.log("Login success:", response.data);
 
       sessionStorage.setItem("role", response.data.role);
@@ -77,13 +85,16 @@ const Login = () => {
         }, 1800);
       }
     } catch (error) {
+      clearTimeout(wakeTimer);
       console.error("Login failed:", error);
       toast.error("Invalid credentials. Try our 1-click demo roles below!", {
         position: "top-center",
         autoClose: 3000,
       });
     } finally {
+      clearTimeout(wakeTimer);
       setLoading(false);
+      setServerSpinning(false);
     }
   };
 
@@ -225,7 +236,7 @@ const Login = () => {
               {loading ? (
                 <>
                   <div className="spinner-border spinner-border-sm text-light" role="status" />
-                  <span>Verifying Credentials...</span>
+                  <span>{serverSpinning ? "Waking Cloud Backend..." : "Verifying Credentials..."}</span>
                 </>
               ) : (
                 <>
@@ -234,6 +245,23 @@ const Login = () => {
                 </>
               )}
             </button>
+
+            {serverSpinning && (
+              <div
+                className="mt-3 p-2 rounded-3 text-center small font-mono"
+                style={{
+                  background: "#FFFBEB",
+                  border: "1px solid #FDE68A",
+                  color: "#92400E",
+                  fontSize: "12px",
+                  lineHeight: "1.4",
+                }}
+              >
+                ⏳ <strong>Waking Server:</strong> Render free-tier sleeps after 15 min of inactivity.
+                <br />
+                Cold start takes ~45–60s on the first request. Please wait...
+              </div>
+            )}
           </form>
 
           {/* 1-Click Fast Role Selection for Quick Evaluator Access */}

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './responsive.css';
@@ -30,6 +30,12 @@ const RouteLoader = () => (
 );
 
 function App() {
+  useEffect(() => {
+    // Silently pre-warm Render free-tier backend in background to prevent login delay
+    try {
+      fetch(`${baseUrl}/`, { mode: 'no-cors' }).catch(() => {});
+    } catch (e) {}
+  }, []);
   return (
     <LanguageProvider>
       <div className="App d-flex flex-column min-vh-100">
