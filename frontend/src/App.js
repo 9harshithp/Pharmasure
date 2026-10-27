@@ -31,9 +31,9 @@ const RouteLoader = () => (
 
 function App() {
   useEffect(() => {
-    // Silently pre-warm Render free-tier backend in background to prevent login delay
+    // Silently pre-warm Render free-tier backend in background using a valid endpoint
     try {
-      fetch(`${baseUrl}/`, { mode: 'no-cors' }).catch(() => {});
+      fetch(`${baseUrl}/inventory`).catch(() => {});
     } catch (e) {}
   }, []);
   return (
