@@ -112,7 +112,15 @@ const Home = () => {
           </div>
 
           {/* Right Actions */}
-          <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-2 gap-sm-3">
+            <button
+              className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 rounded-pill px-2.5 px-sm-3 py-1.5 fw-semibold"
+              style={{ fontSize: "12px", border: "1px solid #06B6D4", color: "#0F2942" }}
+              onClick={() => window.dispatchEvent(new CustomEvent("openPWAInstall"))}
+              title="Install PharmaSure as an app on your phone or desktop"
+            >
+              <span>📲 Install App</span>
+            </button>
             <LanguageSelector variant="light" />
             <button
               className="bio-btn-glow btn-sm"
