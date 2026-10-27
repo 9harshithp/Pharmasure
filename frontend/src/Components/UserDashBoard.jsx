@@ -328,7 +328,67 @@ const UserDashBoard = () => {
           <span className="badge bg-secondary font-mono">ID: #{pid}</span>
         </div>
 
-        <div className="d-flex flex-column gap-2">
+        {/* 🌟 Full Module Navigation Links */}
+        <div className="d-flex flex-column gap-1 mb-3">
+          <Link
+            to="/userDashBoard/manageMedication"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition"
+            style={{
+              backgroundColor: location.pathname.includes("manageMedication") ? "rgba(0, 245, 212, 0.15)" : "rgba(255,255,255,0.05)",
+              border: location.pathname.includes("manageMedication") ? "1px solid rgba(0, 245, 212, 0.3)" : "1px solid transparent",
+            }}
+          >
+            <FaPills className="me-2 text-primary" /> {t("manageMedication")}
+          </Link>
+          <Link
+            to="/userDashBoard/consumedChart"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition"
+            style={{
+              backgroundColor: location.pathname.includes("consumedChart") ? "rgba(0, 245, 212, 0.15)" : "rgba(255,255,255,0.05)",
+              border: location.pathname.includes("consumedChart") ? "1px solid rgba(0, 245, 212, 0.3)" : "1px solid transparent",
+            }}
+          >
+            <FaChartLine className="me-2 text-info" /> {t("consumedChart")}
+          </Link>
+          <Link
+            to="/userDashBoard/ConsumedCount"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition"
+            style={{
+              backgroundColor: location.pathname.includes("ConsumedCount") ? "rgba(0, 245, 212, 0.15)" : "rgba(255,255,255,0.05)",
+              border: location.pathname.includes("ConsumedCount") ? "1px solid rgba(0, 245, 212, 0.3)" : "1px solid transparent",
+            }}
+          >
+            <FaCheckCircle className="me-2 text-success" /> {t("consumedCount")}
+          </Link>
+          <Link
+            to="/userDashBoard/mentalSupport"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition"
+            style={{
+              backgroundColor: location.pathname.includes("mentalSupport") ? "rgba(0, 245, 212, 0.15)" : "rgba(255,255,255,0.05)",
+              border: location.pathname.includes("mentalSupport") ? "1px solid rgba(0, 245, 212, 0.3)" : "1px solid transparent",
+            }}
+          >
+            <FaBrain className="me-2 text-warning" /> {t("mentalSupport")}
+          </Link>
+          <Link
+            to="/userDashBoard/profile"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition"
+            style={{
+              backgroundColor: location.pathname.includes("profile") ? "rgba(0, 245, 212, 0.15)" : "rgba(255,255,255,0.05)",
+              border: location.pathname.includes("profile") ? "1px solid rgba(0, 245, 212, 0.3)" : "1px solid transparent",
+            }}
+          >
+            <FaUser className="me-2 text-light" /> {t("profile")}
+          </Link>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="d-flex flex-column gap-2 pt-2 border-top border-secondary border-opacity-25">
           <button
             className="btn btn-outline-info w-100 text-white text-start d-flex align-items-center gap-2 rounded-3 py-2"
             onClick={() => {
