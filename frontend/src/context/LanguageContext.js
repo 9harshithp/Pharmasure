@@ -4,6 +4,7 @@ import {
   getTranslation,
   translateDynamicText,
   getLanguageBCP47,
+  loadLanguage,
 } from "../utils/translationService";
 
 const LanguageContext = createContext();
@@ -27,11 +28,17 @@ export const LanguageProvider = ({ children }) => {
     clearResidualGoogleTranslateCookies();
     localStorage.setItem("pharmasure_lang", currentLanguage);
     document.documentElement.lang = currentLanguage;
+    if (currentLanguage !== "en") {
+      loadLanguage(currentLanguage);
+    }
   }, [currentLanguage]);
 
-  const changeLanguage = (langCode) => {
+  const changeLanguage = async (langCode) => {
     if (SUPPORTED_LANGUAGES.some((l) => l.code === langCode)) {
       clearResidualGoogleTranslateCookies();
+      if (langCode !== "en") {
+        await loadLanguage(langCode);
+      }
       setCurrentLanguage(langCode);
     }
   };

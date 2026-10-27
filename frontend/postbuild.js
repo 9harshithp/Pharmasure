@@ -19,16 +19,17 @@ async function runPostbuild() {
       const purged = await new PurgeCSS().purge({
         content: [
           path.join(buildDir, 'index.html'),
-          path.join(buildDir, 'static/js/*.js')
+          path.join(__dirname, 'src/**/*.{js,jsx,html}')
         ],
         css: cssFiles,
+        variables: true,
+        keyframes: true,
+        fontFace: true,
         safelist: {
           standard: [
-            /^btn/, /^modal/, /^fade/, /^show/, /^table/, /^alert/, /^spinner/,
-            /^badge/, /^nav/, /^dropdown/, /^collapse/, /^container/, /^row/, /^col/,
-            /^d-/, /^p-/, /^m-/, /^w-/, /^h-/, /^shadow/
+            'fade', 'show', 'collapsing', 'collapse'
           ],
-          greedy: [/^bio-/, /^font-/, /^text-/, /^bg-/, /^border/]
+          greedy: [/^bio-/]
         }
       });
       if (purged.length > 0) {
