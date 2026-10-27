@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp } from "react-icons/fa";
+import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp, FaShoppingCart, FaBell, FaHeartbeat } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { baseUrl } from "../App";
 import { performMedicationOCR } from "../utils/ocrScanner";
@@ -12,6 +12,7 @@ import LanguageSelector from "./LanguageSelector";
 import PrescriptionScannerModal from "./PrescriptionScannerModal";
 import BlockchainAuditModal from "./BlockchainAuditModal";
 import WhatsAppAlertModal from "./WhatsAppAlertModal";
+import DirectPharmacyModal from "./DirectPharmacyModal";
 
 const ManageMedication = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -42,6 +43,28 @@ const ManageMedication = () => {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [whatsAppType, setWhatsAppType] = useState("schedule");
   const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
+
+  const [showDirectPharmacyModal, setShowDirectPharmacyModal] = useState(false);
+  const [selectedPharmacyItem, setSelectedPharmacyItem] = useState(null);
+
+  const handleTestAlarm = () => {
+    const sampleMed = medications[0] || {
+      tableName: "Metformin 500mg (Daily Dose)",
+      doctor: "Dr. Sharma (Cardio-Diabetologist)",
+    };
+    window.dispatchEvent(
+      new CustomEvent("testMedicationAlarm", {
+        detail: {
+          tableName: sampleMed.tableName,
+          doctor: sampleMed.doctor,
+        },
+      })
+    );
+    toast.info("🚨 9:00 AM Alarm sounding! Look at the top of your screen to Turn Off or Mark as Taken.", {
+      autoClose: 3500,
+      position: "top-center",
+    });
+  };
 
   const [editingId, setEditingId] = useState(null);
   const patientId = sessionStorage.getItem("pid");
@@ -490,6 +513,42 @@ const handleScan = async () => {
         </form>
       </div>
 
+      {/* 🚀 CLINICAL ACTIONS & CHRONIC CARE HUB */}
+      <div className="p-3 mb-4 rounded-4 shadow-sm border bg-white d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div className="d-flex align-items-center gap-2">
+          <span className="badge bg-danger rounded-pill p-2"><FaBell /></span>
+          <div>
+            <div className="fw-bold small" style={{ color: "#0F2942" }}>Timed Medication Alarm & Direct Refills</div>
+            <div className="small font-mono text-muted" style={{ fontSize: "11px" }}>
+              Stipulated dose alarm (1-min chime) • Compare retail pharmacy prices
+            </div>
+          </div>
+        </div>
+
+        <div className="d-flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold"
+            onClick={handleTestAlarm}
+            title="Simulate 9:00 AM alarm with continuous audio chime"
+          >
+            <FaBell /> <span>🔔 Test 9:00 AM Alarm</span>
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-sm btn-success d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold text-white shadow-sm"
+            style={{ background: "linear-gradient(135deg, #0D9488 0%, #059669 100%)", border: "none" }}
+            onClick={() => {
+              setSelectedPharmacyItem(medications[0] || null);
+              setShowDirectPharmacyModal(true);
+            }}
+          >
+            <FaHeartbeat /> <span>🏥 ChronicCare 365 & Direct Store (Save ₹100+)</span>
+          </button>
+        </div>
+      </div>
+
       {/* Medication Table */}
       <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
         <div className="table-responsive">
@@ -504,6 +563,7 @@ const handleScan = async () => {
                 <th className="py-3 text-white">{t("projectedRunout")}</th>
                 <th className="py-3 text-white">{t("zeroRiskStatus")}</th>
                 <th className="py-3 text-white">{t("verifyBlockchain") || "Blockchain Audit"}</th>
+                <th className="py-3 text-white">Direct Pharmacy</th>
                 {role !== "patient" && <th className="py-3 text-white">{t("actions")}</th>}
               </tr>
             </thead>
@@ -604,6 +664,22 @@ const handleScan = async () => {
                         <span className="badge bg-success rounded-pill" style={{ fontSize: "8px" }}>PoS</span>
                       </button>
                     </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1"
+                        style={{ fontSize: "11px", borderRadius: "20px" }}
+                        onClick={() => {
+                          setSelectedPharmacyItem(med);
+                          setShowDirectPharmacyModal(true);
+                        }}
+                        title="Compare retail store prices and order direct"
+                      >
+                        <FaShoppingCart size={10} />
+                        <span className="fw-bold">Buy Direct</span>
+                        <span className="badge bg-danger rounded-pill" style={{ fontSize: "8px" }}>-8%</span>
+                      </button>
+                    </td>
                     {role !== "patient" && (
                       <td className="text-nowrap">
                         <button
@@ -627,7 +703,7 @@ const handleScan = async () => {
               })
             ) : (
               <tr>
-                <td colSpan={role === "patient" ? 8 : 9} className="text-center text-muted py-4">
+                <td colSpan={role === "patient" ? 9 : 10} className="text-center text-muted py-4">
                   No medications found.
                 </td>
               </tr>
@@ -798,6 +874,13 @@ const handleScan = async () => {
         initialType={whatsAppType}
         alertData={whatsAppAlertData}
         patientName={sessionStorage.getItem("name") || "Patient"}
+      />
+
+      {/* 🛍️ Direct Pharmacy Store & Chronic Care Modal */}
+      <DirectPharmacyModal
+        show={showDirectPharmacyModal}
+        onHide={() => setShowDirectPharmacyModal(false)}
+        medication={selectedPharmacyItem}
       />
     </div>
   );

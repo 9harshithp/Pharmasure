@@ -5,6 +5,7 @@ import './responsive.css';
 import Home from './Components/Home';
 import Footer from './Components/Footer';
 import PWAInstallPrompt from './Components/PWAInstallPrompt';
+import MedicationAlarmBanner from './Components/MedicationAlarmBanner';
 import { LanguageProvider } from './context/LanguageContext';
 
 // Dynamic lazy-loaded routes for optimal initial bundle & mobile performance
@@ -65,6 +66,7 @@ function App() {
           </div>
           <Footer />
           <PWAInstallPrompt />
+          <MedicationAlarmBanner />
         </BrowserRouter>
       </div>
     </LanguageProvider>
