@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, Link } from "react-router-dom";
+import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { baseUrl } from "../App";
 import {
   FaPills,
@@ -13,6 +13,8 @@ import {
   FaVolumeUp,
   FaStop,
   FaWhatsapp,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -28,6 +30,7 @@ import WhatsAppAlertModal from "./WhatsAppAlertModal";
 const UserDashBoard = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const [name, setName] = useState("");
   const [role, setRole] = useState("patient");
   const [alertStatus, setAlertStatus] = useState(false);
@@ -40,6 +43,7 @@ const UserDashBoard = () => {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [whatsAppType, setWhatsAppType] = useState("missed");
   const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleToggleVoiceAlert = async () => {
     let text = `Critical Zero-risk alert. You have ${zeroRiskAlerts.length} medications whose remaining supply extends past their batch expiry date. Please review your regimen.`;
@@ -265,71 +269,110 @@ const UserDashBoard = () => {
     <div className="d-flex flex-column flex-md-row" style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
   <ToastContainer position="top-center" autoClose={2000} />
 
-  {/* Mobile Navbar */}
-  <nav className="navbar navbar-dark bg-dark d-md-none">
-    <div className="container-fluid d-flex justify-content-between align-items-center">
-      <span className="navbar-brand fw-bold mb-0">💊 {t("appName")}</span>
+  {/* 📱 Mobile Top Navigation Bar */}
+  <header
+    className="d-md-none sticky-top py-2 px-3 text-white shadow-sm"
+    style={{
+      background: "linear-gradient(135deg, #09081e 0%, #0d0b27 100%)",
+      borderBottom: "1px solid rgba(0, 245, 212, 0.25)",
+      zIndex: 1030,
+    }}
+  >
+    <div className="d-flex justify-content-between align-items-center">
+      {/* Brand */}
+      <div
+        className="d-flex align-items-center gap-2"
+        role="button"
+        onClick={() => {
+          navigate("/userDashboard/manageMedication");
+          setIsMobileMenuOpen(false);
+        }}
+      >
+        <div
+          className="p-1 rounded-2 d-flex align-items-center justify-content-center"
+          style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.4)" }}
+        >
+          <span className="fs-6">💊</span>
+        </div>
+        <span className="fw-bold fs-6 text-white" style={{ letterSpacing: "-0.01em" }}>
+          PHARMA<span style={{ color: "var(--bio-cyan, #00f5d4)" }}>SURE</span>
+        </span>
+      </div>
+
+      {/* Right controls */}
       <div className="d-flex align-items-center gap-2">
         <LanguageSelector variant="dark" />
         <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mobileMenu"
+          className="btn btn-sm btn-outline-light d-flex align-items-center justify-content-center p-2 rounded-2"
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          aria-label="Toggle Navigation Menu"
+          style={{ borderColor: "rgba(255, 255, 255, 0.25)", minWidth: "36px", height: "36px" }}
         >
-          <span className="navbar-toggler-icon"></span>
+          {isMobileMenuOpen ? <FaTimes size={16} /> : <FaBars size={16} />}
         </button>
       </div>
     </div>
-    <div className="collapse" id="mobileMenu">
-      <ul className="navbar-nav text-start bg-dark p-3">
-        <li className="nav-item mb-2">
-          <Link to="/userDashBoard/manageMedication" className="nav-link text-white">
-            <FaPills className="me-2" /> {t("manageMedication")}
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/userDashBoard/consumedChart" className="nav-link text-white">
-            <FaChartLine className="me-2" /> {t("consumedChart")}
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/userDashBoard/ConsumedCount" className="nav-link text-white">
-            <FaCheckCircle className="me-2" /> {t("consumedCount")}
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/userDashBoard/mentalSupport" className="nav-link text-white">
-            <FaBrain className="me-2" /> {t("mentalSupport")}
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/userDashBoard/profile" className="nav-link text-white">
-            <FaUser className="me-2" /> {t("profile")}
-          </Link>
-        </li>
-        {role === "patient" && (
-          <li className="nav-item mt-3">
-            <button
-              className={`btn ${alertStatus ? "btn-secondary" : "btn-warning"} w-100 fw-bold d-flex align-items-center justify-content-center gap-2`}
-              disabled={alertStatus}
-              onClick={handleAlert}
-            >
-              <FaBell /> {alertStatus ? "Alert Sent" : "Send Alert"}
-            </button>
-          </li>
-        )}
-        <li className="nav-item mt-3">
+
+    {/* Slide-down Mobile Menu for Actions & Extras */}
+    {isMobileMenuOpen && (
+      <div
+        className="pt-3 pb-2 mt-2 border-top border-secondary border-opacity-25"
+        style={{ animation: "fadeIn 0.2s ease" }}
+      >
+        <div className="d-flex align-items-center justify-content-between mb-3 px-1 text-light small">
+          <span>👤 {name} ({role})</span>
+          <span className="badge bg-secondary font-mono">ID: #{pid}</span>
+        </div>
+
+        <div className="d-flex flex-column gap-2">
           <button
-            className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
-            onClick={handleLogout}
+            className="btn btn-outline-info w-100 text-white text-start d-flex align-items-center gap-2 rounded-3 py-2"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              handleGenerateDoctorReport();
+            }}
           >
-            <FaSignOutAlt /> {t("logout")}
+            <FaFilePdf /> <span>{t("downloadDoctorReport")}</span>
           </button>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
+          <button
+            className="btn btn-outline-success w-100 fw-bold d-flex align-items-center justify-content-start gap-2 rounded-3 py-2 text-start"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              setWhatsAppType("schedule");
+              setWhatsAppAlertData({ medications: [] });
+              setShowWhatsAppModal(true);
+            }}
+          >
+            <FaWhatsapp size={16} /> <span>{t("whatsAppAlerts") || "WhatsApp & SMS Alerts"}</span>
+          </button>
+
+          {role === "patient" && (
+            <button
+              className={`btn ${alertStatus ? "btn-secondary" : "btn-warning"} w-100 fw-bold d-flex align-items-center justify-content-start gap-2 rounded-3 py-2`}
+              disabled={alertStatus}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleAlert();
+              }}
+            >
+              <FaBell /> <span>{alertStatus ? t("alertSent") : t("sendAlert")}</span>
+            </button>
+          )}
+
+          <button
+            className="btn btn-danger w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 mt-2"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              handleLogout();
+            }}
+          >
+            <FaSignOutAlt /> <span>{t("logout")}</span>
+          </button>
+        </div>
+      </div>
+    )}
+  </header>
 
   {/* Sidebar (Desktop Only) */}
   <div
@@ -431,7 +474,14 @@ const UserDashBoard = () => {
   </div>
 
   {/* Main Content */}
-  <div className="flex-grow-1 p-3 p-md-4" style={{ backgroundColor: "#f8fafc", minHeight: "100vh" }}>
+  <div
+    className="flex-grow-1 p-3 p-md-4"
+    style={{
+      backgroundColor: "#f8fafc",
+      minHeight: "100vh",
+      paddingBottom: "85px",
+    }}
+  >
     {/* 🚨 Global Zero-Risk Expiry Conflict Banner */}
     {zeroRiskAlerts.length > 0 && (
       <div className="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 p-3 rounded-3">
@@ -477,6 +527,70 @@ const UserDashBoard = () => {
     )}
     <Outlet />
   </div>
+
+  {/* 📲 App-Style Mobile Bottom Navigation Bar */}
+  <nav
+    className="d-flex d-md-none justify-content-around align-items-center fixed-bottom px-1"
+    style={{
+      height: "64px",
+      background: "linear-gradient(180deg, rgba(13, 11, 39, 0.98) 0%, rgba(7, 7, 22, 0.99) 100%)",
+      backdropFilter: "blur(16px)",
+      borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+      boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.4)",
+      zIndex: 1040,
+    }}
+  >
+    {[
+      { path: "/userDashBoard/manageMedication", altPath: "/userDashBoard", label: t("manageMedication")?.split(" ")[0] || "Meds", icon: FaPills },
+      { path: "/userDashBoard/consumedChart", label: t("consumedChart")?.split(" ")[0] || "Chart", icon: FaChartLine },
+      { path: "/userDashBoard/ConsumedCount", label: t("consumedCount")?.split(" ")[0] || "Count", icon: FaCheckCircle },
+      { path: "/userDashBoard/mentalSupport", label: t("mentalSupport")?.split(" ")[0] || "Rings", icon: FaBrain },
+      { path: "/userDashBoard/profile", label: t("profile") || "Profile", icon: FaUser },
+    ].map((tab, idx) => {
+      const isActive =
+        location.pathname.toLowerCase() === tab.path.toLowerCase() ||
+        (tab.altPath && location.pathname.toLowerCase() === tab.altPath.toLowerCase());
+      const IconComp = tab.icon;
+      return (
+        <Link
+          key={idx}
+          to={tab.path}
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="text-decoration-none d-flex flex-column align-items-center justify-content-center py-1 px-2 flex-grow-1"
+          style={{
+            color: isActive ? "#00f5d4" : "#94a3b8",
+            transition: "all 0.2s ease",
+            position: "relative",
+          }}
+        >
+          {isActive && (
+            <span
+              style={{
+                position: "absolute",
+                top: "2px",
+                width: "22px",
+                height: "3px",
+                borderRadius: "2px",
+                background: "#00f5d4",
+                boxShadow: "0 0 8px #00f5d4",
+              }}
+            />
+          )}
+          <IconComp size={19} style={{ marginBottom: "2px", filter: isActive ? "drop-shadow(0 0 6px rgba(0,245,212,0.6))" : "none" }} />
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: isActive ? "700" : "500",
+              letterSpacing: "-0.01em",
+              lineHeight: 1.1,
+            }}
+          >
+            {tab.label}
+          </span>
+        </Link>
+      );
+    })}
+  </nav>
 
   {/* 🚀 1-Tap Quick-Dose Floating Action Button for Patients */}
   {role === "patient" && <QuickDoseFAB />}

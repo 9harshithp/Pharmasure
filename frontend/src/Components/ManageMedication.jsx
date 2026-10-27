@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp, FaShoppingCart, FaBell, FaHeartbeat } from "react-icons/fa";
+import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp, FaShoppingCart, FaBell, FaHeartbeat, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { baseUrl } from "../App";
 import { performMedicationOCR } from "../utils/ocrScanner";
@@ -46,6 +46,7 @@ const ManageMedication = () => {
 
   const [showDirectPharmacyModal, setShowDirectPharmacyModal] = useState(false);
   const [selectedPharmacyItem, setSelectedPharmacyItem] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const handleTestAlarm = () => {
     const sampleMed = medications[0] || {
@@ -129,7 +130,9 @@ const ManageMedication = () => {
       tabletQty: med.tabletQty,
       timing: med.timing.split(",").map((t) => t.trim()),
       doctor: med.doctor || "",
+      expiryDate: med.expiryDate || "",
     });
+    setShowAddForm(true);
   };
 
   const handleUpdate = async () => {
@@ -166,7 +169,9 @@ const ManageMedication = () => {
       tabletQty: "",
       timing: ["Morning"],
       doctor: "",
+      expiryDate: "",
     });
+    setShowAddForm(false);
   };
 
 // ✅ Medication OCR extraction using hybrid Tesseract.js / Gemini
@@ -194,6 +199,7 @@ const handleScan = async () => {
       tableName: data.name || prev.tableName,
       expiryDate: data.expiryDate || prev.expiryDate,
     }));
+    setShowAddForm(true);
 
     setScanSuccess(`Details extracted via ${data.engine}! Check the values below.`);
   } catch (err) {
@@ -370,147 +376,207 @@ const handleScan = async () => {
         </div>
       )}
 
-      {/* Add / Edit Form */}
-      <div className="card shadow-lg p-4 mb-5 border-0">
-        <h5 className="mb-3 fw-bold text-dark">{editingId ? `✏️ ${t("editMedication")}` : `➕ ${t("addNewMedication")}`}</h5>
-        <form onSubmit={handleSubmit} className="row g-3">
-          <div className="col-md-4">
-            <label className="form-label">{t("tabletName")}</label>
-            <input
-              type="text"
-              name="tableName"
-              className="form-control"
-              value={form.tableName}
-              onChange={handleInputChange}
-              required
-              disabled={role === "patient"}
-            />
+      {/* ➕ Collapsible Add / Edit Medication Form */}
+      <div className="card shadow-sm mb-4 border-0 rounded-3 overflow-hidden" style={{ transition: "all 0.3s ease" }}>
+        <div
+          className="card-header bg-white py-3 px-4 d-flex justify-content-between align-items-center cursor-pointer border-0"
+          style={{ cursor: "pointer", background: showAddForm ? "#f8fafc" : "#ffffff" }}
+          onClick={() => setShowAddForm((prev) => !prev)}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="d-flex align-items-center gap-3">
+            <div
+              className={`p-2 rounded-circle d-flex align-items-center justify-content-center ${
+                showAddForm ? "bg-primary text-white" : "bg-light text-primary"
+              }`}
+              style={{ width: "38px", height: "38px" }}
+            >
+              {editingId ? <FaEdit size={16} /> : <FaPlusCircle size={16} />}
+            </div>
+            <div>
+              <h5 className="mb-0 fw-bold text-dark">
+                {editingId ? `✏️ ${t("editMedication")}` : `➕ ${t("addNewMedication")}`}
+              </h5>
+              <small className="text-muted d-block">
+                {showAddForm
+                  ? "Form active — auto-filled on scan / edit or enter manually"
+                  : "Collapsed by default — auto-opens on medicine scan or edit (click to toggle)"}
+              </small>
+            </div>
           </div>
+          <button
+            type="button"
+            className={`btn btn-sm ${showAddForm ? "btn-outline-secondary" : "btn-primary"} d-flex align-items-center gap-2 rounded-pill px-3 shadow-sm`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAddForm((prev) => !prev);
+            }}
+          >
+            {showAddForm ? (
+              <>
+                <FaChevronUp size={12} /> <span>{t("collapse") || "Collapse Form"}</span>
+              </>
+            ) : (
+              <>
+                <FaChevronDown size={12} /> <span>{t("fillManually") || "➕ Add / Fill Manually"}</span>
+              </>
+            )}
+          </button>
+        </div>
 
-          <div className="col-md-4">
-            <label className="form-label">{t("expiryDate")}</label>
-            <input
-              type="date"
-              name="expiryDate"
-              className="form-control"
-              value={form.expiryDate}
-              onChange={handleInputChange}
-              required
-              disabled={role === "patient"}
-            />
-          </div>
-
-          <div className="col-md-4">
-            <label className="form-label">{t("tabletQuantity")}</label>
-            <input
-              type="number"
-              name="tabletQty"
-              className="form-control"
-              value={form.tabletQty}
-              onChange={handleInputChange}
-              required
-              disabled={role === "patient"}
-            />
-          </div>
-
-          <div className="col-md-4">
-            <label className="form-label">{t("doctor")}</label>
-            <input
-              type="text"
-              name="doctor"
-              className="form-control"
-              value={form.doctor}
-              onChange={handleInputChange}
-              required
-              disabled={role === "patient"}
-            />
-          </div>
-
-          <div className="col-12">
-            <label className="form-label d-block">{t("timing")}</label>
-            {["Morning", "Afternoon", "Evening"].map((time) => (
-              <div className="form-check form-check-inline" key={time}>
+        {showAddForm && (
+          <div className="card-body p-4 pt-2 border-top bg-light bg-opacity-50">
+            <form onSubmit={handleSubmit} className="row g-3">
+              <div className="col-md-4">
+                <label className="form-label">{t("tabletName")}</label>
                 <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value={time}
-                  checked={form.timing.includes(time)}
-                  onChange={handleTimingChange}
+                  type="text"
+                  name="tableName"
+                  className="form-control"
+                  value={form.tableName}
+                  onChange={handleInputChange}
+                  required
+                  disabled={role === "patient"}
+                  placeholder="e.g. Paracetamol 500mg"
+                />
+              </div>
+
+              <div className="col-md-4">
+                <label className="form-label">{t("expiryDate")}</label>
+                <input
+                  type="date"
+                  name="expiryDate"
+                  className="form-control"
+                  value={form.expiryDate}
+                  onChange={handleInputChange}
+                  required
                   disabled={role === "patient"}
                 />
-                <label className="form-check-label">{t(time.toLowerCase())}</label>
               </div>
-            ))}
-          </div>
 
-          {/* ⚡ Live Predictive Expiry & Zero-Risk Calculator Card */}
-          {form.tabletQty && form.expiryDate && (() => {
-            const live = calculateMedicationRisk({
-              tabletQty: form.tabletQty,
-              timing: form.timing,
-              expiryDate: form.expiryDate,
-            });
+              <div className="col-md-4">
+                <label className="form-label">{t("tabletQuantity")}</label>
+                <input
+                  type="number"
+                  name="tabletQty"
+                  className="form-control"
+                  value={form.tabletQty}
+                  onChange={handleInputChange}
+                  required
+                  disabled={role === "patient"}
+                  placeholder="e.g. 30"
+                />
+              </div>
 
-            return (
-              <div className={`col-12 p-3 rounded-3 border border-2 border-${live.badgeColor} bg-light mt-3`}>
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <span className="fw-bold text-dark">
-                    🛡️ {t("zeroRiskPredictiveAnalysis")}:
-                  </span>
-                  <span className={`badge bg-${live.badgeColor} px-3 py-2 text-uppercase`}>
-                    {live.badgeText}
-                  </span>
-                </div>
-                <div className="row g-2 small text-secondary">
-                  <div className="col-md-3">
-                    <strong>{t("dailyIntake")}:</strong> {live.dailyDoses} dose(s)/day
+              <div className="col-md-4">
+                <label className="form-label">{t("doctor")}</label>
+                <input
+                  type="text"
+                  name="doctor"
+                  className="form-control"
+                  value={form.doctor}
+                  onChange={handleInputChange}
+                  required
+                  disabled={role === "patient"}
+                  placeholder="e.g. Dr. Sharma"
+                />
+              </div>
+
+              <div className="col-12">
+                <label className="form-label d-block">{t("timing")}</label>
+                {["Morning", "Afternoon", "Evening"].map((time) => (
+                  <div className="form-check form-check-inline" key={time}>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={time}
+                      checked={form.timing.includes(time)}
+                      onChange={handleTimingChange}
+                      disabled={role === "patient"}
+                    />
+                    <label className="form-check-label">{t(time.toLowerCase())}</label>
                   </div>
-                  <div className="col-md-3">
-                    <strong>{t("courseDuration")}:</strong> {live.daysSupply} days
+                ))}
+              </div>
+
+              {/* ⚡ Live Predictive Expiry & Zero-Risk Calculator Card */}
+              {form.tabletQty && form.expiryDate && (() => {
+                const live = calculateMedicationRisk({
+                  tabletQty: form.tabletQty,
+                  timing: form.timing,
+                  expiryDate: form.expiryDate,
+                });
+
+                return (
+                  <div className={`col-12 p-3 rounded-3 border border-2 border-${live.badgeColor} bg-white shadow-sm mt-3`}>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <span className="fw-bold text-dark">
+                        🛡️ {t("zeroRiskPredictiveAnalysis")}:
+                      </span>
+                      <span className={`badge bg-${live.badgeColor} px-3 py-2 text-uppercase`}>
+                        {live.badgeText}
+                      </span>
+                    </div>
+                    <div className="row g-2 small text-secondary">
+                      <div className="col-md-3">
+                        <strong>{t("dailyIntake")}:</strong> {live.dailyDoses} dose(s)/day
+                      </div>
+                      <div className="col-md-3">
+                        <strong>{t("courseDuration")}:</strong> {live.daysSupply} days
+                      </div>
+                      <div className="col-md-3">
+                        <strong>{t("projectedRunout")}:</strong> <span className="text-dark fw-bold">{live.runoutDateStr}</span>
+                      </div>
+                      <div className="col-md-3">
+                        <strong>{t("safetyBuffer")}:</strong>{" "}
+                        <span className={live.bufferDays < 0 ? "text-danger fw-bold" : "text-success fw-bold"}>
+                          {live.bufferDays >= 0 ? `+${live.bufferDays} ${t("daysSafe")}` : `${live.bufferDays} ${t("daysOverrun")}`}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-2 text-dark small">
+                      {live.message}
+                    </div>
+                    {live.recommendation && (
+                      <div className="mt-1 small fw-semibold text-primary">
+                        💡 <strong>{t("action")}:</strong> {live.recommendation}
+                      </div>
+                    )}
                   </div>
-                  <div className="col-md-3">
-                    <strong>{t("projectedRunout")}:</strong> <span className="text-dark fw-bold">{live.runoutDateStr}</span>
-                  </div>
-                  <div className="col-md-3">
-                    <strong>{t("safetyBuffer")}:</strong>{" "}
-                    <span className={live.bufferDays < 0 ? "text-danger fw-bold" : "text-success fw-bold"}>
-                      {live.bufferDays >= 0 ? `+${live.bufferDays} ${t("daysSafe")}` : `${live.bufferDays} ${t("daysOverrun")}`}
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-2 text-dark small">
-                  {live.message}
-                </div>
-                {live.recommendation && (
-                  <div className="mt-1 small fw-semibold text-primary">
-                    💡 <strong>{t("action")}:</strong> {live.recommendation}
-                  </div>
+                );
+              })()}
+
+              <div className="col-12 text-center mt-3 d-flex justify-content-center gap-2">
+                {editingId ? (
+                  <button
+                    type="button"
+                    className="btn btn-success px-4"
+                    onClick={handleUpdate}
+                    disabled={role === "patient"}
+                  >
+                    <FaSave className="me-2" /> {t("updateMedication")}
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-primary px-4"
+                    disabled={role === "patient"}
+                  >
+                    <FaPlusCircle className="me-2" /> {t("addMedication")}
+                  </button>
                 )}
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary px-3"
+                  onClick={() => resetForm()}
+                >
+                  {t("cancel") || "Cancel / Collapse"}
+                </button>
               </div>
-            );
-          })()}
-
-          <div className="col-12 text-center mt-3">
-            {editingId ? (
-              <button
-                type="button"
-                className="btn btn-success px-4"
-                onClick={handleUpdate}
-                disabled={role === "patient"}
-              >
-                <FaSave className="me-2" /> {t("updateMedication")}
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="btn btn-primary px-4"
-                disabled={role === "patient"}
-              >
-                <FaPlusCircle className="me-2" /> {t("addMedication")}
-              </button>
-            )}
+            </form>
           </div>
-        </form>
+        )}
       </div>
 
       {/* 🚀 CLINICAL ACTIONS & CHRONIC CARE HUB */}

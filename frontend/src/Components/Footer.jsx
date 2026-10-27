@@ -22,7 +22,75 @@ const Footer = () => {
         color: "#CBD5E1",
       }}
     >
-      <div className="container py-5">
+      {/* 📱 MOBILE COMPACT FOOTER (reduced height, clean essentials) */}
+      <div className="d-block d-md-none container py-3">
+        <div className="d-flex align-items-center justify-content-between mb-2">
+          <div className="d-flex align-items-center gap-2">
+            <div
+              className="bg-white rounded-2 px-2 py-1 d-inline-flex align-items-center"
+              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}
+            >
+              <img
+                src="/pharmasure-logo-full.png"
+                alt="PharmaSure"
+                width="70"
+                height="24"
+                loading="lazy"
+                style={{ height: "24px", width: "auto", objectFit: "contain" }}
+              />
+            </div>
+            <span
+              className="badge"
+              style={{
+                fontSize: "9px",
+                background: "rgba(6, 182, 212, 0.2)",
+                border: "1px solid rgba(6, 182, 212, 0.4)",
+                color: "#67E8F9",
+              }}
+            >
+              DSCSA 2.0
+            </span>
+          </div>
+
+          <button
+            onClick={scrollToTop}
+            className="btn btn-sm text-white d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill"
+            style={{
+              background: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              fontSize: "11px",
+            }}
+          >
+            <span>Top</span>
+            <FaArrowUp size={9} />
+          </button>
+        </div>
+
+        <div className="d-flex flex-wrap gap-2 justify-content-start my-2">
+          <Link to="/userDashboard/manageMedication" className="badge text-decoration-none px-2 py-1.5" style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1" }}>
+            💊 Medications
+          </Link>
+          <Link to="/userDashboard/consumedChart" className="badge text-decoration-none px-2 py-1.5" style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1" }}>
+            📊 Adherence
+          </Link>
+          <Link to="/login" className="badge text-decoration-none px-2 py-1.5" style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1" }}>
+            🔐 Portal
+          </Link>
+          <span
+            className="badge px-2 py-1.5 font-mono d-inline-flex align-items-center gap-1"
+            style={{ background: "rgba(0, 242, 255, 0.12)", border: "1px solid rgba(0, 242, 255, 0.35)", color: "#00F2FF", fontSize: "10px" }}
+          >
+            Amoy #80002
+          </span>
+        </div>
+
+        <div className="pt-2 border-top border-secondary border-opacity-25 text-center text-muted" style={{ fontSize: "11px" }}>
+          <span>© 2026 PharmaSure • Zero-Risk Dispensing • HIPAA & DSCSA Compliant</span>
+        </div>
+      </div>
+
+      {/* 💻 DESKTOP FULL FOOTER */}
+      <div className="d-none d-md-block container py-5">
         <div className="row g-4 justify-content-between">
           {/* Column 1: Brand & Mission */}
           <div className="col-lg-4 col-md-6">
