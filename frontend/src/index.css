@@ -394,3 +394,16 @@ small.text-muted {
 ::-webkit-scrollbar-thumb:hover {
   background: #06B6D4;
 }
+
+/* Table Header High-Contrast Enforcement (guarantees dark navy header with crisp white text) */
+.table thead,
+.table thead tr,
+.table thead th,
+.medication-table thead,
+.medication-table thead tr,
+.medication-table thead th {
+  background-color: #0F2942 !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #06B6D4 !important;
+}

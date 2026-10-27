@@ -27,9 +27,9 @@ async function runPostbuild() {
         fontFace: true,
         safelist: {
           standard: [
-            'fade', 'show', 'collapsing', 'collapse'
+            'fade', 'show', 'collapsing', 'collapse', 'table', 'thead', 'th', 'tr'
           ],
-          greedy: [/^bio-/]
+          greedy: [/^bio-/, /^medication-/, /^dashboard-/]
         }
       });
       if (purged.length > 0) {
