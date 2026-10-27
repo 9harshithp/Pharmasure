@@ -266,12 +266,12 @@ const UserDashBoard = () => {
   };
 
   return (
-    <div className="d-flex flex-column flex-md-row" style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
+    <div className="d-flex flex-column flex-lg-row" style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
   <ToastContainer position="top-center" autoClose={2000} />
 
   {/* 📱 Mobile Top Navigation Bar */}
   <header
-    className="d-md-none sticky-top py-2 px-3 text-white shadow-sm"
+    className="d-lg-none dashboard-mobile-header sticky-top py-2 px-3 text-white shadow-sm"
     style={{
       background: "linear-gradient(135deg, #09081e 0%, #0d0b27 100%)",
       borderBottom: "1px solid rgba(0, 245, 212, 0.25)",
@@ -279,24 +279,28 @@ const UserDashBoard = () => {
     }}
   >
     <div className="d-flex justify-content-between align-items-center">
-      {/* Brand */}
+      {/* Brand - Official PharmaSure Logo */}
       <div
-        className="d-flex align-items-center gap-2"
+        className="d-flex align-items-center"
         role="button"
         onClick={() => {
           navigate("/userDashboard/manageMedication");
           setIsMobileMenuOpen(false);
         }}
+        style={{ cursor: "pointer" }}
       >
-        <div
-          className="p-1 rounded-2 d-flex align-items-center justify-content-center"
-          style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.4)" }}
-        >
-          <span className="fs-6">💊</span>
+        <div className="bg-white rounded-2 px-2 py-1 d-inline-flex align-items-center shadow-sm">
+          <picture>
+            <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+            <img
+              src="/pharmasure-logo-full.png"
+              alt="PharmaSure"
+              width="85"
+              height="28"
+              style={{ height: "26px", width: "auto", objectFit: "contain" }}
+            />
+          </picture>
         </div>
-        <span className="fw-bold fs-6 text-white" style={{ letterSpacing: "-0.01em" }}>
-          PHARMA<span style={{ color: "var(--bio-cyan, #00f5d4)" }}>SURE</span>
-        </span>
       </div>
 
       {/* Right controls */}
@@ -376,7 +380,7 @@ const UserDashBoard = () => {
 
   {/* Sidebar (Desktop Only) */}
   <div
-    className="d-none d-md-flex flex-column p-3 text-white"
+    className="d-none d-lg-flex dashboard-desktop-sidebar flex-column p-3 text-white"
     style={{
       width: "270px",
       minHeight: "100vh",
@@ -385,17 +389,25 @@ const UserDashBoard = () => {
       boxShadow: "4px 0 25px rgba(0, 0, 0, 0.3)",
     }}
   >
-    {/* Logo */}
-    <div className="d-flex align-items-center gap-2 justify-content-center mb-3 pt-2" role="button" onClick={() => navigate("/")}>
-      <div
-        className="p-2 rounded-3 d-flex align-items-center justify-content-center"
-        style={{ background: "rgba(0, 245, 212, 0.15)", border: "1px solid rgba(0, 245, 212, 0.3)" }}
-      >
-        <span className="fs-5">💊</span>
+    {/* Official PharmaSure Logo */}
+    <div
+      className="d-flex align-items-center justify-content-center mb-3 pt-2"
+      role="button"
+      onClick={() => navigate("/")}
+      style={{ cursor: "pointer" }}
+    >
+      <div className="bg-white rounded-3 px-3 py-1.5 d-inline-flex align-items-center shadow-sm">
+        <picture>
+          <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
+          <img
+            src="/pharmasure-logo-full.png"
+            alt="PharmaSure"
+            width="110"
+            height="40"
+            style={{ height: "34px", width: "auto", objectFit: "contain" }}
+          />
+        </picture>
       </div>
-      <h4 className="mb-0 fw-bold bio-heading text-white" style={{ letterSpacing: "-0.02em" }}>
-        PHARMA<span style={{ color: "var(--bio-cyan)" }}>SURE</span>
-      </h4>
     </div>
     
     {/* Global Language Selector */}
@@ -530,7 +542,7 @@ const UserDashBoard = () => {
 
   {/* 📲 App-Style Mobile Bottom Navigation Bar */}
   <nav
-    className="d-flex d-md-none justify-content-around align-items-center fixed-bottom px-1"
+    className="d-flex d-lg-none dashboard-mobile-bottom-nav justify-content-around align-items-center fixed-bottom px-1"
     style={{
       height: "64px",
       background: "linear-gradient(180deg, rgba(13, 11, 39, 0.98) 0%, rgba(7, 7, 22, 0.99) 100%)",

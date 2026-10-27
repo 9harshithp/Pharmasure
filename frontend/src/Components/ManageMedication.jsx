@@ -618,19 +618,19 @@ const handleScan = async () => {
       {/* Medication Table */}
       <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
         <div className="table-responsive">
-          <table className="table table-hover align-middle mb-0">
-            <thead style={{ background: "linear-gradient(135deg, #09081e 0%, #151336 100%)", color: "#ffffff" }}>
-              <tr>
-                <th className="py-3 px-3 text-white">{t("medicineName")}</th>
-                <th className="py-3 text-white">{t("quantity")}</th>
-                <th className="py-3 text-white">{t("doctor")}</th>
-                <th className="py-3 text-white">{t("timing")}</th>
-                <th className="py-3 text-white">{t("expiryDate")}</th>
-                <th className="py-3 text-white">{t("projectedRunout")}</th>
-                <th className="py-3 text-white">{t("zeroRiskStatus")}</th>
-                <th className="py-3 text-white">{t("verifyBlockchain") || "Blockchain Audit"}</th>
-                <th className="py-3 text-white">Direct Pharmacy</th>
-                {role !== "patient" && <th className="py-3 text-white">{t("actions")}</th>}
+          <table className="table table-hover align-middle mb-0 medication-table">
+            <thead style={{ backgroundColor: "#0F2942" }}>
+              <tr style={{ backgroundColor: "#0F2942" }}>
+                <th className="py-3 px-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("medicineName")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("quantity")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("doctor")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("timing")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("expiryDate")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("projectedRunout")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("zeroRiskStatus")}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("verifyBlockchain") || "Blockchain Audit"}</th>
+                <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>Direct Pharmacy</th>
+                {role !== "patient" && <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("actions")}</th>}
               </tr>
             </thead>
           <tbody>
