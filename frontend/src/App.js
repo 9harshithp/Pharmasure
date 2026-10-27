@@ -4,6 +4,7 @@ import './App.css';
 import './responsive.css';
 import Home from './Components/Home';
 import Footer from './Components/Footer';
+import PWAInstallPrompt from './Components/PWAInstallPrompt';
 import { LanguageProvider } from './context/LanguageContext';
 
 // Dynamic lazy-loaded routes for optimal initial bundle & mobile performance
@@ -63,6 +64,7 @@ function App() {
             </Suspense>
           </div>
           <Footer />
+          <PWAInstallPrompt />
         </BrowserRouter>
       </div>
     </LanguageProvider>
