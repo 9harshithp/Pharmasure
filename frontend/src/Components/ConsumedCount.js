@@ -3,6 +3,8 @@ import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { baseUrl } from "../App";
+import { toast } from "react-toastify";
+import { FaCheckCircle, FaPills } from "react-icons/fa";
 
 const ConsumedCount = () => {
   const [progressData, setProgressData] = useState([]);
@@ -22,7 +24,7 @@ const ConsumedCount = () => {
       ...prev,
       [medicationName]: today
     }));
-    alert(`${medicationName} marked as taken today!`);
+    toast.success(`✅ ${medicationName} marked as taken today!`, { autoClose: 2500 });
   };
 
   useEffect(() => {
@@ -189,8 +191,29 @@ const ConsumedCount = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h3 className="text-center mb-4">Medication Consumption Progress</h3>
+    <div className="container py-2">
+      {/* Page heading */}
+      <div className="mb-4 d-flex align-items-center gap-2">
+        <FaCheckCircle size={22} style={{ color: "#06B6D4" }} />
+        <h5
+          className="mb-0 fw-bold"
+          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0F2942" }}
+        >
+          Medication Adherence Rings
+        </h5>
+        <span
+          className="badge ms-1"
+          style={{
+            background: "rgba(6,182,212,0.12)",
+            border: "1px solid rgba(6,182,212,0.3)",
+            color: "#0891B2",
+            fontSize: "10px",
+            fontFamily: "'JetBrains Mono', monospace",
+          }}
+        >
+          PROGRESS TRACKER
+        </span>
+      </div>
 
       {progressData.length > 0 ? (
         <div className="d-flex flex-wrap justify-content-center gap-4">
@@ -225,23 +248,23 @@ const ConsumedCount = () => {
                   text={`${item.consumed}/${item.total}`}
                   styles={buildStyles({
                     textSize: "16px",
-                    pathColor:
-                      item.percentage >= 80
-                        ? "#28a745"
-                        : item.percentage >= 40
-                        ? "#ffc107"
-                        : "#dc3545",
-                    textColor: "#333",
-                    trailColor: "#f5f5f5",
+                    pathColor: item.percentage >= 80
+                      ? "#06B6D4"
+                      : item.percentage >= 40
+                      ? "#D97706"
+                      : "#E11D48",
+                    textColor: "#0F2942",
+                    trailColor: "#E2E8F0",
+                    pathTransitionDuration: 0.5,
                   })}
                 />
               </div>
               
               {/* Medication Info */}
-              <h5 className="mt-3 mb-1" style={{ color: '#2c3e50', fontSize: '1.1rem' }}>
+              <h5 className="mt-3 mb-1 fw-bold" style={{ color: "#0F2942", fontSize: "1rem", fontFamily: "'Space Grotesk', sans-serif" }}>
                 {item.name}
               </h5>
-              <p className="text-muted mb-2" style={{ fontSize: '0.9rem' }}>
+              <p className="text-muted mb-2" style={{ fontSize: "0.85rem" }}>
                 {item.timing}
               </p>
               {item.expiryMessage && (
@@ -254,27 +277,35 @@ const ConsumedCount = () => {
                 </p>
               )}
               <button
-                className="btn btn-sm btn-outline-primary mt-2"
+                className="btn btn-sm mt-2 fw-semibold"
                 onClick={() => handleTakeMedication(item.name)}
                 disabled={new Date().toDateString() === takenToday[item.name]}
                 style={{
-                  fontSize: '0.8rem',
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: '20px',
-                  transition: 'all 0.2s',
-                  opacity: new Date().toDateString() === takenToday[item.name] ? 0.6 : 1
+                  fontSize: "0.8rem",
+                  padding: "6px 16px",
+                  borderRadius: "20px",
+                  transition: "all 0.2s",
+                  background: new Date().toDateString() === takenToday[item.name]
+                    ? "rgba(6,182,212,0.15)"
+                    : "linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)",
+                  color: new Date().toDateString() === takenToday[item.name] ? "#0891B2" : "#ffffff",
+                  border: "none",
+                  boxShadow: new Date().toDateString() === takenToday[item.name] ? "none" : "0 2px 8px rgba(6,182,212,0.3)",
+                  opacity: new Date().toDateString() === takenToday[item.name] ? 0.7 : 1,
                 }}
               >
-                {new Date().toDateString() === takenToday[item.name] 
-                  ? 'Taken Today' 
-                  : 'Mark as Taken'}
+                {new Date().toDateString() === takenToday[item.name]
+                  ? "✓ Taken Today"
+                  : "Mark as Taken"}
               </button>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center p-4">
-          <p className="text-muted">No medication data available</p>
+        <div className="bio-floating-window text-center p-5">
+          <FaPills size={38} style={{ color: "#CBD5E1", marginBottom: "12px" }} />
+          <p className="fw-semibold mb-1" style={{ color: "#0F2942" }}>No medication data yet</p>
+          <p className="small mb-0" style={{ color: "#64748B" }}>Mark medications as taken to see your adherence rings.</p>
         </div>
       )}
     </div>

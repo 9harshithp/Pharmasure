@@ -5,7 +5,7 @@ import { baseUrl } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
-import { FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope } from "react-icons/fa";
+import { FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [serverSpinning, setServerSpinning] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 150);
@@ -212,20 +213,31 @@ const Login = () => {
               <label className="form-label small font-mono d-flex align-items-center gap-1" style={{ color: "#0F2942" }}>
                 <FaLock style={{ color: "#06B6D4" }} /> SECURITY KEY / PASSWORD:
               </label>
-              <input
-                type="password"
-                className="form-control font-mono py-2 px-3"
-                style={{
-                  backgroundColor: "#F8FAFC",
-                  border: "1px solid #CBD5E1",
-                  borderRadius: "10px",
-                  color: "#0F2942",
-                }}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-              />
+              <div className="position-relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control font-mono py-2 px-3 pe-5"
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    border: "1px solid #CBD5E1",
+                    borderRadius: "10px",
+                    color: "#0F2942",
+                  }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((p) => !p)}
+                  className="btn btn-sm position-absolute top-50 end-0 translate-middle-y me-2 p-1"
+                  style={{ color: "#64748B", background: "none", border: "none" }}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash size={15} /> : <FaEye size={15} />}
+                </button>
+              </div>
             </div>
 
             <button

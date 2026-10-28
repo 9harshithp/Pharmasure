@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../App";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./MentalSupport.css";
+import { toast } from "react-toastify";
+import { FaBrain, FaExternalLinkAlt, FaCog, FaPaperPlane, FaTrashAlt } from "react-icons/fa";
+import { GoogleGenAI } from "@google/genai";
+import { getStoredGeminiKey } from "../utils/ocrScanner";
+import { generateWellnessResponse } from "../utils/wellnessEngine";
+import AISettingsModal from "./AISettingsModal";
 
 const MentalSupport = () => {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showConfigModal, setShowConfigModal] = useState(false);
+  const [activeEngine, setActiveEngine] = useState("Offline Clinical");
   const patientId = sessionStorage.getItem("pid");
 
   useEffect(() => {
+    const key = getStoredGeminiKey();
+    setActiveEngine(key ? "Gemini Cloud AI" : "Offline Clinical");
+
     setResources([
       {
         type: "video",
@@ -32,31 +40,90 @@ const MentalSupport = () => {
     ]);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+  const sendQuery = async (queryText) => {
+    const userQuery = (queryText || prompt).trim();
+    if (!userQuery) return;
 
-    const userMessage = { role: "user", text: prompt };
+    const userMessage = { role: "user", text: userQuery };
     setMessages((prev) => [...prev, userMessage]);
     setPrompt("");
     setLoading(true);
 
-    try {
-      const res = await axios.post(`${baseUrl}/api/gemini/medication/ask`, {
-        prompt,
-        pid: patientId,
-      });
-      const aiMessage = {
-        role: "ai",
-        text: res.data.aiResponse || "No response from AI.",
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to get AI response!");
-    } finally {
-      setLoading(false);
+    const geminiKey = getStoredGeminiKey();
+    let replyText = "";
+
+    // Tier 1: Try Direct Gemini API (if key is configured in browser/localStorage)
+    if (geminiKey) {
+      try {
+        const genAI = new GoogleGenAI({ apiKey: geminiKey });
+        const candidateModels = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-3.5-flash"];
+
+        for (const model of candidateModels) {
+          try {
+            const res = await genAI.models.generateContent({
+              model: model,
+              contents: userQuery,
+              config: {
+                systemInstruction:
+                  "You are the empathetic, warm, and highly knowledgeable Mental Support & Health Assistant for PharmaSure. " +
+                  "Provide compassionate psychological support, stress relief methods, sleep hygiene, and safe medication adherence tips. " +
+                  "Use clear, well-structured markdown with bullet points and friendly encouraging tone. Never recommend altering prescription dosages without consulting a physician.",
+              },
+            });
+            if (res?.text) {
+              replyText = res.text;
+              break;
+            }
+          } catch (mErr) {
+            console.warn(`Direct Gemini ${model} failed:`, mErr.message || mErr);
+          }
+        }
+      } catch (geminiErr) {
+        console.warn("Direct Gemini invocation failed, trying backend:", geminiErr);
+      }
     }
+
+    // Tier 2: Try Backend API if Direct Gemini didn't answer
+    if (!replyText) {
+      try {
+        const res = await axios.post(
+          `${baseUrl}/api/gemini/medication/ask`,
+          {
+            prompt: userQuery,
+            pid: patientId || "1",
+          },
+          { timeout: 7000 }
+        );
+
+        if (res?.data?.aiResponse && !res.data.aiResponse.includes("Error fetching AI response")) {
+          replyText = res.data.aiResponse;
+        }
+      } catch (backendErr) {
+        console.warn("Backend /api/gemini/medication/ask unavailable or 500, falling back to local engine:", backendErr);
+      }
+    }
+
+    // Tier 3: Seamless Built-in Clinical Mental Support & Wellness Engine (NEVER FAILS)
+    if (!replyText) {
+      replyText = generateWellnessResponse(userQuery);
+    }
+
+    const aiMessage = {
+      role: "ai",
+      text: replyText,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
+    setLoading(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendQuery();
+  };
+
+  const handleChipClick = (suggestion) => {
+    sendQuery(suggestion);
   };
 
   const clearChat = () => {
@@ -64,101 +131,390 @@ const MentalSupport = () => {
     toast.info("Chat cleared!");
   };
 
+  // Basic formatting helper for markdown bolding, headers, and bullet points
   const formatMessageText = (text) => {
+    if (!text) return null;
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.split(urlRegex).map((part, i) =>
-      part.match(urlRegex) ? (
-        <a
-          key={i}
-          href={part}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="chat-link"
+
+    const lines = text.split("\n");
+    return lines.map((line, lineIdx) => {
+      let trimmed = line.trim();
+
+      // Headers (### or ####)
+      if (trimmed.startsWith("### ")) {
+        return (
+          <h6 key={lineIdx} className="fw-bold mt-2 mb-1" style={{ color: "#0F2942" }}>
+            {trimmed.replace(/^###\s+/, "")}
+          </h6>
+        );
+      }
+      if (trimmed.startsWith("#### ")) {
+        return (
+          <div key={lineIdx} className="fw-semibold mt-2 mb-1" style={{ color: "#0891B2", fontSize: "13px" }}>
+            {trimmed.replace(/^####\s+/, "")}
+          </div>
+        );
+      }
+
+      // Bullet points
+      const isBullet = trimmed.startsWith("* ") || trimmed.startsWith("- ") || /^\d+\.\s+/.test(trimmed);
+      let content = isBullet ? trimmed.replace(/^(\*|-|\d+\.)\s+/, "") : line;
+
+      // Inline link replacement
+      const parts = content.split(urlRegex).map((part, i) =>
+        part.match(urlRegex) ? (
+          <a
+            key={i}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#06B6D4", textDecoration: "underline" }}
+          >
+            {part}
+          </a>
+        ) : (
+          part
+        )
+      );
+
+      return (
+        <div
+          key={lineIdx}
+          className={`${isBullet ? "ps-3 mb-1 position-relative" : "mb-1"}`}
+          style={{ lineHeight: "1.5" }}
         >
-          {part}
-        </a>
-      ) : (
-        part
-      )
-    );
+          {isBullet && (
+            <span
+              style={{
+                position: "absolute",
+                left: "4px",
+                top: "2px",
+                color: "#06B6D4",
+                fontWeight: "bold",
+              }}
+            >
+              •
+            </span>
+          )}
+          {parts}
+        </div>
+      );
+    });
   };
 
-  return (
-    <div className="container mt-4 mental-support-container">
-      <ToastContainer position="top-center" autoClose={2000} />
-      <h3 className="text-center mb-4">🧠 Mental Support Chat</h3>
+  const promptSuggestions = [
+    { label: "🧘 Panic / Anxiety Relief", text: "I feel very anxious right now, can you guide me through calming down?" },
+    { label: "💊 Missed a Medication?", text: "What should I do if I forgot to take my morning medicine?" },
+    { label: "😴 Insomnia & Sleep Help", text: "I cannot fall asleep tonight. What can I do to sleep better?" },
+    { label: "🌬️ 4-7-8 Breathing Guide", text: "Can you teach me the 4-7-8 breathing method for quick relaxation?" },
+    { label: "📞 Crisis Helpline Contacts", text: "Can you provide emergency mental health helpline phone numbers?" },
+  ];
 
-      {/* Chat Box */}
-      <div className="chat-box card shadow-sm mb-4">
-        <div className="chat-header d-flex justify-content-between align-items-center px-3 pt-3">
-          <h6 className="text-secondary mb-0">Conversation</h6>
-          <button
-            className="btn btn-outline-danger btn-sm mb-2 clear-btn"
-            onClick={clearChat}
-          >
-            Clear Chat
-          </button>
+  return (
+    <div className="container py-2">
+      {/* Page heading */}
+      <div className="mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2">
+          <FaBrain size={24} style={{ color: "#06B6D4" }} />
+          <div>
+            <h5
+              className="mb-0 fw-bold"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0F2942" }}
+            >
+              Mental Support & Wellness
+            </h5>
+            <div className="text-muted" style={{ fontSize: "12px" }}>
+              Empathetic AI support for anxiety, sleep, stress & medication safety
+            </div>
+          </div>
         </div>
 
-        <div className="chat-messages p-3">
+        {/* Engine status & AI Settings Button */}
+        <div className="d-flex align-items-center gap-2">
+          <span
+            className="badge d-flex align-items-center gap-1"
+            style={{
+              background: activeEngine.includes("Gemini") ? "rgba(34,197,94,0.12)" : "rgba(6,182,212,0.12)",
+              border: `1px solid ${activeEngine.includes("Gemini") ? "rgba(34,197,94,0.3)" : "rgba(6,182,212,0.3)"}`,
+              color: activeEngine.includes("Gemini") ? "#15803D" : "#0891B2",
+              fontSize: "11px",
+              padding: "6px 10px",
+              borderRadius: "20px",
+            }}
+          >
+            <span
+              className="rounded-circle"
+              style={{
+                width: "7px",
+                height: "7px",
+                background: activeEngine.includes("Gemini") ? "#22C55E" : "#06B6D4",
+                display: "inline-block",
+              }}
+            />
+            {activeEngine.includes("Gemini") ? "Gemini Live AI" : "Clinical Offline AI"}
+          </span>
+
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "8px", fontSize: "12px", fontWeight: 600 }}
+            onClick={() => setShowConfigModal(true)}
+            title="Configure Gemini API Key"
+          >
+            <FaCog size={13} style={{ color: "#06B6D4" }} />
+            <span>AI Settings</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Chat Box */}
+      <div className="pharma-chat-box mb-4 shadow-sm" style={{ minHeight: "440px" }}>
+        {/* Header */}
+        <div className="pharma-chat-header d-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-center gap-2">
+            <span
+              className="rounded-circle"
+              style={{
+                width: "10px",
+                height: "10px",
+                background: "#22C55E",
+                display: "inline-block",
+                boxShadow: "0 0 6px rgba(34,197,94,0.5)",
+              }}
+            />
+            <span
+              className="fw-semibold"
+              style={{
+                color: "#0F2942",
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "14px",
+              }}
+            >
+              PharmaSure Wellness Assistant
+            </span>
+          </div>
+
+          <div className="d-flex align-items-center gap-2">
+            {messages.length > 0 && (
+              <button
+                className="btn btn-sm d-flex align-items-center gap-1"
+                style={{
+                  background: "rgba(225,29,72,0.08)",
+                  border: "1px solid rgba(225,29,72,0.2)",
+                  color: "#E11D48",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                }}
+                onClick={clearChat}
+              >
+                <FaTrashAlt size={10} />
+                <span>Clear Chat</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Messages */}
+        <div className="pharma-chat-messages" style={{ minHeight: "280px", maxHeight: "420px" }}>
           {messages.length === 0 && (
-            <p className="text-muted text-center mt-3 small">
-              Start a conversation with your AI support assistant 💬
-            </p>
+            <div className="text-center my-auto py-4 px-3">
+              <FaBrain size={36} style={{ color: "#94A3B8", marginBottom: "12px" }} />
+              <h6 className="fw-bold mb-1" style={{ color: "#1E293B" }}>
+                How can we support you today?
+              </h6>
+              <p className="small mb-3" style={{ color: "#64748B", maxWidth: "460px", margin: "0 auto" }}>
+                Ask anything about anxiety, stress relief, insomnia, mindfulness, or what to do if you missed a pill.
+              </p>
+
+              {/* Quick suggestions */}
+              <div className="d-flex flex-wrap justify-content-center gap-2 mt-2">
+                {promptSuggestions.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className="btn btn-sm text-start"
+                    style={{
+                      background: "#FFFFFF",
+                      border: "1px solid #CBD5E1",
+                      borderRadius: "16px",
+                      fontSize: "12px",
+                      color: "#0F2942",
+                      fontWeight: 500,
+                      transition: "all 0.15s ease",
+                    }}
+                    onClick={() => handleChipClick(item.text)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#06B6D4";
+                      e.currentTarget.style.backgroundColor = "rgba(6, 182, 212, 0.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#CBD5E1";
+                      e.currentTarget.style.backgroundColor = "#FFFFFF";
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
+
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}
+              className={
+                msg.role === "user"
+                  ? "pharma-chat-bubble-user"
+                  : "pharma-chat-bubble-ai"
+              }
+              style={{
+                maxWidth: msg.role === "user" ? "80%" : "90%",
+                fontSize: "14px",
+              }}
             >
-              <div className="bubble-text">{formatMessageText(msg.text)}</div>
+              {formatMessageText(msg.text)}
             </div>
           ))}
-          {loading && <div className="typing-indicator">AI is typing...</div>}
+
+          {loading && (
+            <div className="pharma-chat-bubble-ai d-flex align-items-center gap-2 py-3 px-3">
+              <span className="small text-muted me-1">Assistant is typing</span>
+              <span className="pharma-typing-dot" />
+              <span className="pharma-typing-dot" />
+              <span className="pharma-typing-dot" />
+            </div>
+          )}
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="chat-input border-top">
-          <div className="input-group">
+        <form onSubmit={handleSubmit} className="pharma-chat-input-bar">
+          <div className="d-flex gap-2">
             <input
               type="text"
-              className="form-control chat-text-input"
-              placeholder="Ask something about your medication or mental health..."
+              className="form-control"
+              style={{
+                backgroundColor: "#F8FAFC",
+                border: "1px solid #CBD5E1",
+                borderRadius: "10px",
+                color: "#0F2942",
+                fontSize: "14px",
+              }}
+              placeholder="Ask about stress, anxiety, sleep, or medication…"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
+              disabled={loading}
               required
             />
             <button
-              className="btn btn-primary send-btn"
+              className="bio-btn-glow px-4 d-flex align-items-center gap-2"
               type="submit"
-              disabled={loading}
+              disabled={loading || !prompt.trim()}
+              style={{ whiteSpace: "nowrap", minWidth: "90px" }}
             >
-              {loading ? "..." : "Send"}
+              {loading ? (
+                <>
+                  <div className="spinner-border spinner-border-sm" role="status" />
+                  <span>Thinking</span>
+                </>
+              ) : (
+                <>
+                  <span>Send</span>
+                  <FaPaperPlane size={11} />
+                </>
+              )}
             </button>
           </div>
         </form>
       </div>
 
-      {/* Recommended Resources */}
-      <div className="card shadow-sm p-3 resource-section">
-        <h5 className="mb-3 text-center">🎧 Recommended Videos & Podcasts</h5>
-        <div className="list-group">
+      {/* Quick Prompt Pill Carousel Bar */}
+      {messages.length > 0 && (
+        <div className="d-flex flex-wrap gap-2 mb-4 align-items-center">
+          <span className="small text-muted fw-semibold" style={{ fontSize: "12px" }}>
+            Suggested:
+          </span>
+          {promptSuggestions.map((item, idx) => (
+            <button
+              key={idx}
+              type="button"
+              className="btn btn-sm"
+              style={{
+                background: "#FFFFFF",
+                border: "1px solid #E2E8F0",
+                borderRadius: "14px",
+                fontSize: "11px",
+                color: "#334155",
+                fontWeight: 500,
+              }}
+              onClick={() => handleChipClick(item.text)}
+              disabled={loading}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Recommended Audio & Video Resources */}
+      <div className="bio-floating-window p-4 shadow-sm">
+        <h6
+          className="fw-bold mb-3 d-flex align-items-center gap-2"
+          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0F2942" }}
+        >
+          🎧 Recommended Videos & Podcasts
+        </h6>
+        <div className="d-flex flex-column gap-2">
           {resources.map((res, idx) => (
             <a
               key={idx}
               href={res.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap"
+              className="text-decoration-none d-flex justify-content-between align-items-center p-3 rounded-3"
+              style={{
+                background: "#F8FAFC",
+                border: "1px solid #E2E8F0",
+                color: "#0F2942",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#06B6D4";
+                e.currentTarget.style.background = "rgba(6,182,212,0.04)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E2E8F0";
+                e.currentTarget.style.background = "#F8FAFC";
+              }}
             >
-              <span className="resource-title">{res.title}</span>
-              <span className="badge bg-primary rounded-pill resource-icon">
-                {res.type === "video" ? "🎥" : "🎧"}
-              </span>
+              <span style={{ fontSize: "14px", fontWeight: 500 }}>{res.title}</span>
+              <div className="d-flex align-items-center gap-2">
+                <span
+                  className="badge"
+                  style={{
+                    background: res.type === "video" ? "rgba(6,182,212,0.12)" : "rgba(13,148,136,0.12)",
+                    color: res.type === "video" ? "#0891B2" : "#0D9488",
+                    border: `1px solid ${res.type === "video" ? "rgba(6,182,212,0.3)" : "rgba(13,148,136,0.3)"}`,
+                    fontSize: "10px",
+                  }}
+                >
+                  {res.type === "video" ? "🎥 Video" : "🎧 Podcast"}
+                </span>
+                <FaExternalLinkAlt size={10} style={{ color: "#94A3B8" }} />
+              </div>
             </a>
           ))}
         </div>
       </div>
+
+      {/* AI Settings Modal */}
+      <AISettingsModal
+        isOpen={showConfigModal}
+        onClose={() => setShowConfigModal(false)}
+        onKeyUpdated={(key) => {
+          setActiveEngine(key ? "Gemini Cloud AI" : "Offline Clinical");
+        }}
+      />
     </div>
   );
 };

@@ -476,31 +476,29 @@ const UserDashBoard = () => {
     </div>
 
     <ul className="nav flex-column text-start gap-1">
-      <li className="nav-item">
-        <Link to="/userDashBoard/manageMedication" className="nav-link text-white rounded-3 py-2 px-3 d-flex align-items-center transition" style={{ backgroundColor: "rgba(255,255,255,0.04)" }}>
-          <FaPills className="me-2 text-primary" /> {t("manageMedication")}
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/userDashBoard/consumedChart" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
-          <FaChartLine className="me-2 text-info" /> {t("consumedChart")}
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/userDashBoard/ConsumedCount" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
-          <FaCheckCircle className="me-2 text-success" /> {t("consumedCount")}
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/userDashBoard/mentalSupport" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
-          <FaBrain className="me-2 text-warning" /> {t("mentalSupport")}
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/userDashBoard/profile" className="nav-link text-light opacity-85 rounded-3 py-2 px-3 d-flex align-items-center transition">
-          <FaUser className="me-2 text-light" /> {t("profile")}
-        </Link>
-      </li>
+      {[
+        { path: "/userDashBoard/manageMedication", altPath: "/userDashboard", label: t("manageMedication"), icon: FaPills, iconColor: "#3B82F6" },
+        { path: "/userDashBoard/consumedChart", label: t("consumedChart"), icon: FaChartLine, iconColor: "#06B6D4" },
+        { path: "/userDashBoard/ConsumedCount", label: t("consumedCount"), icon: FaCheckCircle, iconColor: "#22C55E" },
+        { path: "/userDashBoard/mentalSupport", label: t("mentalSupport"), icon: FaBrain, iconColor: "#F59E0B" },
+        { path: "/userDashBoard/profile", label: t("profile"), icon: FaUser, iconColor: "#E2E8F0" },
+      ].map((item, idx) => {
+        const isActive =
+          location.pathname.toLowerCase() === item.path.toLowerCase() ||
+          (item.altPath && location.pathname.toLowerCase() === item.altPath.toLowerCase());
+        const IconComp = item.icon;
+        return (
+          <li key={idx} className="nav-item">
+            <Link
+              to={item.path}
+              className={`nav-link rounded-3 py-2 px-3 d-flex align-items-center dashboard-nav-item ${isActive ? "dashboard-nav-active" : "text-light opacity-85"}`}
+            >
+              <IconComp className="me-2" style={{ color: isActive ? "#06B6D4" : item.iconColor, opacity: isActive ? 1 : 0.7 }} />
+              {item.label}
+            </Link>
+          </li>
+        );
+      })}
 
       <li className="nav-item mt-2">
         <button
@@ -547,11 +545,11 @@ const UserDashBoard = () => {
 
   {/* Main Content */}
   <div
-    className="flex-grow-1 p-3 p-md-4"
+    className="flex-grow-1 p-3 p-md-4 dashboard-main-content-container"
     style={{
       backgroundColor: "#f8fafc",
       minHeight: "100vh",
-      paddingBottom: "85px",
+      paddingBottom: "130px",
     }}
   >
     {/* 🚨 Global Zero-Risk Expiry Conflict Banner */}

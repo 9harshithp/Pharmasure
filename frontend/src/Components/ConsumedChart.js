@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { baseUrl } from "../App";
+import { FaChartLine, FaPills } from "react-icons/fa";
 
 const ConsumedChart = () => {
   const [chartData, setChartData] = useState([]);
@@ -122,12 +123,33 @@ const CustomLegend = () => {
 };
 
   return (
-    <div className="container mt-4 px-2">
-      <h5 className="text-center mb-3 fw-bold">Medication Consumption Chart</h5>
+    <div className="container py-2">
+      {/* Page heading */}
+      <div className="mb-4 d-flex align-items-center gap-2">
+        <FaChartLine size={22} style={{ color: "#06B6D4" }} />
+        <h5
+          className="mb-0 fw-bold"
+          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0F2942" }}
+        >
+          Medication Consumption Chart
+        </h5>
+        <span
+          className="badge ms-1"
+          style={{
+            background: "rgba(6,182,212,0.12)",
+            border: "1px solid rgba(6,182,212,0.3)",
+            color: "#0891B2",
+            fontSize: "10px",
+            fontFamily: "'JetBrains Mono', monospace",
+          }}
+        >
+          ADHERENCE TIMELINE
+        </span>
+      </div>
 
       {chartData.length > 0 ? (
-        <div className="chart-wrapper" style={{ width: "100%", overflowX: "auto" }}>
-          <div style={{ minWidth: "320px", width: "100%", height: "50vh" }}>
+        <div className="bio-floating-window p-3" style={{ width: "100%", overflowX: "auto" }}>
+          <div style={{ minWidth: "320px", width: "100%", height: "min(50vh, 340px)" }}>
 
             {/* Center Legend */}
             <CustomLegend />
@@ -135,7 +157,7 @@ const CustomLegend = () => {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
                 
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,41,66,0.07)" />
 
                 <XAxis
                   dataKey="date"
@@ -212,7 +234,11 @@ const CustomLegend = () => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-muted small">No consumption data available.</p>
+        <div className="bio-floating-window text-center p-5">
+          <FaPills size={38} style={{ color: "#CBD5E1", marginBottom: "12px" }} />
+          <p className="fw-semibold mb-1" style={{ color: "#0F2942" }}>No consumption data available</p>
+          <p className="small mb-0" style={{ color: "#64748B" }}>Mark medications as taken to build your adherence timeline.</p>
+        </div>
       )}
     </div>
   );

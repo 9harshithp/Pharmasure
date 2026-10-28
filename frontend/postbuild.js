@@ -29,7 +29,7 @@ async function runPostbuild() {
           standard: [
             'fade', 'show', 'collapsing', 'collapse', 'table', 'thead', 'th', 'tr'
           ],
-          greedy: [/^bio-/, /^medication-/, /^dashboard-/, /^desktop-footer-/, /^mobile-footer-/]
+          greedy: [/^bio-/, /^medication-/, /^dashboard-/, /^desktop-footer-/, /^mobile-footer-/, /^pharma-chat-/, /^pharma-typing-/, /^pharma-/]
         }
       });
       if (purged.length > 0) {

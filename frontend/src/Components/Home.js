@@ -75,7 +75,7 @@ const Home = () => {
       />
 
       {/* Floating Modern Healthcare Navbar */}
-      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid #E2E8F0", background: "rgba(255, 255, 255, 0.9)" }}>
+      <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid #E2E8F0", background: "rgba(255, 255, 255, 0.92)", boxShadow: "0 2px 16px rgba(15,41,66,0.08)" }}>
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
           <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>

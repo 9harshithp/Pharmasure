@@ -137,9 +137,9 @@ const Footer = () => {
             </h3>
             <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
               <li>
-                <Link to="/#floating-windows" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
+                <a href="/userDashboard/manageMedication" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
                   Zero-Risk Inversion Engine
-                </Link>
+                </a>
               </li>
               <li>
                 <a
@@ -154,19 +154,19 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <Link to="/userDashboard" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
+                <a href="/userDashboard/manageMedication" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
                   Gemini Prescription OCR
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/userDashboard" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
+                <a href="/userDashboard/manageMedication" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
                   WhatsApp Dispatch Hub
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/userDashboard/mentalSupport" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
+                <a href="/userDashboard/mentalSupport" className="text-decoration-none transition" style={{ color: "#cbd5e1" }}>
                   Adherence & Wellness Rings
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

@@ -1,5 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import Tesseract from "tesseract.js";
+import { getStoredGeminiKey } from "./ocrScanner";
 
 /**
  * Converts File to Base64 data for Gemini
@@ -65,7 +66,7 @@ function getDefaultExpiryDate() {
  * with robust local parsing fallback.
  */
 export async function scanDoctorPrescription(file, onProgress) {
-  const geminiKey = process.env.REACT_APP_GEMINI_API_KEY;
+  const geminiKey = getStoredGeminiKey();
 
   if (geminiKey && geminiKey.trim().length > 5) {
     if (onProgress) onProgress("Scanning doctor handwriting with Multimodal AI...");
@@ -96,7 +97,7 @@ Extract:
 
 Return ONLY a valid JSON object matching this schema.`;
 
-    const candidateModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+    const candidateModels = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-3.5-flash"];
 
     for (const model of candidateModels) {
       try {

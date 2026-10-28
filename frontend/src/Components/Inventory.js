@@ -18,9 +18,11 @@ import {
   FaEdit,
   FaLink,
   FaWhatsapp,
+  FaBrain,
 } from "react-icons/fa";
 import BlockchainAuditModal from "./BlockchainAuditModal";
 import WhatsAppAlertModal from "./WhatsAppAlertModal";
+import AISettingsModal from "./AISettingsModal";
 
 const Inventory = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -39,6 +41,7 @@ const Inventory = () => {
   const [whatsAppType, setWhatsAppType] = useState("refill");
   const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showAISettings, setShowAISettings] = useState(false);
 
   // FEFO sorting & filtering state
   const [filterMode, setFilterMode] = useState("fefo"); // 'all' | 'fefo' | 'expiringSoon' | 'expired'
@@ -344,9 +347,23 @@ const Inventory = () => {
         className="card shadow-sm p-4 mb-4 rounded-4"
         style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
       >
-        <h5 className="mb-1 fw-bold" style={{ color: "#0F2942" }}>📷 Extract Tablet Details via Multimodal OCR</h5>
-        <p className="text-muted small mb-3">Upload or capture blister packaging for automated name & expiry extraction.</p>
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <h5 className="mb-1 fw-bold" style={{ color: "#0F2942" }}>📷 Extract Tablet Details via Multimodal OCR</h5>
+            <p className="text-muted small mb-0">Upload or capture blister packaging for automated name & expiry extraction.</p>
+          </div>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "8px", fontSize: "12px", fontWeight: 600 }}
+            onClick={() => setShowAISettings(true)}
+            title="Configure Cloud Gemini Vision or Offline OCR"
+          >
+            <FaBrain size={12} style={{ color: "#06B6D4" }} />
+            <span>AI Vision Settings</span>
+          </button>
+        </div>
+        <div className="d-flex flex-column align-items-center mt-3">
           <input
             type="file"
             accept="image/*"
@@ -566,7 +583,7 @@ const Inventory = () => {
 
       {/* ✅ Enhanced Inventory Table */}
       <div
-        className="card shadow-sm mb-4 rounded-4 overflow-hidden"
+        className="d-none d-lg-block card shadow-sm mb-4 rounded-4 overflow-hidden"
         style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
       >
         <div className="table-responsive" style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -699,6 +716,147 @@ const Inventory = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* 📱 Mobile Inventory Cards View (screens < 992px) */}
+      <div className="d-block d-lg-none mb-4">
+        {processedInventory.length > 0 ? (
+          processedInventory.map((item, idx) => {
+            const today = new Date();
+            const expiry = new Date(item.expiryDate);
+            const diffDays = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+            let statusBadge = <span className="badge bg-success">Safe</span>;
+            let borderAccent = "#10B981";
+            if (diffDays <= 0) {
+              statusBadge = <span className="badge bg-danger">Expired</span>;
+              borderAccent = "#EF4444";
+            } else if (diffDays <= 15) {
+              statusBadge = <span className="badge bg-danger">Expiring Soon ({diffDays}d)</span>;
+              borderAccent = "#EF4444";
+            } else if (diffDays <= 45) {
+              statusBadge = <span className="badge bg-warning text-dark">Expiring in {diffDays}d</span>;
+              borderAccent = "#F59E0B";
+            }
+
+            const isNextFEFO = filterMode === "fefo" && idx === 0 && diffDays > 0;
+
+            return (
+              <div
+                key={item.id}
+                className="card border-0 shadow-sm rounded-4 mb-3 p-3 position-relative"
+                style={{
+                  borderLeft: `5px solid ${borderAccent}`,
+                  backgroundColor: isNextFEFO ? "#F0FDF4" : "#FFFFFF",
+                }}
+                onClick={() => handleShowDetails(item)}
+              >
+                <div className="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <div className="d-flex align-items-center gap-1.5 mb-1">
+                      {isNextFEFO ? (
+                        <span className="badge bg-success py-1 px-2" style={{ fontSize: "10px" }}>⚡ 1st to Dispense</span>
+                      ) : (
+                        <span className="badge bg-light text-dark border" style={{ fontSize: "10px" }}>FEFO #{idx + 1}</span>
+                      )}
+                    </div>
+                    <h6 className="fw-bold mb-0 text-dark" style={{ fontSize: "16px" }}>
+                      {item.tableName}
+                    </h6>
+                  </div>
+                  <div>{statusBadge}</div>
+                </div>
+
+                <div className="row g-2 mb-3">
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Stock Quantity</span>
+                      <strong style={{ color: "#0F2942", fontSize: "13px" }}>📦 {item.tabletQty} units</strong>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Batch Value</span>
+                      <strong style={{ color: "#059669", fontSize: "13px" }}>
+                        {item.amount !== null && !isNaN(item.amount) ? `₹${parseFloat(item.amount).toFixed(2)}` : "₹0.00"}
+                      </strong>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Expiry Date</span>
+                      <strong style={{ color: diffDays <= 15 ? "#DC2626" : "#0F2942", fontSize: "13px" }}>
+                        📅 {item.expiryDate}
+                      </strong>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Days Left</span>
+                      <strong style={{ color: diffDays <= 15 ? "#DC2626" : "#0F2942", fontSize: "13px" }}>
+                        ⏳ {diffDays > 0 ? `${diffDays} days` : "Expired"}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2 border-top">
+                  <div className="d-flex align-items-center gap-1.5">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1"
+                      style={{ fontSize: "11px" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedBlockchainItem(item);
+                      }}
+                    >
+                      <FaLink size={9} />
+                      <span>Audit Batch</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1"
+                      style={{ fontSize: "11px" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setWhatsAppType("refill");
+                        setWhatsAppAlertData({
+                          medicineName: item.tableName,
+                          expiryDate: item.expiryDate,
+                          remainingQty: item.tabletQty,
+                          daysRemaining: diffDays,
+                        });
+                        setShowWhatsAppModal(true);
+                      }}
+                    >
+                      <FaWhatsapp size={10} />
+                      <span>Alert</span>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-primary"
+                    style={{ padding: "4px 10px", fontSize: "12px" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(item);
+                    }}
+                  >
+                    <FaEdit size={12} className="me-1" />
+                    <span>Edit</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="card border-0 shadow-sm rounded-4 p-4 text-center text-muted mb-3">
+            No matching inventory batches found.
+          </div>
+        )}
       </div>
 
       {/* ✅ SMART DISPENSE ASSISTANT MODAL */}
@@ -1065,6 +1223,12 @@ const Inventory = () => {
         initialType={whatsAppType}
         alertData={whatsAppAlertData}
         patientName="Valued Customer"
+      />
+
+      {/* 🧠 AI Vision & Gemini Key Modal */}
+      <AISettingsModal
+        isOpen={showAISettings}
+        onClose={() => setShowAISettings(false)}
       />
     </div>
   );

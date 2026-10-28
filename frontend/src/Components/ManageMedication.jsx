@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp, FaShoppingCart, FaBell, FaHeartbeat, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaEdit, FaSave, FaPlusCircle, FaTrash, FaShieldAlt, FaVolumeUp, FaStop, FaNotesMedical, FaLink, FaWhatsapp, FaShoppingCart, FaBell, FaHeartbeat, FaChevronDown, FaChevronUp, FaBrain } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { baseUrl } from "../App";
 import { performMedicationOCR } from "../utils/ocrScanner";
@@ -13,6 +13,7 @@ import PrescriptionScannerModal from "./PrescriptionScannerModal";
 import BlockchainAuditModal from "./BlockchainAuditModal";
 import WhatsAppAlertModal from "./WhatsAppAlertModal";
 import DirectPharmacyModal from "./DirectPharmacyModal";
+import AISettingsModal from "./AISettingsModal";
 
 const ManageMedication = () => {
   const { t, currentLanguage, translate, speechLangCode } = useLanguage();
@@ -42,6 +43,7 @@ const ManageMedication = () => {
   const [selectedBlockchainItem, setSelectedBlockchainItem] = useState(null);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [whatsAppType, setWhatsAppType] = useState("schedule");
+  const [showAISettings, setShowAISettings] = useState(false);
   const [whatsAppAlertData, setWhatsAppAlertData] = useState({});
 
   const [showDirectPharmacyModal, setShowDirectPharmacyModal] = useState(false);
@@ -247,7 +249,19 @@ const handleScan = async () => {
 
       {/* OCR Section */}
 <div className="card shadow-sm p-3 mb-4">
-  <h5 className="mb-3">{t("extractMedicationDetails")}</h5>
+  <div className="d-flex justify-content-between align-items-center mb-3">
+    <h5 className="mb-0">{t("extractMedicationDetails")}</h5>
+    <button
+      type="button"
+      className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 shadow-sm"
+      style={{ borderRadius: "8px", fontSize: "12px", fontWeight: 600 }}
+      onClick={() => setShowAISettings(true)}
+      title="Configure Cloud Gemini Vision or Offline OCR"
+    >
+      <FaBrain size={12} style={{ color: "#06B6D4" }} />
+      <span>AI Vision Settings</span>
+    </button>
+  </div>
 
   <div className="d-flex flex-column align-items-center">
     <input
@@ -592,14 +606,17 @@ const handleScan = async () => {
         </div>
 
         <div className="d-flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold"
-            onClick={handleTestAlarm}
-            title="Simulate 9:00 AM alarm with continuous audio chime"
-          >
-            <FaBell /> <span>🔔 Test 9:00 AM Alarm</span>
-          </button>
+          {/* Only patients/caretakers can test their own alarm */}
+          {role !== "PHARMASURE" && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold"
+              onClick={handleTestAlarm}
+              title="Simulate 9:00 AM alarm with continuous audio chime"
+            >
+              <FaBell /> <span>🔔 Test 9:00 AM Alarm</span>
+            </button>
+          )}
 
           <button
             type="button"
@@ -615,8 +632,8 @@ const handleScan = async () => {
         </div>
       </div>
 
-      {/* Medication Table */}
-      <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+      {/* 🖥️ Desktop Medication Table (screens >= 992px) */}
+      <div className="d-none d-lg-block card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
         <div className="table-responsive">
           <table className="table table-hover align-middle mb-0 medication-table">
             <thead style={{ backgroundColor: "#0F2942" }}>
@@ -633,151 +650,388 @@ const handleScan = async () => {
                 {role !== "patient" && <th className="py-3 text-white" style={{ backgroundColor: "#0F2942", color: "#ffffff", borderBottom: "2px solid #06B6D4" }}>{t("actions")}</th>}
               </tr>
             </thead>
-          <tbody>
-            {medications.length > 0 ? (
-              medications.map((med) => {
-                const risk = calculateMedicationRisk(med);
-                const rowClass = risk.status === "RUNOUT_EXCEEDS_EXPIRY" 
-                  ? "table-danger" 
-                  : risk.status === "TIGHT_BUFFER" 
-                  ? "table-warning" 
-                  : "";
+            <tbody>
+              {medications.length > 0 ? (
+                medications.map((med) => {
+                  const risk = calculateMedicationRisk(med);
+                  const rowClass = risk.status === "RUNOUT_EXCEEDS_EXPIRY" 
+                    ? "table-danger" 
+                    : risk.status === "TIGHT_BUFFER" 
+                    ? "table-warning" 
+                    : "";
 
-                return (
-                  <tr key={med.mid} className={rowClass}>
-                    <td className="fw-semibold">
-                      <div className="d-flex align-items-center">
+                  return (
+                    <tr key={med.mid} className={rowClass}>
+                      <td className="fw-semibold">
+                        <div className="d-flex align-items-center">
+                          <button
+                            type="button"
+                            className={`btn btn-sm p-1 me-2 rounded-circle d-flex align-items-center justify-content-center ${
+                              activeSpeechMid === med.mid
+                                ? "btn-danger text-white border-0 shadow-sm"
+                                : "btn-outline-primary"
+                            }`}
+                            style={{ width: "26px", height: "26px", minWidth: "26px" }}
+                            title={activeSpeechMid === med.mid ? "Click to stop voice readout" : "Listen to dose schedule"}
+                            onClick={async () => {
+                              const speechKey = `med-${med.mid}`;
+                              let text = `Medication: ${med.tableName}. Take during ${med.timing}. Remaining quantity is ${med.tabletQty} tablets. Expiry date is ${med.expiryDate}. Status: ${risk.badgeText}. ${risk.message}`;
+                              if (currentLanguage !== "en") {
+                                text = await translate(text);
+                              }
+                              const isPlaying = toggleSpeech(speechKey, text, {
+                                lang: speechLangCode,
+                                onStart: () => setActiveSpeechMid(med.mid),
+                                onEnd: () => setActiveSpeechMid(null),
+                                onStop: () => setActiveSpeechMid(null),
+                                onError: () => setActiveSpeechMid(null),
+                              });
+
+                              if (isPlaying) {
+                                toast.info(`🔊 Reading: ${med.tableName} (Click again to stop)`, { autoClose: 2000 });
+                                setActiveSpeechMid(med.mid);
+                              } else {
+                                toast.info(`⏹️ Stopped voice for ${med.tableName}`, { autoClose: 1500 });
+                                setActiveSpeechMid(null);
+                              }
+                            }}
+                          >
+                            {activeSpeechMid === med.mid ? <FaStop size={10} /> : <FaVolumeUp size={11} />}
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-success p-1 me-2 rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: "26px", height: "26px", minWidth: "26px" }}
+                            title="Send alert/reminder for this medicine via WhatsApp"
+                            onClick={() => {
+                              const isExpiryIssue = risk.status === "RUNOUT_EXCEEDS_EXPIRY";
+                              setWhatsAppType(isExpiryIssue ? "zeroRisk" : "refill");
+                              setWhatsAppAlertData({
+                                medicineName: med.tableName,
+                                runoutDateStr: risk.runoutDateStr,
+                                expiryDate: med.expiryDate,
+                                daysDifference: risk.daysDifference,
+                                remainingQty: med.tabletQty,
+                              });
+                              setShowWhatsAppModal(true);
+                            }}
+                          >
+                            <FaWhatsapp size={12} />
+                          </button>
+                          <span>{med.tableName}</span>
+                        </div>
+                      </td>
+                      <td>{med.tabletQty} tabs</td>
+                      <td>{med.doctor}</td>
+                      <td>
+                        <div className="d-flex flex-wrap gap-1">
+                          {med.timing.split(",").map((t, i) => (
+                            <span
+                              key={i}
+                              className="badge"
+                              style={{
+                                background: "rgba(6,182,212,0.12)",
+                                border: "1px solid rgba(6,182,212,0.3)",
+                                color: "#0891B2",
+                                fontSize: "11px",
+                                fontWeight: 600,
+                                padding: "3px 8px",
+                                borderRadius: "20px",
+                              }}
+                            >
+                              {t.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="text-nowrap">{med.expiryDate}</td>
+                      <td className="text-nowrap fw-semibold">{risk.runoutDateStr}</td>
+                      <td>
+                        <span className={`badge bg-${risk.badgeColor} d-inline-block mb-1`}>
+                          {risk.badgeText}
+                        </span>
+                        <div className="small text-muted" style={{ fontSize: "11px", maxWidth: "240px" }}>
+                          {risk.message}
+                        </div>
+                      </td>
+                      <td>
                         <button
                           type="button"
-                          className={`btn btn-sm p-1 me-2 rounded-circle d-flex align-items-center justify-content-center ${
-                            activeSpeechMid === med.mid
-                              ? "btn-danger text-white border-0 shadow-sm"
-                              : "btn-outline-primary"
-                          }`}
-                          style={{ width: "26px", height: "26px", minWidth: "26px" }}
-                          title={activeSpeechMid === med.mid ? "Click to stop voice readout" : "Listen to dose schedule"}
-                          onClick={async () => {
-                            const speechKey = `med-${med.mid}`;
-                            let text = `Medication: ${med.tableName}. Take during ${med.timing}. Remaining quantity is ${med.tabletQty} tablets. Expiry date is ${med.expiryDate}. Status: ${risk.badgeText}. ${risk.message}`;
-                            if (currentLanguage !== "en") {
-                              text = await translate(text);
-                            }
-                            const isPlaying = toggleSpeech(speechKey, text, {
-                              lang: speechLangCode,
-                              onStart: () => setActiveSpeechMid(med.mid),
-                              onEnd: () => setActiveSpeechMid(null),
-                              onStop: () => setActiveSpeechMid(null),
-                              onError: () => setActiveSpeechMid(null),
-                            });
-
-                            if (isPlaying) {
-                              toast.info(`🔊 Reading: ${med.tableName} (Click again to stop)`, { autoClose: 2000 });
-                              setActiveSpeechMid(med.mid);
-                            } else {
-                              toast.info(`⏹️ Stopped voice for ${med.tableName}`, { autoClose: 1500 });
-                              setActiveSpeechMid(null);
-                            }
-                          }}
+                          className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 shadow-sm px-2 py-1"
+                          style={{ fontSize: "11px", borderRadius: "20px" }}
+                          onClick={() => setSelectedBlockchainItem(med)}
+                          title="Audit batch integrity on Polygon PoS"
                         >
-                          {activeSpeechMid === med.mid ? <FaStop size={10} /> : <FaVolumeUp size={11} />}
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-success p-1 me-2 rounded-circle d-flex align-items-center justify-content-center"
-                          style={{ width: "26px", height: "26px", minWidth: "26px" }}
-                          title="Send alert/reminder for this medicine via WhatsApp"
-                          onClick={() => {
-                            const isExpiryIssue = risk.status === "RUNOUT_EXCEEDS_EXPIRY";
-                            setWhatsAppType(isExpiryIssue ? "zeroRisk" : "refill");
-                            setWhatsAppAlertData({
-                              medicineName: med.tableName,
-                              runoutDateStr: risk.runoutDateStr,
-                              expiryDate: med.expiryDate,
-                              daysDifference: risk.daysDifference,
-                              remainingQty: med.tabletQty,
-                            });
-                            setShowWhatsAppModal(true);
-                          }}
-                        >
-                          <FaWhatsapp size={12} />
-                        </button>
-                        <span>{med.tableName}</span>
-                      </div>
-                    </td>
-                    <td>{med.tabletQty} tabs</td>
-                    <td>{med.doctor}</td>
-                    <td><span className="badge bg-light text-dark border">{med.timing}</span></td>
-                    <td className="text-nowrap">{med.expiryDate}</td>
-                    <td className="text-nowrap fw-semibold">{risk.runoutDateStr}</td>
-                    <td>
-                      <span className={`badge bg-${risk.badgeColor} d-inline-block mb-1`}>
-                        {risk.badgeText}
-                      </span>
-                      <div className="small text-muted" style={{ fontSize: "11px", maxWidth: "240px" }}>
-                        {risk.message}
-                      </div>
-                    </td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 shadow-sm px-2 py-1"
-                        style={{ fontSize: "11px", borderRadius: "20px" }}
-                        onClick={() => setSelectedBlockchainItem(med)}
-                        title="Audit batch integrity on Polygon PoS"
-                      >
-                        <FaLink size={10} className="text-primary" />
-                        <span className="fw-bold text-dark">Verified</span>
-                        <span className="badge bg-success rounded-pill" style={{ fontSize: "8px" }}>PoS</span>
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1"
-                        style={{ fontSize: "11px", borderRadius: "20px" }}
-                        onClick={() => {
-                          setSelectedPharmacyItem(med);
-                          setShowDirectPharmacyModal(true);
-                        }}
-                        title="Compare retail store prices and order direct"
-                      >
-                        <FaShoppingCart size={10} />
-                        <span className="fw-bold">Buy Direct</span>
-                        <span className="badge bg-danger rounded-pill" style={{ fontSize: "8px" }}>-8%</span>
-                      </button>
-                    </td>
-                    {role !== "patient" && (
-                      <td className="text-nowrap">
-                        <button
-                          className="btn btn-outline-primary btn-sm me-2"
-                          onClick={() => handleEdit(med)}
-                          title="Edit"
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          className="btn btn-outline-danger btn-sm"
-                          onClick={() => handleDelete(med.mid)}
-                          title="Delete"
-                        >
-                          <FaTrash />
+                          <FaLink size={10} className="text-primary" />
+                          <span className="fw-bold text-dark">Verified</span>
+                          <span className="badge bg-success rounded-pill" style={{ fontSize: "8px" }}>PoS</span>
                         </button>
                       </td>
-                    )}
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={role === "patient" ? 9 : 10} className="text-center text-muted py-4">
-                  No medications found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1"
+                          style={{ fontSize: "11px", borderRadius: "20px" }}
+                          onClick={() => {
+                            setSelectedPharmacyItem(med);
+                            setShowDirectPharmacyModal(true);
+                          }}
+                          title="Compare retail store prices and order direct"
+                        >
+                          <FaShoppingCart size={10} />
+                          <span className="fw-bold">Buy Direct</span>
+                          <span className="badge bg-danger rounded-pill" style={{ fontSize: "8px" }}>-8%</span>
+                        </button>
+                      </td>
+                      {role !== "patient" && (
+                        <td>
+                          <div className="d-flex flex-wrap gap-1">
+                            <button
+                              className="btn btn-outline-primary btn-sm"
+                              onClick={() => handleEdit(med)}
+                              title="Edit"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              className="btn btn-outline-danger btn-sm"
+                              onClick={() => handleDelete(med.mid)}
+                              title="Delete"
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={role === "patient" ? 9 : 10} className="text-center text-muted py-4">
+                    No medications found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+
+      {/* 📱 Mobile Medication Cards View (screens < 992px) */}
+      <div className="d-block d-lg-none mb-4">
+        {medications.length > 0 ? (
+          medications.map((med) => {
+            const risk = calculateMedicationRisk(med);
+            const borderAccent = risk.status === "RUNOUT_EXCEEDS_EXPIRY"
+              ? "#EF4444"
+              : risk.status === "TIGHT_BUFFER"
+              ? "#F59E0B"
+              : "#10B981";
+            const bgAccent = risk.status === "RUNOUT_EXCEEDS_EXPIRY"
+              ? "rgba(239, 68, 68, 0.04)"
+              : risk.status === "TIGHT_BUFFER"
+              ? "rgba(245, 158, 11, 0.04)"
+              : "#FFFFFF";
+
+            return (
+              <div
+                key={med.mid}
+                className="card border-0 shadow-sm rounded-4 mb-3 p-3 position-relative"
+                style={{
+                  borderLeft: `5px solid ${borderAccent}`,
+                  backgroundColor: bgAccent,
+                }}
+              >
+                {/* Header: Title + Doctor + Risk Badge */}
+                <div className="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h6 className="fw-bold mb-0" style={{ color: "#0F2942", fontSize: "16px" }}>
+                      {med.tableName}
+                    </h6>
+                    <div className="text-muted small" style={{ fontSize: "12px" }}>
+                      👨‍⚕️ {med.doctor || "Consulting Physician"}
+                    </div>
+                  </div>
+                  <span
+                    className={`badge bg-${risk.badgeColor} py-1.5 px-2.5 rounded-pill shadow-sm`}
+                    style={{ fontSize: "11px" }}
+                  >
+                    {risk.badgeText}
+                  </span>
+                </div>
+
+                {/* Quick Audio & WhatsApp Alert Buttons */}
+                <div className="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                  <button
+                    type="button"
+                    className={`btn btn-sm d-inline-flex align-items-center gap-1.5 rounded-pill px-2.5 py-1 ${
+                      activeSpeechMid === med.mid ? "btn-danger text-white shadow-sm" : "btn-outline-primary"
+                    }`}
+                    style={{ fontSize: "12px", fontWeight: 500 }}
+                    onClick={async () => {
+                      const speechKey = `med-${med.mid}`;
+                      let text = `Medication: ${med.tableName}. Take during ${med.timing}. Remaining quantity is ${med.tabletQty} tablets. Expiry date is ${med.expiryDate}. Status: ${risk.badgeText}. ${risk.message}`;
+                      if (currentLanguage !== "en") {
+                        text = await translate(text);
+                      }
+                      const isPlaying = toggleSpeech(speechKey, text, {
+                        lang: speechLangCode,
+                        onStart: () => setActiveSpeechMid(med.mid),
+                        onEnd: () => setActiveSpeechMid(null),
+                        onStop: () => setActiveSpeechMid(null),
+                        onError: () => setActiveSpeechMid(null),
+                      });
+                      if (isPlaying) {
+                        toast.info(`🔊 Reading: ${med.tableName}`, { autoClose: 2000 });
+                        setActiveSpeechMid(med.mid);
+                      } else {
+                        setActiveSpeechMid(null);
+                      }
+                    }}
+                  >
+                    {activeSpeechMid === med.mid ? <FaStop size={10} /> : <FaVolumeUp size={11} />}
+                    <span>{activeSpeechMid === med.mid ? "Stop Voice" : "Listen"}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1.5 rounded-pill px-2.5 py-1"
+                    style={{ fontSize: "12px", fontWeight: 500 }}
+                    onClick={() => {
+                      const isExpiryIssue = risk.status === "RUNOUT_EXCEEDS_EXPIRY";
+                      setWhatsAppType(isExpiryIssue ? "zeroRisk" : "refill");
+                      setWhatsAppAlertData({
+                        medicineName: med.tableName,
+                        runoutDateStr: risk.runoutDateStr,
+                        expiryDate: med.expiryDate,
+                        daysDifference: risk.daysDifference,
+                        remainingQty: med.tabletQty,
+                      });
+                      setShowWhatsAppModal(true);
+                    }}
+                  >
+                    <FaWhatsapp size={12} />
+                    <span>WhatsApp Alert</span>
+                  </button>
+                </div>
+
+                {/* Key Metrics Grid */}
+                <div className="row g-2 mb-3">
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Quantity Left</span>
+                      <strong style={{ color: "#0F2942", fontSize: "13px" }}>📦 {med.tabletQty} tabs</strong>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Timing</span>
+                      <div className="d-flex flex-wrap gap-1 mt-0.5">
+                        {med.timing.split(",").map((t, i) => (
+                          <span
+                            key={i}
+                            className="badge"
+                            style={{
+                              background: "rgba(6,182,212,0.12)",
+                              border: "1px solid rgba(6,182,212,0.3)",
+                              color: "#0891B2",
+                              fontSize: "10px",
+                              padding: "2px 6px",
+                            }}
+                          >
+                            {t.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Expiry Date</span>
+                      <strong style={{ color: risk.daysDifference <= 15 ? "#DC2626" : "#0F2942", fontSize: "13px" }}>
+                        📅 {med.expiryDate}
+                      </strong>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="p-2 rounded-3 h-100" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                      <span className="text-muted d-block" style={{ fontSize: "11px" }}>Projected Runout</span>
+                      <strong style={{ color: "#0F2942", fontSize: "13px" }}>⏳ {risk.runoutDateStr}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Risk Warning Message (if applicable) */}
+                {risk.status !== "SAFE_TO_DISPENSE" && (
+                  <div
+                    className={`alert alert-${risk.status === "RUNOUT_EXCEEDS_EXPIRY" ? "danger" : "warning"} py-2 px-3 small rounded-3 mb-3 d-flex align-items-center gap-2`}
+                    style={{ fontSize: "12px" }}
+                  >
+                    <FaShieldAlt size={14} className="flex-shrink-0" />
+                    <span>{risk.message}</span>
+                  </div>
+                )}
+
+                {/* Action Buttons Row */}
+                <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2 border-top">
+                  <div className="d-flex flex-wrap align-items-center gap-1.5">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1"
+                      style={{ fontSize: "11px" }}
+                      onClick={() => setSelectedBlockchainItem(med)}
+                    >
+                      <FaLink size={9} />
+                      <span className="fw-semibold">Blockchain Audit</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1"
+                      style={{ fontSize: "11px" }}
+                      onClick={() => {
+                        setSelectedPharmacyItem(med);
+                        setShowDirectPharmacyModal(true);
+                      }}
+                    >
+                      <FaShoppingCart size={9} />
+                      <span className="fw-semibold">Buy Direct</span>
+                      <span className="badge bg-danger rounded-pill" style={{ fontSize: "8px" }}>-8%</span>
+                    </button>
+                  </div>
+
+                  {role !== "patient" && (
+                    <div className="d-flex align-items-center gap-1">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary"
+                        onClick={() => handleEdit(med)}
+                        title="Edit"
+                        style={{ padding: "4px 8px" }}
+                      >
+                        <FaEdit size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDelete(med.mid)}
+                        title="Delete"
+                        style={{ padding: "4px 8px" }}
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="card border-0 shadow-sm rounded-4 p-4 text-center text-muted mb-3">
+            No medications found.
+          </div>
+        )}
+      </div>
 
       {/* 🔬 AI Clinical Interaction Modal */}
       {showSafetyModal && safetyData && (
@@ -947,6 +1201,12 @@ const handleScan = async () => {
         show={showDirectPharmacyModal}
         onHide={() => setShowDirectPharmacyModal(false)}
         medication={selectedPharmacyItem}
+      />
+
+      {/* 🧠 AI Vision & Gemini Key Modal */}
+      <AISettingsModal
+        isOpen={showAISettings}
+        onClose={() => setShowAISettings(false)}
       />
     </div>
   );
