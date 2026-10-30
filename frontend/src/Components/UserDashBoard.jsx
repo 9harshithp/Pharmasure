@@ -554,8 +554,8 @@ const UserDashBoard = () => {
   >
     {/* 🚨 Global Zero-Risk Expiry Conflict Banner */}
     {zeroRiskAlerts.length > 0 && (
-      <div className="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 p-3 rounded-3">
-        <div>
+      <div className="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 p-3 rounded-3">
+        <div className="mb-2 mb-md-0">
           <h6 className="fw-bold mb-1 text-danger">
             🚨 {t("zeroRiskAlert")}: Course Overruns Batch Expiry!
           </h6>
@@ -563,9 +563,9 @@ const UserDashBoard = () => {
             <strong>{zeroRiskAlerts.length}</strong> {t("zeroRiskDesc")}
           </p>
         </div>
-        <div className="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
+        <div className="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-0">
           <button
-            className={`btn btn-sm text-nowrap fw-bold d-flex align-items-center gap-1 ${
+            className={`btn btn-sm fw-bold d-flex align-items-center gap-1 ${
               isVoiceAlertPlaying ? "btn-danger" : "btn-outline-danger"
             }`}
             onClick={handleToggleVoiceAlert}
@@ -575,7 +575,7 @@ const UserDashBoard = () => {
             <span>{isVoiceAlertPlaying ? t("stopVoice") : t("voiceAlert")}</span>
           </button>
           <button
-            className="btn btn-sm btn-outline-success fw-bold d-flex align-items-center gap-1 text-nowrap"
+            className="btn btn-sm btn-outline-success fw-bold d-flex align-items-center gap-1"
             onClick={() => {
               const firstAlert = zeroRiskAlerts[0] || {};
               setWhatsAppType("zeroRisk");
@@ -588,7 +588,7 @@ const UserDashBoard = () => {
           </button>
           <Link
             to="/userDashBoard/manageMedication"
-            className="btn btn-danger btn-sm text-nowrap fw-bold"
+            className="btn btn-danger btn-sm fw-bold"
           >
             {t("reviewAdjustDosage")}
           </Link>
@@ -612,9 +612,9 @@ const UserDashBoard = () => {
   >
     {[
       { path: "/userDashBoard/manageMedication", altPath: "/userDashBoard", label: t("manageMedication")?.split(" ")[0] || "Meds", icon: FaPills },
-      { path: "/userDashBoard/consumedChart", label: t("consumedChart")?.split(" ")[0] || "Chart", icon: FaChartLine },
-      { path: "/userDashBoard/ConsumedCount", label: t("consumedCount")?.split(" ")[0] || "Count", icon: FaCheckCircle },
-      { path: "/userDashBoard/mentalSupport", label: t("mentalSupport")?.split(" ")[0] || "Rings", icon: FaBrain },
+      { path: "/userDashBoard/consumedChart", label: t("adherence") || "Adherence", icon: FaChartLine },
+      { path: "/userDashBoard/ConsumedCount", label: t("doses") || "Log Dose", icon: FaCheckCircle },
+      { path: "/userDashBoard/mentalSupport", label: t("mentalSupport")?.split(" ")[0] || "Wellness", icon: FaBrain },
       { path: "/userDashBoard/profile", label: t("profile") || "Profile", icon: FaUser },
     ].map((tab, idx) => {
       const isActive =
