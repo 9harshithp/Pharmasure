@@ -613,12 +613,13 @@ const handleScan = async () => {
           </div>
         </div>
 
-        <div className="d-flex flex-wrap gap-2">
+        <div className="d-flex flex-wrap gap-2 w-100 w-sm-auto">
           {/* Only patients/caretakers can test their own alarm */}
           {role !== "PHARMASURE" && (
             <button
               type="button"
-              className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold"
+              className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold flex-grow-1 flex-sm-grow-0"
+              style={{ minHeight: "36px" }}
               onClick={handleTestAlarm}
               title="Simulate 9:00 AM alarm with continuous audio chime"
             >
@@ -628,14 +629,14 @@ const handleScan = async () => {
 
           <button
             type="button"
-            className="btn btn-sm btn-success d-flex align-items-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold text-white shadow-sm"
-            style={{ background: "linear-gradient(135deg, #0D9488 0%, #059669 100%)", border: "none" }}
+            className="btn btn-sm btn-success d-flex align-items-center justify-content-center gap-1.5 rounded-pill px-3 py-1.5 fw-semibold text-white shadow-sm flex-grow-1 flex-sm-grow-0"
+            style={{ background: "linear-gradient(135deg, #0D9488 0%, #059669 100%)", border: "none", minHeight: "36px" }}
             onClick={() => {
               setSelectedPharmacyItem(medications[0] || null);
               setShowDirectPharmacyModal(true);
             }}
           >
-            <FaHeartbeat /> <span>🏥 ChronicCare 365 & Direct Store (Save ₹100+)</span>
+            <FaHeartbeat /> <span>🏥 ChronicCare 365 & Direct Store</span>
           </button>
         </div>
       </div>
@@ -846,60 +847,63 @@ const handleScan = async () => {
                   border: "1px solid #E2E8F0",
                 }}
               >
-                {/* Header: Icon + Title + Doctor on Left | Badge + Actions on Right */}
-                <div className="d-flex justify-content-between align-items-start mb-2.5">
-                  <div className="d-flex align-items-center gap-2">
+                {/* Top Row: Icon + Title on Left | Edit & Delete Actions on Right */}
+                <div className="d-flex justify-content-between align-items-center mb-1.5">
+                  <div className="d-flex align-items-center gap-2 flex-grow-1 text-truncate pe-2">
                     <div
                       className="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                       style={{
-                        width: "36px",
-                        height: "36px",
+                        width: "34px",
+                        height: "34px",
                         background: "rgba(6, 182, 212, 0.12)",
                         color: "#0891B2",
                       }}
                     >
-                      <FaPills size={17} />
+                      <FaPills size={16} />
                     </div>
-                    <div>
-                      <h6 className="fw-bolder mb-0 text-dark" style={{ fontSize: "16px", letterSpacing: "-0.01em" }}>
+                    <div className="text-truncate">
+                      <h6 className="fw-bolder mb-0 text-dark text-truncate" style={{ fontSize: "16px", letterSpacing: "-0.01em" }}>
                         {med.tableName}
                       </h6>
-                      <span className="text-muted small" style={{ fontSize: "11.5px" }}>
-                        👨‍⚕️ {med.doctor || "Consulting Physician"}
-                      </span>
                     </div>
                   </div>
 
-                  <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
-                    <span
-                      className={`badge bg-${risk.badgeColor} py-1.5 px-2 rounded-pill shadow-xs`}
-                      style={{ fontSize: "10.5px", fontWeight: "600" }}
-                    >
-                      {risk.badgeText}
-                    </span>
-                    {role !== "patient" && (
-                      <div className="d-flex align-items-center gap-1 ms-0.5">
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-primary p-0 d-flex align-items-center justify-content-center rounded-2"
-                          onClick={() => handleEdit(med)}
-                          title="Edit medication"
-                          style={{ width: "26px", height: "26px" }}
-                        >
-                          <FaEdit size={11} />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger p-0 d-flex align-items-center justify-content-center rounded-2"
-                          onClick={() => handleDelete(med.mid)}
-                          title="Delete medication"
-                          style={{ width: "26px", height: "26px" }}
-                        >
-                          <FaTrash size={11} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  {/* Actions: Edit & Delete (Safely right-aligned with ample space) */}
+                  {role !== "patient" && (
+                    <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary p-0 d-flex align-items-center justify-content-center rounded-2 shadow-xs"
+                        onClick={() => handleEdit(med)}
+                        title="Edit medication"
+                        style={{ width: "30px", height: "30px", borderColor: "#CBD5E1" }}
+                      >
+                        <FaEdit size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger p-0 d-flex align-items-center justify-content-center rounded-2 shadow-xs"
+                        onClick={() => handleDelete(med.mid)}
+                        title="Delete medication"
+                        style={{ width: "30px", height: "30px", borderColor: "#FECACA" }}
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Sub-Header Row: Doctor on Left | Status Badge on Right */}
+                <div className="d-flex justify-content-between align-items-center mb-2.5">
+                  <span className="text-muted small d-flex align-items-center gap-1 text-truncate pe-2" style={{ fontSize: "12px" }}>
+                    👨‍⚕️ {med.doctor || "Consulting Physician"}
+                  </span>
+                  <span
+                    className={`badge bg-${risk.badgeColor} py-1 px-2.5 rounded-pill shadow-xs flex-shrink-0`}
+                    style={{ fontSize: "10.5px", fontWeight: "600" }}
+                  >
+                    {risk.badgeText}
+                  </span>
                 </div>
 
                 {/* Timing Pills & Voice / WhatsApp Quick Buttons */}
