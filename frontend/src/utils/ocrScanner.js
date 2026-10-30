@@ -452,10 +452,7 @@ export async function preprocessImage(imageSource) {
   });
 }
 
-export const PERMANENT_GEMINI_API_KEY =
-  typeof atob === "function"
-    ? atob("QVEuQWI4Uk42SU5MLUxwYzFKUXlPS2JtdUthY2Y0TU9PQmNDWVJlWkF4M1lRYUx5ZkNxVlE=")
-    : "";
+export const PERMANENT_GEMINI_API_KEY = "";
 
 /**
  * Retrieve user-configured Gemini API Key from localStorage, .env, or permanent default

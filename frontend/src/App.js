@@ -6,7 +6,12 @@ import Home from './Components/Home';
 import Footer from './Components/Footer';
 import PWAInstallPrompt from './Components/PWAInstallPrompt';
 import MedicationAlarmBanner from './Components/MedicationAlarmBanner';
+import ProtectedRoute from './Components/ProtectedRoute';
 import { LanguageProvider } from './context/LanguageContext';
+import { setupAxiosInterceptors } from './utils/apiAuth';
+
+// Initialize global security interceptors for token attachment & rate limiting
+setupAxiosInterceptors();
 
 // Dynamic lazy-loaded routes for optimal initial bundle & mobile performance
 const Login = lazy(() => import('./Components/Login'));
@@ -33,11 +38,12 @@ const RouteLoader = () => (
 
 function App() {
   useEffect(() => {
-    // Silently pre-warm Render free-tier backend in background using a valid endpoint
+    // Silently pre-warm Render free-tier backend in background via non-privileged ping
     try {
-      fetch(`${baseUrl}/inventory`).catch(() => {});
+      fetch(`${baseUrl}/`).catch(() => {});
     } catch (e) {}
   }, []);
+
   return (
     <LanguageProvider>
       <div className="App d-flex flex-column min-vh-100">
@@ -48,7 +54,16 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/userDashboard" element={<UserDashBoard />}>
+
+                {/* Protected Patient & Caretaker Dashboard Routes */}
+                <Route
+                  path="/userDashboard"
+                  element={
+                    <ProtectedRoute allowedRoles={["patient", "caretaker"]}>
+                      <UserDashBoard />
+                    </ProtectedRoute>
+                  }
+                >
                   <Route index element={<ManageMedication />} />  
                   <Route path="manageMedication" element={<ManageMedication />} />
                   <Route path="consumedChart" element={<ConsumedChart />} />
@@ -56,7 +71,16 @@ function App() {
                   <Route path="profile" element={<Profile />} />
                   <Route path="mentalSupport" element={<MentalSupport />} />
                 </Route>
-                <Route path="/pharmaDashBoard" element={<PharmaDashboard />}>
+
+                {/* Strictly Protected Admin / Pharmacist Terminal Routes */}
+                <Route
+                  path="/pharmaDashBoard"
+                  element={
+                    <ProtectedRoute requiredRole="PHARMASURE">
+                      <PharmaDashboard />
+                    </ProtectedRoute>
+                  }
+                >
                   <Route index element={<Inventory />} />
                   <Route path="inventory" element={<Inventory />} />
                   <Route path="analytics" element={<Analytics />} />

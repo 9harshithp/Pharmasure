@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
 import { FaUserInjured, FaUserNurse, FaPrescriptionBottleAlt, FaArrowRight, FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
+import { sanitizeInput } from "../utils/sanitize";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,6 +41,12 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    const cleanEmail = sanitizeInput(email, 100).toLowerCase();
+    if (!cleanEmail) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     setLoading(true);
     setServerSpinning(false);
 
@@ -49,10 +56,12 @@ const Login = () => {
     }, 2500);
 
     try {
-      const response = await axios.post(`${baseUrl}/login`, { email, password });
+      const response = await axios.post(`${baseUrl}/login`, { email: cleanEmail, password });
       clearTimeout(wakeTimer);
-      console.log("Login success:", response.data);
 
+      if (response.data.token) {
+        sessionStorage.setItem("token", response.data.token);
+      }
       sessionStorage.setItem("role", response.data.role);
 
       if (response.data.role === "PHARMASURE") {

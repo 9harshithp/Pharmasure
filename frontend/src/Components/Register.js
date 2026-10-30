@@ -4,6 +4,8 @@ import axios from "axios";
 import { baseUrl } from "../App";
 import bgImage from "../Assets/home123.jpg";
 
+import { sanitizeInput, validateEmail } from "../utils/sanitize";
+
 const Register = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -20,20 +22,39 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const cleanName = sanitizeInput(name, 100);
+    const cleanEmail = sanitizeInput(email, 100).toLowerCase();
+    const cleanCareTakerEmail = sanitizeInput(careTakerEmail, 100).toLowerCase();
+
+    if (!cleanName) {
+      alert("Please enter your full name.");
+      return;
+    }
+    if (!validateEmail(cleanEmail)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (!password || password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
+    }
+    if (cleanCareTakerEmail && !validateEmail(cleanCareTakerEmail)) {
+      alert("Please enter a valid caretaker email address.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/register`, {
-        name,
-        email,
+        name: cleanName,
+        email: cleanEmail,
         password,
-        careTakerEmail,
+        careTakerEmail: cleanCareTakerEmail || null,
       });
-      console.log("Registration success:", response.data);
-      alert("Registration successful!");
-      navigate("/login"); // Redirect to login after registration
+      alert(response.data || "Registration successful!");
+      navigate("/login");
     } catch (error) {
-      console.error("Registration failed:", error.response?.data || error.message);
-      alert("Registration failed. Please try again.");
+      alert(error.response?.data || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }

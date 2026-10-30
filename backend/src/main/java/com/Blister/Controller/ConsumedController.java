@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/consumed")
 public class ConsumedController {
 

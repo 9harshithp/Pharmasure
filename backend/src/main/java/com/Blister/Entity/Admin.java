@@ -1,5 +1,6 @@
 package com.Blister.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,7 +14,8 @@ public class Admin {
     @Column(length = 40)
     private String email;
 
-    @Column(length = 40)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(length = 255)
     private String password;
 
     public int getId() {

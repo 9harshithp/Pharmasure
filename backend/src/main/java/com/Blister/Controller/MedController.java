@@ -15,7 +15,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/gemini/medication")
 public class MedController {
 
@@ -29,17 +28,11 @@ public class MedController {
     public MedController(MedicationRepository medicationRepository,
                          @Value("${gemini.api.key:}") String apiKey) {
         this.medicationRepository = medicationRepository;
-        String resolvedKey = apiKey;
-        if (resolvedKey == null || resolvedKey.trim().isEmpty() || resolvedKey.contains("dummy")) {
-            try {
-                resolvedKey = new String(java.util.Base64.getDecoder().decode("QVEuQWI4Uk42SU5MLUxwYzFKUXlPS2JtdUthY2Y0TU9PQmNDWVJlWkF4M1lRYUx5ZkNxVlE="), java.nio.charset.StandardCharsets.UTF_8);
-            } catch (Exception ignored) {}
-        }
-        this.apiKey = resolvedKey;
+        this.apiKey = apiKey != null ? apiKey.trim() : "";
         Client tempClient = null;
         try {
-            if (resolvedKey != null && !resolvedKey.trim().isEmpty()) {
-                tempClient = Client.builder().apiKey(resolvedKey).build();
+            if (!this.apiKey.isEmpty() && !this.apiKey.contains("dummy")) {
+                tempClient = Client.builder().apiKey(this.apiKey).build();
             }
         } catch (Exception e) {
             tempClient = null;
