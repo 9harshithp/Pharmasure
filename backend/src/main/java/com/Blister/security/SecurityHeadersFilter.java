@@ -22,7 +22,6 @@ public class SecurityHeadersFilter implements Filter {
             httpResponse.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
             httpResponse.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
             httpResponse.setHeader("Permissions-Policy", "camera=(self), microphone=(), geolocation=()");
-            httpResponse.setHeader("Content-Security-Policy", "default-src 'self'; frame-ancestors 'none';");
         }
         chain.doFilter(request, response);
     }

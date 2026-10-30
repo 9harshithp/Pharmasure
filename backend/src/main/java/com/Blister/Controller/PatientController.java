@@ -39,6 +39,15 @@ public class PatientController {
     @Autowired
     private InputSanitizer inputSanitizer;
 
+    // 🔹 Public Health Check / Root Ping
+    @GetMapping("/")
+    public ResponseEntity<Map<String, String>> healthCheck() {
+        Map<String, String> status = new HashMap<>();
+        status.put("status", "UP");
+        status.put("service", "PharmaSure API");
+        return ResponseEntity.ok(status);
+    }
+
     // 🔹 Get Patient by ID (Protected)
     @GetMapping("/getById/{id}")
     public ResponseEntity<?> getPatientById(@PathVariable Integer id) {

@@ -102,11 +102,14 @@ public class SecurityFilter implements Filter {
     }
 
     private boolean isPublicEndpoint(String path) {
-        return path.equals("/") ||
-               path.startsWith("/login") ||
-               path.startsWith("/register") ||
-               path.startsWith("/error") ||
-               path.startsWith("/favicon.ico");
+        if (path == null) return false;
+        String normalized = path.trim();
+        return normalized.isEmpty() ||
+               normalized.equals("/") ||
+               normalized.startsWith("/login") ||
+               normalized.startsWith("/register") ||
+               normalized.startsWith("/error") ||
+               normalized.startsWith("/favicon.ico");
     }
 
     private void sendError(HttpServletResponse response, int status, String message) throws IOException {
