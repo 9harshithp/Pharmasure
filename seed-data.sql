@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `id` int NOT NULL,
-  `email` varchar(40) DEFAULT NULL,
-  `password` varchar(40) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'pharmacist@pharmasure.com','admin123');
+INSERT INTO `admin` VALUES (1,'pharmacist@pharmasure.com','$2b$12$w.7/dF3mbdJ135QZwG3iUOmlN5kogtCTG021gzaXnp40JRSUJXUp6');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +152,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,_binary '\0',NULL,'harshithp9141@gmail.com',NULL,'harshithp914@gmail.com','harshithp','student123',NULL);
+INSERT INTO `patient` VALUES (1,_binary '\0',NULL,'harshithp9141@gmail.com',NULL,'harshithp914@gmail.com','harshithp','$2b$12$VTBsqZsU2BSacDlGnNimTOBiKcEpAb/MW99Okhb4RY3lUsdJ59pze',NULL);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

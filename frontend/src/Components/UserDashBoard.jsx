@@ -75,7 +75,7 @@ const UserDashBoard = () => {
     const medicationChecked = sessionStorage.getItem("medicationChecked");
 
     if (!storedName || !storedPid || !storedEmail) {
-      navigate("/");
+      navigate("/login");
       return;
     }
 

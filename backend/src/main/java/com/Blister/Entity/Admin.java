@@ -11,7 +11,7 @@ public class Admin {
     @Id
     private int id;
 
-    @Column(length = 40)
+    @Column(length = 100)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
