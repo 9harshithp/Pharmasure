@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   FaDownload,
   FaTimes,
@@ -12,11 +13,15 @@ import {
 } from "react-icons/fa";
 
 const PWAInstallPrompt = () => {
+  const location = useLocation();
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [platform, setPlatform] = useState("desktop");
+
+  // Suppress floating banner on authentication pages so it never blocks the login/register forms
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
 
   useEffect(() => {
     // 1. Check if running as installed standalone PWA
@@ -92,103 +97,119 @@ const PWAInstallPrompt = () => {
     return null;
   }
 
+  // Check if we are on a dashboard with bottom navigation
+  const isDashboardPage = location.pathname.startsWith("/userDashboard");
+
   return (
     <>
-      {/* 🌟 Floating Bottom Install Bar (Always visible in browser mode until dismissed) */}
-      {!isDismissed && (
+      {/* 🌟 Floating Bottom Install Bar (Suppressed on /login and /register to never block forms) */}
+      {!isDismissed && !isAuthPage && (
         <div
-          className="position-fixed bottom-0 start-50 translate-middle-x mb-3 px-3 w-100"
-          style={{ maxWidth: "540px", zIndex: 9998, animation: "slideUp 0.3s ease-out" }}
+          className={`position-fixed start-50 translate-middle-x px-3 w-100 ${
+            isDashboardPage ? "pwa-banner-dashboard" : "pwa-banner-standard"
+          }`}
+          style={{
+            maxWidth: "480px",
+            zIndex: 1025,
+            animation: "slideUp 0.3s ease-out",
+          }}
         >
           <div
-            className="d-flex align-items-center justify-content-between p-3 rounded-4 shadow-lg text-white"
+            className="d-flex align-items-center justify-content-between p-2.5 px-3 rounded-4 shadow-lg text-white"
             style={{
               background: "linear-gradient(135deg, #0F2942 0%, #164E63 100%)",
               border: "1px solid rgba(6, 182, 212, 0.45)",
               backdropFilter: "blur(14px)",
-              boxShadow: "0 10px 35px rgba(15, 41, 66, 0.5)",
+              boxShadow: "0 10px 30px rgba(15, 41, 66, 0.45)",
             }}
           >
-            <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2.5">
               <div
-                className="rounded-3 p-2.5 d-flex align-items-center justify-content-center flex-shrink-0"
+                className="rounded-3 p-2 d-flex align-items-center justify-content-center flex-shrink-0"
                 style={{ background: "rgba(6, 182, 212, 0.2)", color: "#06B6D4" }}
               >
-                <FaMobileAlt size={22} />
+                <FaMobileAlt size={18} />
               </div>
               <div>
-                <div className="fw-bold small" style={{ color: "#F8FAFC" }}>
+                <div className="fw-bold text-white" style={{ fontSize: "13px" }}>
                   Install PharmaSure App
                 </div>
-                <div className="small font-mono" style={{ fontSize: "11px", color: "#94A3B8" }}>
-                  Zero-Risk Alerts • Full-Screen • Offline
+                <div className="small font-mono text-truncate" style={{ fontSize: "10.5px", color: "#94A3B8", maxWidth: "180px" }}>
+                  Zero-Risk Alerts • Fast • Offline
                 </div>
               </div>
             </div>
 
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center gap-1.5">
               <button
                 onClick={handleOpenInstall}
-                className="btn btn-sm d-flex align-items-center gap-1.5 fw-semibold px-3 py-1.5 rounded-pill text-white shadow-sm"
+                className="btn btn-sm d-flex align-items-center gap-1 fw-semibold px-2.5 py-1.5 rounded-pill text-white shadow-sm"
                 style={{
                   background: "linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)",
                   border: "none",
-                  fontSize: "12px",
+                  fontSize: "11.5px",
+                  minHeight: "34px",
                 }}
               >
-                <FaDownload size={11} />
+                <FaDownload size={10} />
                 <span>Install</span>
               </button>
 
               <button
                 onClick={handleDismiss}
-                className="btn btn-sm p-1 text-secondary"
-                style={{ color: "#94A3B8", background: "transparent", border: "none" }}
+                className="btn btn-sm p-1.5 text-secondary d-flex align-items-center justify-content-center"
+                style={{ color: "#94A3B8", background: "transparent", border: "none", minWidth: "32px", minHeight: "32px" }}
                 aria-label="Close install prompt"
               >
-                <FaTimes size={14} />
+                <FaTimes size={13} />
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 📋 Step-by-Step Installation Modal (When browser native prompt is deferred) */}
+      {/* 📋 Step-by-Step Installation Modal - Fully Responsive for Mobile */}
       {showInstructions && (
         <div
           className="modal show d-block"
           tabIndex="-1"
           style={{ backgroundColor: "rgba(15, 41, 66, 0.8)", zIndex: 10600, backdropFilter: "blur(6px)" }}
         >
-          <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: "480px" }}>
+          <div
+            className="modal-dialog modal-dialog-centered mx-auto px-2"
+            style={{ maxWidth: "460px", width: "100%" }}
+          >
             <div className="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
               <div
-                className="modal-header text-white px-4 py-3"
+                className="modal-header text-white px-3 py-2.5"
                 style={{ background: "linear-gradient(135deg, #0F2942 0%, #0D9488 100%)" }}
               >
                 <div className="d-flex align-items-center gap-2">
                   <FaDownload className="text-info" />
-                  <h5 className="modal-title fw-bold mb-0" style={{ fontSize: "16px" }}>
+                  <h6 className="modal-title fw-bold mb-0" style={{ fontSize: "15px" }}>
                     Install PharmaSure Application
-                  </h5>
+                  </h6>
                 </div>
                 <button
                   type="button"
                   className="btn-close btn-close-white"
+                  style={{ fontSize: "12px" }}
                   onClick={() => setShowInstructions(false)}
                 />
               </div>
 
-              <div className="modal-body p-4 bg-light">
+              <div className="modal-body p-3 p-sm-4 bg-light" style={{ maxHeight: "75vh", overflowY: "auto" }}>
                 <div className="text-center mb-3">
-                  <img
-                    src="/pharmasure-logo-full.webp"
-                    alt="PharmaSure"
-                    height="40"
-                    className="mb-2"
-                  />
-                  <p className="small text-muted mb-0 font-mono">
-                    Install to home screen for instant access without a browser URL bar.
+                  <div className="bg-white rounded-3 p-2 d-inline-block shadow-sm mb-2">
+                    <img
+                      src="/pharmasure-logo-full.webp"
+                      alt="PharmaSure"
+                      height="32"
+                      style={{ height: "32px", width: "auto" }}
+                    />
+                  </div>
+                  <p className="small text-muted mb-0 font-mono" style={{ fontSize: "12px" }}>
+                    Install to home screen for full-screen zero-risk dispensing alerts.
                   </p>
                 </div>
 
@@ -198,7 +219,7 @@ const PWAInstallPrompt = () => {
                     <div className="d-flex align-items-center gap-2 mb-2 text-primary fw-bold small">
                       <FaApple size={18} /> Safari on iPhone / iPad:
                     </div>
-                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.8" }}>
+                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.75" }}>
                       <li>
                         Tap the <strong>Share</strong> button <FaShareAlt className="text-primary ms-1" /> at the bottom of Safari.
                       </li>
@@ -216,7 +237,7 @@ const PWAInstallPrompt = () => {
                     <div className="d-flex align-items-center gap-2 mb-2 text-success fw-bold small">
                       <FaAndroid size={18} /> Chrome / Browser on Android:
                     </div>
-                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.8" }}>
+                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.75" }}>
                       <li>
                         Tap the menu <strong>(⋮)</strong> in the top-right corner of Chrome.
                       </li>
@@ -234,12 +255,12 @@ const PWAInstallPrompt = () => {
                     <div className="d-flex align-items-center gap-2 mb-2 text-info fw-bold small">
                       <FaDesktop size={18} /> Desktop (Chrome, Edge, Brave):
                     </div>
-                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.8" }}>
+                    <ol className="small text-muted mb-0 ps-3 font-mono" style={{ fontSize: "12px", lineHeight: "1.75" }}>
                       <li>
                         Look at the right side of the URL address bar above.
                       </li>
                       <li>
-                        Click the <strong>Install PharmaSure</strong> icon <strong>(⊕)</strong> or computer screen icon.
+                        Click the <strong>Install PharmaSure</strong> icon <strong>(⊕)</strong> or monitor icon.
                       </li>
                       <li>
                         Click <strong>Install</strong> to launch the standalone desktop window.
@@ -249,24 +270,25 @@ const PWAInstallPrompt = () => {
                 )}
 
                 <div className="d-flex align-items-center gap-2 p-2 rounded-2" style={{ background: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                  <FaCheckCircle className="text-success" />
+                  <FaCheckCircle className="text-success flex-shrink-0" />
                   <span className="small text-success font-mono" style={{ fontSize: "11px" }}>
-                    DSCSA 2.0 PWA • Offline Cache Enabled • Zero App Store Fees
+                    DSCSA 2.0 PWA • Offline Cache Enabled • Native Feel
                   </span>
                 </div>
               </div>
 
-              <div className="modal-footer bg-white py-2 px-4 justify-content-between">
+              <div className="modal-footer bg-white py-2 px-3 justify-content-between">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-secondary"
+                  className="btn btn-sm btn-outline-secondary px-3"
                   onClick={() => setShowInstructions(false)}
                 >
                   Close
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm btn-primary px-3 rounded-pill"
+                  className="btn btn-sm btn-primary px-4 rounded-pill fw-semibold"
+                  style={{ background: "linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)", border: "none" }}
                   onClick={() => setShowInstructions(false)}
                 >
                   Got It!

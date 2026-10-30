@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import {
   FaBoxes,
   FaChartBar,
   FaSignOutAlt,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { useLanguage } from "../context/LanguageContext";
 import LanguageSelector from "./LanguageSelector";
@@ -13,6 +15,7 @@ const PharmaDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -30,67 +33,97 @@ const PharmaDashboard = () => {
     >
       <ToastContainer position="top-center" autoClose={2000} />
 
-      {/* Mobile Navbar */}
-      <nav className="navbar navbar-dark d-md-none" style={{ backgroundColor: "#0F2942" }}>
-        <div className="container-fluid d-flex justify-content-between align-items-center">
-          <div className="navbar-brand mb-0 d-flex align-items-center" role="button" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+      {/* Mobile Navbar with React state toggle */}
+      <nav className="navbar navbar-dark d-md-none sticky-top py-2 px-3" style={{ backgroundColor: "#0F2942", zIndex: 1030 }}>
+        <div className="container-fluid d-flex justify-content-between align-items-center p-0">
+          <div
+            className="navbar-brand mb-0 d-flex align-items-center"
+            role="button"
+            onClick={() => {
+              navigate("/");
+              setIsMobileMenuOpen(false);
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <div className="bg-white rounded-2 px-2 py-1 d-inline-flex align-items-center shadow-sm">
               <picture>
                 <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
                 <img
                   src="/pharmasure-logo-full.png"
                   alt="PharmaSure"
-                  width="65"
+                  width="75"
                   height="26"
                   style={{ height: "26px", width: "auto", objectFit: "contain" }}
                 />
               </picture>
             </div>
+            <span className="badge bio-pill-cyan ms-2" style={{ fontSize: "9px" }}>
+              Pharmacist
+            </span>
           </div>
+
           <div className="d-flex align-items-center gap-2">
             <LanguageSelector variant="dark" />
             <button
-              className="navbar-toggler"
+              className="btn btn-sm btn-outline-light d-flex align-items-center justify-content-center p-2 rounded-2"
               type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#pharmaMobileMenu"
-              style={{ borderColor: "rgba(255,255,255,0.2)" }}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+              style={{ borderColor: "rgba(255,255,255,0.25)", minWidth: "36px", height: "36px" }}
             >
-              <span className="navbar-toggler-icon"></span>
+              {isMobileMenuOpen ? <FaTimes size={16} /> : <FaBars size={16} />}
             </button>
           </div>
         </div>
-        <div className="collapse" id="pharmaMobileMenu" style={{ backgroundColor: "#0B1F33" }}>
-          <ul className="navbar-nav text-start p-3">
-            <li className="nav-item mb-2">
-              <Link
-                to="/pharmaDashBoard/inventory"
-                className={`nav-link rounded-3 px-3 py-2 ${isInventory ? "text-white fw-bold" : "text-white-50"}`}
-                style={{ backgroundColor: isInventory ? "rgba(6, 182, 212, 0.2)" : "transparent" }}
-              >
-                <FaBoxes className="me-2" style={{ color: "#06B6D4" }} /> {t("inventory")}
-              </Link>
-            </li>
-            <li className="nav-item mb-2">
-              <Link
-                to="/pharmaDashBoard/analytics"
-                className={`nav-link rounded-3 px-3 py-2 ${isAnalytics ? "text-white fw-bold" : "text-white-50"}`}
-                style={{ backgroundColor: isAnalytics ? "rgba(6, 182, 212, 0.2)" : "transparent" }}
-              >
-                <FaChartBar className="me-2" style={{ color: "#06B6D4" }} /> {t("analytics")}
-              </Link>
-            </li>
-            <li className="nav-item mt-3">
-              <button
-                className="btn w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2"
-                style={{ backgroundColor: "rgba(239, 68, 68, 0.15)", color: "#F87171", border: "1px solid rgba(239, 68, 68, 0.3)" }}
-                onClick={handleLogout}
-              >
-                <FaSignOutAlt /> {t("logout")}
-              </button>
-            </li>
-          </ul>
-        </div>
+
+        {/* Slide-down Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div
+            className="w-100 pt-3 pb-2 mt-2 border-top border-secondary border-opacity-25"
+            style={{ animation: "fadeIn 0.2s ease" }}
+          >
+            <ul className="navbar-nav text-start">
+              <li className="nav-item mb-2">
+                <Link
+                  to="/pharmaDashBoard/inventory"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`nav-link rounded-3 px-3 py-2 d-flex align-items-center ${
+                    isInventory ? "text-white fw-bold" : "text-white-50"
+                  }`}
+                  style={{ backgroundColor: isInventory ? "rgba(6, 182, 212, 0.2)" : "rgba(255,255,255,0.05)" }}
+                >
+                  <FaBoxes className="me-2" style={{ color: "#06B6D4" }} /> {t("inventory")}
+                </Link>
+              </li>
+              <li className="nav-item mb-2">
+                <Link
+                  to="/pharmaDashBoard/analytics"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`nav-link rounded-3 px-3 py-2 d-flex align-items-center ${
+                    isAnalytics ? "text-white fw-bold" : "text-white-50"
+                  }`}
+                  style={{ backgroundColor: isAnalytics ? "rgba(6, 182, 212, 0.2)" : "rgba(255,255,255,0.05)" }}
+                >
+                  <FaChartBar className="me-2" style={{ color: "#06B6D4" }} /> {t("analytics")}
+                </Link>
+              </li>
+              <li className="nav-item mt-3">
+                <button
+                  className="btn w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 py-2.5"
+                  style={{
+                    backgroundColor: "rgba(239, 68, 68, 0.15)",
+                    color: "#F87171",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    minHeight: "44px",
+                  }}
+                  onClick={handleLogout}
+                >
+                  <FaSignOutAlt /> {t("logout")}
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
       </nav>
 
       {/* Desktop Sidebar */}

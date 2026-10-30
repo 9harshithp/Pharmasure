@@ -78,16 +78,16 @@ const Home = () => {
       <header className="position-sticky top-0 w-100 py-3" style={{ zIndex: 1000, backdropFilter: "blur(20px)", borderBottom: "1px solid #E2E8F0", background: "rgba(255, 255, 255, 0.92)", boxShadow: "0 2px 16px rgba(15,41,66,0.08)" }}>
         <div className="container d-flex justify-content-between align-items-center">
           {/* Logo */}
-          <div className="d-flex align-items-center gap-2" role="button" onClick={() => navigate("/")}>
+          <div className="d-flex align-items-center gap-1 gap-sm-2" role="button" onClick={() => navigate("/")}>
             <picture>
               <source srcSet="/pharmasure-logo-full.webp" type="image/webp" />
               <img
                 src="/pharmasure-logo-full.png"
                 alt="PharmaSure: Predictive Expiry & Decentralized Provenance"
-                width="110"
-                height="44"
+                width="100"
+                height="36"
                 fetchPriority="high"
-                style={{ height: "44px", width: "auto", objectFit: "contain" }}
+                style={{ height: "32px", width: "auto", objectFit: "contain" }}
               />
             </picture>
             <span className="badge bio-pill-cyan d-none d-sm-inline-block ms-1" style={{ fontSize: "10px" }}>
@@ -112,9 +112,9 @@ const Home = () => {
           </div>
 
           {/* Right Actions */}
-          <div className="d-flex align-items-center gap-2 gap-sm-3">
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2">
             <button
-              className="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1 rounded-pill px-2.5 px-sm-3 py-1.5 fw-semibold"
+              className="btn btn-sm btn-outline-info d-none d-sm-inline-flex align-items-center gap-1 rounded-pill px-2.5 px-sm-3 py-1.5 fw-semibold"
               style={{ fontSize: "12px", border: "1px solid #06B6D4", color: "#0F2942" }}
               onClick={() => window.dispatchEvent(new CustomEvent("openPWAInstall"))}
               title="Install PharmaSure as an app on your phone or desktop"
@@ -123,11 +123,12 @@ const Home = () => {
             </button>
             <LanguageSelector variant="light" />
             <button
-              className="bio-btn-glow btn-sm"
+              className="bio-btn-glow btn-sm py-1.5 px-2.5 px-sm-3"
+              style={{ fontSize: "12.5px" }}
               onClick={() => navigate("/login")}
             >
-              <span>{t("login") || "Access Portal"}</span>
-              <FaArrowRight size={12} />
+              <span>{t("login") || "Portal"}</span>
+              <FaArrowRight size={11} />
             </button>
           </div>
         </div>
