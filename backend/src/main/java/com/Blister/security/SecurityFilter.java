@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE + 2)
+@Order(Ordered.HIGHEST_PRECEDENCE + 3)
 public class SecurityFilter implements Filter {
 
     private final JwtUtil jwtUtil;
