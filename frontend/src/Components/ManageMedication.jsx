@@ -364,8 +364,8 @@ const handleScan = async () => {
       {/* 🔬 AI Clinical Safety Audit Trigger (Responsive Layout) */}
       {medications.length > 0 && (
         <div className="card border-0 shadow-sm rounded-3 mb-4 p-3 bg-white border-start border-4 border-info">
-          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
-            <div className="flex-grow-1">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+            <div className="flex-grow-1 pe-md-3 min-w-0">
               <h6 className="fw-bold mb-1 text-dark d-flex align-items-center gap-1.5" style={{ fontSize: "15px" }}>
                 <span>🔬</span> {t("ddiCheckerTitle")}
               </h6>
@@ -375,7 +375,7 @@ const handleScan = async () => {
             </div>
             <button
               type="button"
-              className="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto flex-shrink-0 rounded-pill px-3 py-2"
+              className="btn btn-outline-primary btn-sm fw-bold d-inline-flex align-items-center justify-content-center gap-2 text-nowrap rounded-pill px-4 py-2 w-100 w-md-auto flex-shrink-0"
               style={{ minHeight: "40px" }}
               onClick={async () => {
                 setIsAnalyzingSafety(true);
@@ -391,7 +391,7 @@ const handleScan = async () => {
               }}
               disabled={isAnalyzingSafety}
             >
-              <FaShieldAlt /> {isAnalyzingSafety ? t("auditingRegimen") : t("auditDrugInteractions")}
+              <FaShieldAlt /> <span>{isAnalyzingSafety ? t("auditingRegimen") : t("auditDrugInteractions")}</span>
             </button>
           </div>
         </div>
