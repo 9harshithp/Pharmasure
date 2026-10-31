@@ -58,6 +58,11 @@ html, body {
     font-size: 0.92rem;
   }
 
+  .btn-sm {
+    min-height: 32px !important;
+    font-size: 0.82rem !important;
+  }
+
   /* Universal container safe margin */
   .container, .container-fluid {
     padding-left: 14px !important;

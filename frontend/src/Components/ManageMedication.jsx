@@ -839,75 +839,51 @@ const handleScan = async () => {
             return (
               <div
                 key={med.mid}
-                className="card border-0 shadow-sm rounded-4 mb-3 p-3 position-relative"
+                className="card border-0 shadow-sm rounded-4 mb-3 p-3 position-relative overflow-hidden"
                 style={{
                   borderLeft: `5px solid ${borderAccent}`,
                   backgroundColor: "#FFFFFF",
                   boxShadow: "0 4px 18px rgba(15, 41, 66, 0.07)",
                   border: "1px solid #E2E8F0",
+                  boxSizing: "border-box",
+                  width: "100%",
+                  maxWidth: "100%",
                 }}
               >
-                {/* Top Row: Icon + Title on Left | Edit & Delete Actions on Right */}
-                <div className="d-flex justify-content-between align-items-center mb-1.5">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1 text-truncate pe-2">
+                {/* Header Row: Drug Icon + Name + Doctor (Left) | Risk Badge (Right) */}
+                <div className="d-flex justify-content-between align-items-start gap-2 mb-2.5">
+                  <div className="d-flex align-items-center gap-2.5 min-w-0" style={{ maxWidth: "68%" }}>
                     <div
                       className="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                       style={{
-                        width: "34px",
-                        height: "34px",
+                        width: "36px",
+                        height: "36px",
                         background: "rgba(6, 182, 212, 0.12)",
                         color: "#0891B2",
                       }}
                     >
-                      <FaPills size={16} />
+                      <FaPills size={17} />
                     </div>
-                    <div className="text-truncate">
-                      <h6 className="fw-bolder mb-0 text-dark text-truncate" style={{ fontSize: "16px", letterSpacing: "-0.01em" }}>
+                    <div className="min-w-0 flex-grow-1">
+                      <h6 className="fw-bolder mb-0 text-dark text-truncate" style={{ fontSize: "16px", letterSpacing: "-0.01em" }} title={med.tableName}>
                         {med.tableName}
                       </h6>
+                      <span className="text-muted small d-block text-truncate" style={{ fontSize: "12px", marginTop: "2px" }}>
+                        👨‍⚕️ {med.doctor || "Consulting Physician"}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Actions: Edit & Delete (Safely right-aligned with ample space) */}
-                  {role !== "patient" && (
-                    <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary p-0 d-flex align-items-center justify-content-center rounded-2 shadow-xs"
-                        onClick={() => handleEdit(med)}
-                        title="Edit medication"
-                        style={{ width: "30px", height: "30px", borderColor: "#CBD5E1" }}
-                      >
-                        <FaEdit size={12} />
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger p-0 d-flex align-items-center justify-content-center rounded-2 shadow-xs"
-                        onClick={() => handleDelete(med.mid)}
-                        title="Delete medication"
-                        style={{ width: "30px", height: "30px", borderColor: "#FECACA" }}
-                      >
-                        <FaTrash size={12} />
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Sub-Header Row: Doctor on Left | Status Badge on Right */}
-                <div className="d-flex justify-content-between align-items-center mb-2.5">
-                  <span className="text-muted small d-flex align-items-center gap-1 text-truncate pe-2" style={{ fontSize: "12px" }}>
-                    👨‍⚕️ {med.doctor || "Consulting Physician"}
-                  </span>
                   <span
-                    className={`badge bg-${risk.badgeColor} py-1 px-2.5 rounded-pill shadow-xs flex-shrink-0`}
-                    style={{ fontSize: "10.5px", fontWeight: "600" }}
+                    className={`badge bg-${risk.badgeColor} py-1.5 px-2.5 rounded-pill shadow-xs flex-shrink-0 text-nowrap`}
+                    style={{ fontSize: "10px", fontWeight: "600", letterSpacing: "0.02em" }}
                   >
                     {risk.badgeText}
                   </span>
                 </div>
 
                 {/* Timing Pills & Voice / WhatsApp Quick Buttons */}
-                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 pb-2 border-bottom">
+                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 pt-1 pb-2 border-bottom border-light">
                   <div className="d-flex flex-wrap align-items-center gap-1">
                     {med.timing.split(",").map((t, i) => (
                       <span
@@ -915,11 +891,12 @@ const handleScan = async () => {
                         className="badge"
                         style={{
                           background: "rgba(6, 182, 212, 0.08)",
-                          border: "1px solid rgba(6, 182, 212, 0.2)",
+                          border: "1px solid rgba(6, 182, 212, 0.25)",
                           color: "#0891B2",
-                          fontSize: "10.5px",
-                          padding: "2px 6px",
+                          fontSize: "11px",
+                          padding: "3px 7px",
                           borderRadius: "6px",
+                          fontWeight: 500,
                         }}
                       >
                         🕒 {t.trim()}
@@ -927,10 +904,10 @@ const handleScan = async () => {
                     ))}
                   </div>
 
-                  <div className="d-flex align-items-center gap-1.5">
+                  <div className="d-flex align-items-center gap-1.5 ms-auto">
                     <button
                       type="button"
-                      className={`btn btn-sm d-inline-flex align-items-center gap-1 rounded-pill px-2 py-0.5 ${
+                      className={`btn btn-sm d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1 ${
                         activeSpeechMid === med.mid ? "btn-danger text-white shadow-sm" : "btn-outline-primary"
                       }`}
                       style={{ fontSize: "11px", fontWeight: 600, minHeight: "28px" }}
@@ -955,13 +932,13 @@ const handleScan = async () => {
                         }
                       }}
                     >
-                      {activeSpeechMid === med.mid ? <FaStop size={9} /> : <FaVolumeUp size={10} />}
+                      {activeSpeechMid === med.mid ? <FaStop size={10} /> : <FaVolumeUp size={11} />}
                       <span>{activeSpeechMid === med.mid ? "Stop" : "Listen"}</span>
                     </button>
 
                     <button
                       type="button"
-                      className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 rounded-pill px-2 py-0.5"
+                      className="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 rounded-pill px-2.5 py-1"
                       style={{ fontSize: "11px", fontWeight: 600, minHeight: "28px" }}
                       onClick={() => {
                         setWhatsAppType(isHazard ? "zeroRisk" : "refill");
@@ -975,7 +952,7 @@ const handleScan = async () => {
                         setShowWhatsAppModal(true);
                       }}
                     >
-                      <FaWhatsapp size={11} />
+                      <FaWhatsapp size={12} />
                       <span>WhatsApp</span>
                     </button>
                   </div>
@@ -1019,49 +996,78 @@ const handleScan = async () => {
                 {isHazard ? (
                   <div className="alert alert-danger py-2 px-2.5 small rounded-3 mb-2.5 d-flex align-items-center gap-2" style={{ fontSize: "11.5px" }}>
                     <FaShieldAlt size={13} className="flex-shrink-0 text-danger" />
-                    <span>{risk.message}</span>
+                    <span className="flex-grow-1">{risk.message}</span>
                   </div>
                 ) : isWarning ? (
                   <div className="alert alert-warning py-2 px-2.5 small rounded-3 mb-2.5 d-flex align-items-center gap-2" style={{ fontSize: "11.5px" }}>
                     <FaShieldAlt size={13} className="flex-shrink-0 text-warning" />
-                    <span>{risk.message}</span>
+                    <span className="flex-grow-1">{risk.message}</span>
                   </div>
                 ) : (
                   <div
                     className="d-flex align-items-center gap-2 py-1.5 px-2.5 rounded-3 mb-2.5"
                     style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", color: "#166534" }}
                   >
-                    <FaShieldAlt className="text-success flex-shrink-0" size={12} />
+                    <FaShieldAlt className="text-success flex-shrink-0" size={13} />
                     <span style={{ fontSize: "11px", fontWeight: "500" }}>
                       Zero-Risk Validated • Course completes {risk.bufferDays} days ahead of expiry.
                     </span>
                   </div>
                 )}
 
-                {/* Primary Action Buttons: Blockchain & Direct Store */}
-                <div className="d-flex align-items-center gap-2 pt-2 border-top">
-                  <button
-                    type="button"
-                    className="btn btn-outline-info btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-1.5"
-                    style={{ fontSize: "11.5px", minHeight: "36px" }}
-                    onClick={() => setSelectedBlockchainItem(med)}
-                  >
-                    <FaLink size={10} />
-                    <span className="fw-semibold">Blockchain Audit</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-success btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-1.5"
-                    style={{ fontSize: "11.5px", minHeight: "36px" }}
-                    onClick={() => {
-                      setSelectedPharmacyItem(med);
-                      setShowDirectPharmacyModal(true);
-                    }}
-                  >
-                    <FaShoppingCart size={10} />
-                    <span className="fw-semibold">Buy Direct</span>
-                    <span className="badge bg-danger rounded-pill" style={{ fontSize: "8px" }}>-8%</span>
-                  </button>
+                {/* Action Controls Section */}
+                <div className="d-flex flex-column gap-2 pt-2 border-top">
+                  {/* Row 1: Primary Actions (Audit & Direct Store) */}
+                  <div className="d-flex align-items-center gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-info btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-1.5"
+                      style={{ fontSize: "11.5px", minHeight: "36px" }}
+                      onClick={() => setSelectedBlockchainItem(med)}
+                    >
+                      <FaLink size={11} />
+                      <span className="fw-semibold">Blockchain Audit</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-success btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-1.5"
+                      style={{ fontSize: "11.5px", minHeight: "36px" }}
+                      onClick={() => {
+                        setSelectedPharmacyItem(med);
+                        setShowDirectPharmacyModal(true);
+                      }}
+                    >
+                      <FaShoppingCart size={11} />
+                      <span className="fw-semibold">Buy Direct</span>
+                      <span className="badge bg-danger rounded-pill ms-0.5" style={{ fontSize: "8px" }}>-8%</span>
+                    </button>
+                  </div>
+
+                  {/* Row 2: Management Controls (Edit & Delete - guaranteed within box) */}
+                  {role !== "patient" && (
+                    <div className="d-flex align-items-center gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-2"
+                        style={{ fontSize: "12px", minHeight: "36px", borderColor: "#93C5FD", color: "#1D4ED8", backgroundColor: "#EFF6FF" }}
+                        onClick={() => handleEdit(med)}
+                        title="Edit medication details"
+                      >
+                        <FaEdit size={12} />
+                        <span className="fw-semibold">Edit Medication</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-1.5 rounded-pill py-2"
+                        style={{ fontSize: "12px", minHeight: "36px", borderColor: "#FCA5A5", color: "#B91C1C", backgroundColor: "#FEF2F2" }}
+                        onClick={() => handleDelete(med.mid)}
+                        title="Delete medication"
+                      >
+                        <FaTrash size={12} />
+                        <span className="fw-semibold">Delete</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );
