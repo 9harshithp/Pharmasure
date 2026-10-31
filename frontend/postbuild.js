@@ -1,7 +1,14 @@
 const fs = require('fs');
 const path = require('path');
-const { PurgeCSS } = require('purgecss');
-const glob = require('glob');
+
+let PurgeCSS;
+let glob;
+try {
+  PurgeCSS = require('purgecss').PurgeCSS;
+  glob = require('glob');
+} catch (e) {
+  // PurgeCSS is an optional optimization; do not crash production builds
+}
 
 async function runPostbuild() {
   const buildDir = path.join(__dirname, 'build');
@@ -12,7 +19,8 @@ async function runPostbuild() {
   }
 
   // 1. Purge unused CSS from main.*.css to completely eliminate "Reduce unused CSS"
-  const cssFiles = glob.sync(path.join(buildDir, 'static/css/main.*.css'));
+  if (glob && PurgeCSS) {
+    const cssFiles = glob.sync(path.join(buildDir, 'static/css/main.*.css'));
   if (cssFiles.length > 0) {
     try {
       const beforeSize = fs.statSync(cssFiles[0]).size;
@@ -41,6 +49,7 @@ async function runPostbuild() {
       console.warn('⚠️ PurgeCSS skipped:', err.message);
     }
   }
+}
 
   let html = fs.readFileSync(indexPath, 'utf8');
 
