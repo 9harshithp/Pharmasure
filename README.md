@@ -1,6 +1,40 @@
+<div align="center">
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:164E63,100:0891B2&height=220&section=header&text=Pharmasure&fontSize=55&fontColor=ffffff&desc=AI-Assisted%20Medication%20Management&descAlignY=70" alt="Pharmasure banner"/>
+
 # 💊 Pharmasure
 
-### Predictive Expiry Alerts for Zero-Risk Dispensing
+### AI-Assisted Medication Management & Predictive Expiry Monitoring
+
+[![Live Website](https://img.shields.io/badge/Live_Website-Visit_Now-0891B2?style=for-the-badge&logo=vercel&logoColor=white)](https://pharmasure.vercel.app/)
+[![Repository](https://img.shields.io/badge/GitHub-Pharmasure-181717?style=for-the-badge&logo=github)](https://github.com/9harshithp/Pharmasure)
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black)](#tech-stack)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](#tech-stack)
+[![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](#tech-stack)
+[![Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?style=for-the-badge&logo=google)](#tech-stack)
+
+</div>
+
+---
+
+## 🖥️ Application Showcase
+
+<div align="center">
+
+[![Pharmasure homepage](./pharmasure-homepage.png)](https://pharmasure.vercel.app/)
+
+*Pharmasure — AI-assisted medication management, predictive expiry monitoring and batch provenance. On-screen metrics are demonstration values, not verified clinical outcomes.*
+
+[![Launch Application](https://img.shields.io/badge/Launch_Application-0891B2?style=for-the-badge&logo=vercel&logoColor=white)](https://pharmasure.vercel.app/)
+
+</div>
+
+---
+
+## 📌 Project Overview
+
+**Live website:** [pharmasure.vercel.app](https://pharmasure.vercel.app/)
+
 
 Pharmasure is a healthcare-focused medication management system designed to help patients track their medicines, monitor expiry dates, manage medication information, and receive alerts for medicines approaching expiry.
 
@@ -18,7 +52,7 @@ The project combines a **React frontend** with a **Spring Boot backend**, **MySQ
   * Pharmasure/Admin
 * 💊 Medication management
 * 📅 Medication expiry-date tracking
-* 🛡️ **Zero-Risk Predictive Expiry & Runout Engine** (computes daily dosage vs. days supply, flags courses that overrun batch expiry dates before consumption)
+* 🛡️ **Predictive Expiry & Runout Engine** (computes daily dosage vs. days supply, flags courses that overrun batch expiry dates before consumption)
 * 🔔 Expiry and patient alerts
 * 📦 Inventory management
 * 📊 Medication consumption tracking and analytics
@@ -31,30 +65,40 @@ The project combines a **React frontend** with a **Spring Boot backend**, **MySQ
 ---
 
 ## 🏗️ System Architecture
-```text
-                    ┌─────────────────────┐
-                    │      React UI       │
-                    │     Frontend        │
-                    └──────────┬──────────┘
-                               │
-                          REST APIs
-                               │
-                    ┌──────────▼──────────┐
-                    │    Spring Boot      │
-                    │      Backend        │
-                    └──────────┬──────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-        ┌─────▼─────┐    ┌─────▼─────┐   ┌──────▼──────┐
-        │   MySQL   │    │  Gemini   │   │ Gmail SMTP  │
-        │ Database  │    │    API    │   │    Email     │
-        └───────────┘    └───────────┘   └─────────────┘
+
+```mermaid
+flowchart TD
+    U["Patients, Caretakers, Pharmacists"] --> F["React frontend"]
+    F -->|REST API| B["Spring Boot backend"]
+    B --> D[("MySQL 8")]
+    B --> G["Gemini API"]
+    B --> M["SMTP notifications"]
+    F --> O["Tesseract OCR"]
 ```
+
+The diagram summarizes the architecture described in the project documentation.
+
+## 🗄️ Conceptual Data Model
+
+```mermaid
+erDiagram
+    PATIENT ||--o{ MEDICATION : tracks
+    MEDICATION ||--o{ CONSUMPTION : logs
+    INVENTORY ||--o{ BATCH : contains
+    PATIENT ||--o{ ALERT : receives
+```
+
+This is a conceptual representation, not a verified physical database schema.
 
 ---
 
 ## 🛠️ Tech Stack
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=react,js,bootstrap,java,spring,maven,mysql,git,github,solidity&theme=dark&perline=5" alt="Pharmasure technology stack"/>
+
+</div>
 
 ### Frontend
 
@@ -129,7 +173,7 @@ Pharmasure/
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/9harshithp/Pharmasure.git
 cd Pharmasure
 ```
 
@@ -207,7 +251,7 @@ cd frontend
 npm install
 ```
 
-Create a local `.env` file if the frontend requires Gemini configuration:
+The legacy frontend configuration references the following variable for local development. React build-time variables are visible to browser users; do not put private API keys in a deployed frontend. Prefer the backend Gemini endpoint:
 
 ```env
 REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
@@ -227,18 +271,15 @@ http://localhost:3000
 
 ---
 
-## 👥 Demo Login Credentials
+## 👥 Application Roles
 
-Pharmasure automatically detects your role based on the email address entered at login (`/login`):
+| Role | Dashboard and capabilities |
+|---|---|
+| Patient | Medication schedules, dosage logs, adherence and expiry tracking |
+| Caretaker | Associated patient monitoring and alerts |
+| Pharmacist / Admin | Inventory, expiry distribution charts and reports |
 
-| Role | Email | Password | Landing Page & Capabilities |
-| :--- | :--- | :--- | :--- |
-| **👤 Patient** | `harshithp914@gmail.com` | `student123` | **`/userDashboard`** — Medication schedules, dosage logs, adherence badges, and expiry tracking |
-| **🤝 Caretaker** | `harshithp9141@gmail.com` | `student123` | **`/userDashboard`** — Associated patient monitoring with automated missed dosage & expiry alert popups |
-| **💊 Pharmacist / Admin** | `pharmacist@pharmasure.com` | `admin123` | **`/pharmaDashBoard`** — Inventory stock management, predictive expiry distribution charts, and PDF reports |
-
-> [!NOTE]
-> There is no manual dropdown to select roles on the login page. Simply enter the corresponding demo email and password, and the backend will route you to the appropriate dashboard.
+For local demonstrations, configure dedicated test accounts using the project's development setup. Do not reuse personal or production credentials.
 
 ---
 
@@ -290,21 +331,21 @@ POST /api/gemini/medication/ask
 
 ## 🚀 Advanced Enterprise & Modern Tech Features
 
-Pharmasure now incorporates enterprise-grade clinical safety and zero-risk dispensing architectures:
+Pharmasure explores the following AI-assisted and inventory management capabilities. These are software prototypes and decision-support features, not clinically validated medical recommendations.
 
 ### 1. 🤖 Multimodal AI OCR Engine (`ocrScanner.js`)
-* **Primary Engine:** Google Gemini (`gemini-3.8-flash`) via `@google/genai` analyzes blister packaging directly, identifying medication brand, strength, and embossed expiry stamps.
+* **Primary Engine:** Google Gemini (`Gemini model configured in the application`) via `@google/genai` analyzes blister packaging directly, identifying medication brand, strength, and embossed expiry stamps.
 * **On-Device Fallback:** Integrated `tesseract.js` for offline OCR.
-* **Regulatory Expiry Alignment:** Automatically translates pharmaceutical month-only blister text (e.g., `EXP. JUL. 29`) to the legally recognized last day of that month (`2029-07-31`).
+* **Regulatory Expiry Alignment:** Automatically translates pharmaceutical month-only blister text (e.g., `EXP. JUL. 29`) to a month-end date for tracking purposes (`2029-07-31`).
 
-### 2. 🛡️ Predictive Zero-Risk Expiry Calculator (`predictiveRiskCalculator.js`)
-* **Predictive Runout Modeling:** Evaluates daily dosing patterns (`timing.length`) against current stock (`tabletQty`) to calculate the exact projected runout date (`runoutDate = today + daysSupply`).
-* **Zero-Risk Inversion Detection:** Flags prescriptions where `runoutDate > expiryDate` (i.e., patient will be consuming expired medicine mid-course) with a red hazard alert, buffer countdown, and corrective guidance.
+### 2. 🛡️ Predictive Predictive Expiry Calculator (`predictiveRiskCalculator.js`)
+* **Predictive Runout Modeling:** Evaluates daily dosing patterns (`timing.length`) against current stock (`tabletQty`) to estimate the projected runout date (`runoutDate = today + daysSupply`).
+* **Predictive Inversion Detection:** Flags prescriptions where `runoutDate > expiryDate` (i.e., the estimated supply extends past the entered expiry date) with an alert and buffer countdown for professional review.
 * **Global Alert Banner:** Real-time alert on the Patient Dashboard alerting patients when course completion overruns batch validity.
 
 ### 3. 🔬 AI Clinical Regimen & Drug-Drug Interaction (DDI) Checker (`clinicalSafetyChecker.js`)
-* Analyzes the patient's full active medication list against Google Gemini 3.8 Flash (with rule-based clinical fallback).
-* Delivers a **Safety Score (0–100)**, identifies adverse drug-drug interactions, food/dietary warnings (e.g. grapefruit, dairy), and clinical precautions.
+* Analyzes the patient's full active medication list against the configured Gemini model (with rule-based clinical fallback).
+* Produces an experimental review score and possible interaction flags for professional verification; it does not establish clinical safety.
 
 ### 4. 📄 Doctor's Clinical Summary PDF Generator (`clinicalReportGenerator.js`)
 * One-click export for clinical appointments.
@@ -316,16 +357,16 @@ Pharmasure now incorporates enterprise-grade clinical safety and zero-risk dispe
 
 ### 6. 🔊 Web Speech API Voice Assistant (`voiceAssistant.js`)
 * Hands-free audio readouts for elderly or visually impaired patients.
-* Pronounces medication schedules, dosage timings, remaining counts, and vocalizes zero-risk hazard warnings.
+* Pronounces medication schedules, dosage timings, remaining counts, and vocalizes predictive hazard warnings.
 
 ### 7. 💊 Pharmacist FEFO Engine & Smart Dispense Assistant (`Inventory.js`)
 * **FEFO Sorting:** Prioritizes batches strictly by earliest expiration date first (First-Expired, First-Out).
-* **Smart Dispense Assistant:** Pharmacist inputs prescribed course duration (e.g. 30 days) and daily intake. The system verifies if the earliest batch will expire before the patient finishes their course. If violated, it prevents dispensing and recommends a safer batch.
+* **Smart Dispense Assistant:** Pharmacist inputs prescribed course duration (e.g. 30 days) and daily intake. The system verifies if the earliest batch will expire before the patient finishes their course. If violated, it flags the batch for pharmacist review.
 * **GS1 2D DataMatrix / QR Codes:** Dynamic QR code generation adhering to pharma serialization standards `(01)GTIN(17)EXP(10)BATCH`.
 
 ### 8. 📦 Enterprise Distributor Return & Credit-Note Manager (`Analytics.js`)
 * Automatically identifies batches in the standard 30–90 days pre-expiry recall window.
-* Generates an official B2B **Distributor Return Claim & Credit-Note PDF** with GSTIN, claim IDs, unit costs, total refund value, and pharmacist sign-off seals to eliminate dead-stock financial loss.
+* Generates a prototype B2B **Distributor Return Claim & Credit-Note PDF** with GSTIN, claim IDs, unit costs, total refund value, and pharmacist sign-off seals to help track potential dead-stock losses.
 
 ### 9. 📱 Enterprise Responsive CSS Design System (`responsive.css`)
 * Custom responsive styles engineered across mobile devices (<576px), tablets (576px–991px), and enterprise pharmacy widescreen monitors (>=1400px).
@@ -333,11 +374,11 @@ Pharmasure now incorporates enterprise-grade clinical safety and zero-risk dispe
 ### 10. 📋 AI Handwritten Doctor Prescription Scanner (`prescriptionScanner.js` & `PrescriptionScannerModal.jsx`)
 * **Multimodal Handwriting Deciphering:** Leverages Google Gemini multimodal vision to extract cursive handwriting from doctors' paper slips.
 * **Clinical Notation Normalization:** Translates shorthand dosage instructions (`1-0-1`, `OD`, `BD`, `TDS`, `PRN`) into standardized schedules.
-* **1-Tap Regimen Import:** Directly bulk-adds deciphered medications, doctors, and quantities into the patient's schedule.
+* **1-Tap Regimen Import:** Supports importing extracted information into the schedule after human verification.
 
 ### 11. 🔗 Blockchain Batch Provenance & DSCSA Anti-Tampering Layer (`MedicineBatchLedger.sol` & `BlockchainAuditModal.jsx`)
 * **Solidity Smart Contract (`MedicineBatchLedger.sol`):** Immutable smart contract ledger for pharmaceutical serialization and track-and-trace.
-* **Anti-Tampering Expiry Verification:** Detects counterfeit or illicitly relabeled expiration dates by cryptographically verifying the physical expiry against the initial genesis mint block.
+* **Anti-Tampering Expiry Verification:** Compares recorded expiry information with an initial ledger entry; this does not independently verify physical authenticity.
 * **On-Chain Explorer & Web3 Broadcast:** Built-in Polygonscan transaction viewer with decoded event logs, plus live transaction broadcasting on Polygon PoS (Amoy Testnet) via MetaMask.
 
 ### 12. 🌐 Multi-Language Regional Accessibility (`LanguageContext.js` & `translationService.js`)
@@ -345,9 +386,22 @@ Pharmasure now incorporates enterprise-grade clinical safety and zero-risk dispe
 * Dynamic phrase caching with automatic speech synthesis dialect alignment for elderly care and inclusive healthcare.
 
 ### 13. 📲 WhatsApp & SMS Clinical Alert Dispatcher (`notificationService.js` & `WhatsAppAlertModal.jsx`)
-* **1-Tap Direct WhatsApp Dispatch:** Opens WhatsApp Web / App with pre-filled clinical notifications for Missed Doses, Zero-Risk Expiry Conflict Warnings, Low-Stock Refills, and Full Daily Regimen Schedules.
+* **1-Tap Direct WhatsApp Dispatch:** Opens WhatsApp Web / App with pre-filled clinical notifications for Missed Doses, Predictive Expiry Conflict Warnings, Low-Stock Refills, and Full Daily Regimen Schedules.
 * **Native SMS Mobile Gateway:** Supports direct SMS composition and Cloud Gateway delivery simulation with unique Message SIDs.
 * **Live Chat Bubble Preview:** Interactive chat preview matching WhatsApp UI with timestamps and double-check read receipts.
+
+---
+
+## 🧪 Testing and Quality
+
+The repository includes a backend test directory. Run the current suite from the backend directory:
+
+```bash
+cd backend
+mvn test
+```
+
+Current pass counts and CI/CD workflow status have not been independently verified.
 
 ---
 
@@ -370,6 +424,12 @@ Use `.env.example` and `application-example.properties` as templates containing 
 
 ---
 
+## ⚕️ Intended Use
+
+Pharmasure is an academic medication-management prototype. AI/OCR outputs, expiry projections, interaction flags and prescription transcription require human verification; they are not a substitute for a clinician or pharmacist.
+
+---
+
 ## 🎯 Project Objective
 
 The objective of Pharmasure is to provide a centralized medication-management platform that helps reduce medication-related risks by tracking medication information, expiry dates, consumption, and patient alerts.
@@ -384,7 +444,7 @@ The objective of Pharmasure is to provide a centralized medication-management pl
 * Improved role-based authorization
 * Automated medication-expiry notification scheduler
 * Secure backend-only Gemini integration
-* Cloud deployment
+* Further cloud deployment and operational hardening
 * Docker-based deployment
 * Automated testing and CI/CD
 * Improved OCR accuracy
@@ -392,12 +452,28 @@ The objective of Pharmasure is to provide a centralized medication-management pl
 
 ---
 
-## 👨‍💻 Contributors
+## 👨‍💻 Developer & Contributors
+
+<div align="center">
+
+**Harshith P** — Backend Engineer | Full Stack Developer
+
+[![GitHub](https://img.shields.io/badge/GitHub-9harshithp-181717?style=for-the-badge&logo=github)](https://github.com/9harshithp)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshith_P-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/harshithp914)
+[![Email](https://img.shields.io/badge/Email-Contact_Me-EA4335?style=for-the-badge&logo=gmail)](mailto:harshithp914@gmail.com)
+
+</div>
 
 Developed as an academic/final-year project focused on healthcare technology, medication management, AI-assisted processing, and predictive expiry monitoring.
 
 ---
 
-## 📄 License
+## 📄 Intended Project Use
 
 This project is intended for educational and demonstration purposes.
+
+<div align="center">
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:164E63,100:0891B2&height=120&section=footer" alt="Pharmasure footer"/>
+
+</div>
