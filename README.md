@@ -6,6 +6,7 @@
 
 ### AI-Assisted Medication Management & Predictive Expiry Monitoring
 
+[![CI](https://github.com/9harshithp/Pharmasure/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/9harshithp/Pharmasure/actions/workflows/ci.yml)
 [![Live Website](https://img.shields.io/badge/Live_Website-Visit_Now-0891B2?style=for-the-badge&logo=vercel&logoColor=white)](https://pharmasure.vercel.app/)
 [![Repository](https://img.shields.io/badge/GitHub-Pharmasure-181717?style=for-the-badge&logo=github)](https://github.com/9harshithp/Pharmasure)
 [![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black)](#tech-stack)

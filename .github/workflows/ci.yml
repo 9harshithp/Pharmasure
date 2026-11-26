@@ -1,0 +1,131 @@
+name: Pharmasure CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend (React)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run ESLint
+        run: npx eslint src/
+
+      - name: Run frontend tests
+        env:
+          CI: true
+        run: npm test -- --watchAll=false
+
+      - name: Build frontend
+        env:
+          REACT_APP_API_BASE_URL: http://localhost:8080
+        run: npm run build
+
+  backend:
+    name: Backend (Spring Boot)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: blister
+          MYSQL_USER: pharmasure
+          MYSQL_PASSWORD: test_db_password
+          MYSQL_ROOT_PASSWORD: test_root_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -ptest_root_password"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Ensure Maven wrapper is executable
+        run: chmod +x mvnw
+
+      - name: Run backend unit and integration tests
+        env:
+          DB_URL: jdbc:mysql://127.0.0.1:3306/blister
+          DB_USERNAME: pharmasure
+          DB_PASSWORD: test_db_password
+          JWT_SECRET: ci-test-jwt-secret-key-for-testing-only-32-chars
+          MAIL_USERNAME: test@example.com
+          MAIL_PASSWORD: test-mail-password
+          GEMINI_API_KEY: test-gemini-api-key
+        run: ./mvnw test -B
+
+      - name: Build Spring Boot application
+        run: ./mvnw package -DskipTests -B
+
+  blockchain:
+    name: Blockchain (Solidity)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: contracts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: contracts/package-lock.json
+
+      - name: Install contract dependencies
+        run: npm ci
+
+      - name: Compile smart contracts
+        run: npm run compile
+
+      - name: Run contract tests
+        run: npm test
+
