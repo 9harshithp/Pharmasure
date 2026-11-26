@@ -65,19 +65,81 @@ The project combines a **React frontend** with a **Spring Boot backend**, **MySQ
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
+
+Pharmasure combines pharmaceutical inventory management,
+predictive expiry analysis, AI-assisted prescription processing
+and blockchain-based batch provenance.
+
+```mermaid
+flowchart TB
+    U["Patients, Caretakers, Pharmacists and Admins"]
+    U --> F["React Frontend - Vercel"]
+    F -->|REST API| B["Spring Boot Backend"]
+
+    B --> A["Authentication and RBAC"]
+    B --> I["Inventory and Batch Management"]
+    B --> E["Predictive Expiry Engine"]
+    B --> P["Prescription Processing"]
+    F --> T["Blockchain Integration / MetaMask"]
+
+    A --> DB[("MySQL")]
+    I --> DB
+    E --> DB
+
+    P --> OCR["OCR"]
+    P --> AI["Gemini Multimodal API"]
+
+    T --> SC["Solidity Smart Contracts"]
+    SC --> BC["Polygon Amoy Testnet"]
+```
+
+### Prescription Processing Workflow
 
 ```mermaid
 flowchart TD
-    U["Patients, Caretakers, Pharmacists"] --> F["React frontend"]
-    F -->|REST API| B["Spring Boot backend"]
-    B --> D[("MySQL 8")]
-    B --> G["Gemini API"]
-    B --> M["SMTP notifications"]
-    F --> O["Tesseract OCR"]
+    A["Upload Prescription"] --> B["Extract Prescription Text"]
+    B --> C["AI-Assisted Data Extraction"]
+    C --> D["Structured Prescription Information"]
+    D --> E["Pharmacist Review"]
+    E --> F["Inventory and Expiry Assessment"]
+    F --> G["Review Results"]
 ```
 
-The diagram summarizes the architecture described in the project documentation.
+### Drug Batch Provenance
+
+```mermaid
+sequenceDiagram
+    actor U as Authorized User
+    participant A as Spring Boot API
+    participant D as MySQL
+    participant W as Browser / MetaMask
+    participant B as Amoy Testnet
+
+    U->>A: Register medicine batch
+    A->>D: Store batch metadata
+    U->>W: Review provenance transaction
+    W->>B: Broadcast signed transaction
+    B-->>W: Transaction reference
+    W-->>U: Display provenance information
+```
+
+### Engineering Design
+
+| Design decision | Purpose |
+|---|---|
+| Spring Boot REST API | Modular backend services |
+| MySQL | Relational inventory management |
+| Predictive expiry analysis | Identify expiry-related inventory risks |
+| Gemini multimodal integration | Assist prescription interpretation |
+| Pharmacist review | Validate extracted information |
+| Solidity smart contracts | Record batch provenance |
+| Polygon Amoy Testnet | Test-network blockchain transaction processing |
+| GitHub Actions | Automated build and test verification |
+| Multilingual interface | Improve accessibility |
+
+Pharmasure is an academic healthcare software prototype.
+Clinical decisions require qualified professional review.
 
 ## 🗄️ Conceptual Data Model
 
@@ -339,7 +401,7 @@ Pharmasure explores the following AI-assisted and inventory management capabilit
 * **On-Device Fallback:** Integrated `tesseract.js` for offline OCR.
 * **Regulatory Expiry Alignment:** Automatically translates pharmaceutical month-only blister text (e.g., `EXP. JUL. 29`) to a month-end date for tracking purposes (`2029-07-31`).
 
-### 2. 🛡️ Predictive Predictive Expiry Calculator (`predictiveRiskCalculator.js`)
+### 2. 🛡️ Predictive Expiry Calculator (`predictiveRiskCalculator.js`)
 * **Predictive Runout Modeling:** Evaluates daily dosing patterns (`timing.length`) against current stock (`tabletQty`) to estimate the projected runout date (`runoutDate = today + daysSupply`).
 * **Predictive Inversion Detection:** Flags prescriptions where `runoutDate > expiryDate` (i.e., the estimated supply extends past the entered expiry date) with an alert and buffer countdown for professional review.
 * **Global Alert Banner:** Real-time alert on the Patient Dashboard alerting patients when course completion overruns batch validity.
@@ -402,7 +464,7 @@ cd backend
 mvn test
 ```
 
-Current pass counts and CI/CD workflow status have not been independently verified.
+The latest reported CI run (#2 on main, commit 1ac4072) passed after configuring Node.js 22 for the Hardhat job. See the [CI workflow](https://github.com/9harshithp/Pharmasure/actions/workflows/ci.yml) for current build and test results.
 
 ---
 
@@ -447,7 +509,7 @@ The objective of Pharmasure is to provide a centralized medication-management pl
 * Secure backend-only Gemini integration
 * Further cloud deployment and operational hardening
 * Docker-based deployment
-* Automated testing and CI/CD
+* Expanded automated test coverage
 * Improved OCR accuracy
 * Mobile application support
 
